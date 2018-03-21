@@ -4,6 +4,9 @@ MAINTAINER RekGRpth
 
 RUN apk add --no-cache \
     postgresql \
+#    postgresql-bdr \
+#    postgresql-bdr-contrib \
+    postgresql-contrib \
     shadow \
     su-exec \
     tzdata
