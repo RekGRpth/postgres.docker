@@ -4,16 +4,14 @@ MAINTAINER RekGRpth
 
 RUN apk add --no-cache \
     postgresql \
-#    postgresql-bdr \
-#    postgresql-bdr-contrib \
     postgresql-contrib \
     shadow \
     su-exec \
     tzdata
 
-ENV HOME /data
-ENV LANG ru_RU.UTF-8
-ENV TZ   Asia/Yekaterinburg
+ENV HOME /data \
+    LANG ru_RU.UTF-8 \
+    TZ   Asia/Yekaterinburg
 
 ENV PGDATA /data/postgres
 
