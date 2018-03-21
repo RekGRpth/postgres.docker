@@ -8,7 +8,6 @@ docker pull rekgrpth/postgres && \
 docker volume create postgres && \
 docker run \
     --add-host `hostname -f`:`ip -4 addr show docker0 | grep -oP 'inet \K[\d.]+'` \
-    --cpus="4.0" \
     --detach \
     --env USER_ID=$(id -u) \
     --env GROUP_ID=$(id -g) \
