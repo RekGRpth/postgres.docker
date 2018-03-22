@@ -17,7 +17,7 @@ ENV HOME=/data \
     PGDATA=/data/postgres
 
 ADD entrypoint.sh /
-RUN chmod +x /entrypoint.sh && usermod --home ${HOME} ${USER}
+RUN chmod +x /entrypoint.sh && usermod --home "${HOME}" "${USER}"
 ENTRYPOINT ["/entrypoint.sh"]
 
 VOLUME  ${HOME}
