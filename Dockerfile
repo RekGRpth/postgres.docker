@@ -9,7 +9,7 @@ RUN apk add --no-cache \
         su-exec \
         tzdata \
     && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-        postgis \
+        postgis
 
 ENV HOME=/data \
     LANG=ru_RU.UTF-8 \
