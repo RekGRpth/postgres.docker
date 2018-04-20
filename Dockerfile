@@ -2,14 +2,13 @@ FROM alpine
 
 MAINTAINER RekGRpth
 
-RUN apk add --no-cache \
+RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+        postgis \
         postgresql \
         postgresql-contrib \
         shadow \
         su-exec \
-        tzdata \
-    && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-        postgis
+        tzdata
 
 ENV HOME=/data \
     LANG=ru_RU.UTF-8 \
