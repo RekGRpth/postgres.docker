@@ -21,7 +21,8 @@ RUN apk add --no-cache \
         json-c \
     && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
         postgis \
-    &&chmod +x /entrypoint.sh && usermod --home "${HOME}" "${USER}"
+    && chmod +x /entrypoint.sh \
+    && usermod --home "${HOME}" "${USER}"
 
 VOLUME  ${HOME}
 
