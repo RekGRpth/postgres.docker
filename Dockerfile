@@ -14,6 +14,7 @@ ENV HOME=/data \
 RUN apk add --no-cache \
         postgresql \
         postgresql-contrib \
+        repmgr \
         shadow \
         su-exec \
         tzdata \
