@@ -22,6 +22,7 @@ RUN apk add --no-cache \
     && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
         postgis \
         barman \
+    && find -name "*.pyc" -delete \
     && chmod +x /entrypoint.sh \
     && usermod --home "${HOME}" "${USER}"
 
