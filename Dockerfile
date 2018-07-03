@@ -19,8 +19,8 @@ RUN apk add --no-cache \
         su-exec \
         tzdata \
 #        json-c \
-#    && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
-#        libressl2.7-libcrypto \
+    && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
+        libressl2.7-libcrypto \
     && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
         postgis \
         barman \
