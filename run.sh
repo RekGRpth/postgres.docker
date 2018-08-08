@@ -14,5 +14,6 @@ docker run \
     --publish 5555:5432 \
     --name postgres \
     --hostname postgres \
+    --restart always \
     --volume postgres:/data \
     rekgrpth/postgres
