@@ -11,7 +11,7 @@ docker run \
     --detach \
     --env USER_ID=$(id -u) \
     --env GROUP_ID=$(id -g) \
-    --publish 5555:5432 \
+    --publish 5432:5432 \
     --name postgres \
     --hostname postgres \
     --restart always \
