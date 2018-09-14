@@ -23,8 +23,8 @@ RUN apk add --no-cache \
         tzdata \
         unzip \
     && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+        pg_cron \
         postgis \
-#        barman \
     && (curl "https://bitbucket.org/eradman/pg-safeupdate/get/pg-safeupdate-1.1.zip" --output pg-safeupdate.zip \
         && unzip pg-safeupdate.zip \
         && cd eradman-pg-safeupdate-3e34b479661d \
