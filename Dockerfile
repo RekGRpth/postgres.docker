@@ -13,7 +13,7 @@ ENV HOME=/data \
 
 RUN apk add --no-cache \
         alpine-sdk \
-        curl \
+        git \
         postgresql \
         postgresql-contrib \
         postgresql-dev \
@@ -21,23 +21,18 @@ RUN apk add --no-cache \
         shadow \
         su-exec \
         tzdata \
-        unzip \
     && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
         pg_cron \
         postgis \
-    && (curl "https://bitbucket.org/eradman/pg-safeupdate/get/pg-safeupdate-1.1.zip" --output pg-safeupdate.zip \
-        && unzip pg-safeupdate.zip \
-        && cd eradman-pg-safeupdate-3e34b479661d \
-        && make install \
-        && cd .. \
-        && rm -rf eradman-pg-safeupdate-3e34b479661d \
-        && rm pg-safeupdate.zip) \
+    && mkdir -p /usr/src/pg-safeupdate \
+    && git clone --progress https://github.com/eradman/pg-safeupdate.git /usr/src/pg-safeupdate \
+    && (cd /usr/src/pg-safeupdate && make install) \
+    && rm -rf /usr/src/pg-safeupdate \
     && echo "shared_preload_libraries=safeupdate" >> /usr/share/postgresql/postgresql.conf.sample \
     && apk del \
         alpine-sdk \
-        curl \
+        git \
         postgresql-dev \
-        unzip \
     && find -name "*.pyc" -delete \
     && chmod +x /entrypoint.sh \
     && usermod --home "${HOME}" "${USER}"
