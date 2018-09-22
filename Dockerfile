@@ -55,8 +55,8 @@ RUN apk add --no-cache --virtual .build-deps \
     && sed -i 's|#include "sys/poll.h"|//#include "sys/poll.h"|g' "/usr/src/pg_cron/src/pg_cron.c" \
     && cd /usr/src/pg_cron \
     && make install \
-#    && echo "shared_preload_libraries = safeupdate,pg_cron" >> /usr/local/share/postgresql/postgresql.conf.sample \
-#    && echo "cron.database_name = 'cron'" >> /usr/local/share/postgresql/postgresql.conf.sample \
+    && echo "#shared_preload_libraries = 'safeupdate,pg_cron'" >> /usr/local/share/postgresql/postgresql.conf.sample \
+    && echo "#cron.database_name = 'cron'" >> /usr/local/share/postgresql/postgresql.conf.sample \
     && runDeps="$( \
         scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
             | tr ',' '\n' \
@@ -72,6 +72,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && cd / \
     && rm -rf \
         /usr/src \
+        /usr/local/include \
         /usr/local/share/doc \
         /usr/local/share/man \
     && find /usr/local -name '*.a' -delete \
