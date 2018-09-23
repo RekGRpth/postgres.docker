@@ -12,6 +12,8 @@ ENV GROUP=postgres \
     USER=postgres
 
 RUN apk add --no-cache --virtual .build-deps \
+        autoconf \
+        automake \
         bison \
         flex \
         gcc \
@@ -19,18 +21,24 @@ RUN apk add --no-cache --virtual .build-deps \
         icu-dev \
         libc-dev \
         libedit-dev \
+        libtool \
         libxml2-dev \
         libxml2-utils \
         libxslt-dev \
+        libxslt \
+        m4 \
         make \
         openssl-dev \
         perl-utils \
+        python \
         util-linux-dev \
         zlib-dev \
     && mkdir -p /usr/src \
-    && git clone --progress https://github.com/citusdata/pg_cron.git /usr/src/pg_cron \
-    && git clone --progress https://github.com/eradman/pg-safeupdate.git /usr/src/pg-safeupdate \
-    && git clone --progress https://github.com/postgres/postgres.git /usr/src/postgres \
+    && git clone --progress --recursive https://github.com/citusdata/pg_cron.git /usr/src/pg_cron \
+    && git clone --progress --recursive https://github.com/eradman/pg-safeupdate.git /usr/src/pg-safeupdate \
+    && git clone --progress --recursive https://github.com/pgq/pgqd.git /usr/src/pgqd \
+    && git clone --progress --recursive https://github.com/RekGRpth/pgq.git /usr/src/pgq \
+    && git clone --progress --recursive https://github.com/postgres/postgres.git /usr/src/postgres \
     && cd /usr/src/postgres \
     && ./configure \
         --disable-rpath \
@@ -54,6 +62,13 @@ RUN apk add --no-cache --virtual .build-deps \
     && make install \
     && sed -i 's|#include "sys/poll.h"|//#include "sys/poll.h"|g' "/usr/src/pg_cron/src/pg_cron.c" \
     && cd /usr/src/pg_cron \
+    && make install \
+    && cd /usr/src/pgqd/lib \
+    && ./autogen.sh \
+    && ./configure \
+    && cd /usr/src/pgqd \
+    && make install \
+    && cd /usr/src/pgq \
     && make install \
     && echo "#shared_preload_libraries = 'safeupdate,pg_cron'" >> /usr/local/share/postgresql/postgresql.conf.sample \
     && echo "#cron.database_name = 'cron'" >> /usr/local/share/postgresql/postgresql.conf.sample \
