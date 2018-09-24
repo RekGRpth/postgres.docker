@@ -87,7 +87,6 @@ RUN apk add --no-cache --virtual .build-deps \
     && cd / \
     && rm -rf \
         /usr/src \
-        /usr/local/include \
         /usr/local/share/doc \
         /usr/local/share/man \
     && find /usr/local -name '*.a' -delete \
