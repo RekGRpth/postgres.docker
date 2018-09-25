@@ -8,6 +8,7 @@ docker rm postgres
 docker rm pgqd
 docker pull rekgrpth/postgres || exit $?
 docker volume create postgres || exit $?
+docker network create my
 docker run \
     --add-host `hostname -f`:`ip -4 addr show docker0 | grep -oP 'inet \K[\d.]+'` \
     --detach \
@@ -15,6 +16,7 @@ docker run \
     --env GROUP_ID=$(id -g) \
     --publish 5432:5432 \
     --name postgres \
+    --network my \
     --hostname postgres \
     --restart always \
     --volume postgres:/data \
@@ -24,8 +26,8 @@ docker run \
     --detach \
     --env USER_ID=$(id -u) \
     --env GROUP_ID=$(id -g) \
-    --link postgres \
     --name pgqd \
+    --network my \
     --hostname pgqd \
     --restart always \
     --volume postgres:/data \
