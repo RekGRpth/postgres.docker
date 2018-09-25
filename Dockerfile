@@ -60,7 +60,6 @@ RUN apk add --no-cache --virtual .build-deps \
     && make -C contrib install \
     && cd /usr/src/pg-safeupdate \
     && make install \
-    && sed -i 's|#include "sys/poll.h"|//#include "sys/poll.h"|g' "/usr/src/pg_cron/src/pg_cron.c" \
     && cd /usr/src/pg_cron \
     && make install \
     && cd /usr/src/pgqd/lib \
