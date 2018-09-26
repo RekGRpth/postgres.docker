@@ -29,7 +29,6 @@ RUN apk add --no-cache --virtual .build-deps \
         libxslt \
         m4 \
         make \
-        openssl-dev \
         perl-utils \
         python \
         util-linux-dev \
