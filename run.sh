@@ -11,22 +11,24 @@ docker volume create postgres || exit $?
 docker network create my
 docker run \
     --detach \
-    --env USER_ID=$(id -u) \
     --env GROUP_ID=$(id -g) \
-    --publish 5432:5432 \
+    --env USER_ID=$(id -u) \
+    --hostname postgres \
+    --link nginx:$(hostname -f) \
     --name postgres \
     --network my \
-    --hostname postgres \
+    --publish 5432:5432 \
     --restart always \
     --volume postgres:/data \
     rekgrpth/postgres
 docker run \
     --detach \
-    --env USER_ID=$(id -u) \
     --env GROUP_ID=$(id -g) \
+    --env USER_ID=$(id -u) \
+    --hostname pgqd \
+    --link nginx:$(hostname -f) \
     --name pgqd \
     --network my \
-    --hostname pgqd \
     --restart always \
     --volume postgres:/data \
     rekgrpth/postgres pgqd /data/pgqd/pgqd.ini
