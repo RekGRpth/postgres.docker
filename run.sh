@@ -10,7 +10,6 @@ docker pull rekgrpth/postgres || exit $?
 docker volume create postgres || exit $?
 docker network create my
 docker run \
-    --add-host `hostname -f`:`ip -4 addr show docker0 | grep -oP 'inet \K[\d.]+'` \
     --detach \
     --env USER_ID=$(id -u) \
     --env GROUP_ID=$(id -g) \
@@ -22,7 +21,6 @@ docker run \
     --volume postgres:/data \
     rekgrpth/postgres
 docker run \
-    --add-host `hostname -f`:`ip -4 addr show docker0 | grep -oP 'inet \K[\d.]+'` \
     --detach \
     --env USER_ID=$(id -u) \
     --env GROUP_ID=$(id -g) \
