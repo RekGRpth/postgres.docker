@@ -19,6 +19,7 @@ RUN apk add --no-cache --virtual .build-deps \
         cmake \
         curl-dev \
         flex \
+        g++ \
         gcc \
         git \
         icu-dev \
@@ -27,8 +28,8 @@ RUN apk add --no-cache --virtual .build-deps \
         libtool \
         libxml2-dev \
         libxml2-utils \
-        libxslt-dev \
         libxslt \
+        libxslt-dev \
         m4 \
         make \
         perl-utils \
