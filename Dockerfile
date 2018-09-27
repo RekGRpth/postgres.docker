@@ -15,6 +15,8 @@ RUN apk add --no-cache --virtual .build-deps \
         autoconf \
         automake \
         bison \
+        boost-dev \
+        cmake \
         curl-dev \
         flex \
         gcc \
@@ -34,6 +36,7 @@ RUN apk add --no-cache --virtual .build-deps \
         util-linux-dev \
         zlib-dev \
     && mkdir -p /usr/src \
+    && git clone --progress --recursive https://github.com/RekGRpth/pgagent.git /usr/src/pgagent \
     && git clone --progress --recursive https://github.com/RekGRpth/pg_cron.git /usr/src/pg_cron \
     && git clone --progress --recursive https://github.com/RekGRpth/pgqd.git /usr/src/pgqd \
     && git clone --progress --recursive https://github.com/RekGRpth/pgq.git /usr/src/pgq \
@@ -71,6 +74,9 @@ RUN apk add --no-cache --virtual .build-deps \
     && cd /usr/src/pgq \
     && make install \
     && cd /usr/src/http \
+    && make install \
+    && cd /usr/src/pgagent \
+    && cmake . \
     && make install \
     && echo "#shared_preload_libraries = 'safeupdate,pg_cron'" >> /usr/local/share/postgresql/postgresql.conf.sample \
     && echo "#cron.database_name = 'cron'" >> /usr/local/share/postgresql/postgresql.conf.sample \
