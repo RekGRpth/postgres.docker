@@ -66,8 +66,8 @@ RUN apk add --no-cache --virtual .build-deps \
     && make -C contrib install \
     && cd /usr/src/pg-safeupdate \
     && make install \
-#    && cd /usr/src/pg_cron \
-#    && make install \
+    && cd /usr/src/pg_cron \
+    && make install \
     && cd /usr/src/pgqd/lib \
     && ./autogen.sh \
     && ./configure \
