@@ -37,13 +37,14 @@ RUN apk add --no-cache --virtual .build-deps \
         util-linux-dev \
         zlib-dev \
     && mkdir -p /usr/src \
-    && git clone --progress --recursive https://github.com/RekGRpth/pgagent.git /usr/src/pgagent \
-    && git clone --progress --recursive https://github.com/RekGRpth/pg_cron.git /usr/src/pg_cron \
-    && git clone --progress --recursive https://github.com/RekGRpth/pgqd.git /usr/src/pgqd \
-    && git clone --progress --recursive https://github.com/RekGRpth/pgq.git /usr/src/pgq \
-    && git clone --progress --recursive https://github.com/RekGRpth/pg-safeupdate.git /usr/src/pg-safeupdate \
-    && git clone --progress --recursive https://github.com/RekGRpth/pgsql-http.git /usr/src/http \
-    && git clone --progress --recursive https://github.com/RekGRpth/postgres.git /usr/src/postgres \
+    && cd /usr/src \
+    && git clone --recursive https://github.com/RekGRpth/pgagent.git \
+    && git clone --recursive https://github.com/RekGRpth/pg_cron.git \
+    && git clone --recursive https://github.com/RekGRpth/pgqd.git \
+    && git clone --recursive https://github.com/RekGRpth/pgq.git \
+    && git clone --recursive https://github.com/RekGRpth/pg-safeupdate.git \
+    && git clone --recursive https://github.com/RekGRpth/pgsql-http.git \
+    && git clone --recursive https://github.com/RekGRpth/postgres.git \
     && cd /usr/src/postgres \
     && ./configure \
         --disable-rpath \
@@ -60,13 +61,13 @@ RUN apk add --no-cache --virtual .build-deps \
         --with-pgport=5432 \
         --with-system-tzdata=/usr/share/zoneinfo \
         --with-uuid=e2fs \
-    && make -j "$(nproc)" world \
+    && make -j"$(nproc)" world \
     && make install-world \
     && make -C contrib install \
     && cd /usr/src/pg-safeupdate \
     && make install \
-    && cd /usr/src/pg_cron \
-    && make install \
+#    && cd /usr/src/pg_cron \
+#    && make install \
     && cd /usr/src/pgqd/lib \
     && ./autogen.sh \
     && ./configure \
@@ -74,7 +75,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && make install \
     && cd /usr/src/pgq \
     && make install \
-    && cd /usr/src/http \
+    && cd /usr/src/pgsql-http \
     && make install \
     && cd /usr/src/pgagent \
     && cmake . \
@@ -104,7 +105,7 @@ RUN apk add --no-cache --virtual .build-deps \
 
 VOLUME  ${HOME}
 
-WORKDIR ${HOME}/postgres
+WORKDIR ${HOME}
 
 ENTRYPOINT ["/entrypoint.sh"]
 
