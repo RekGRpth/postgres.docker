@@ -41,6 +41,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && git clone --recursive https://github.com/RekGRpth/pgagent.git \
     && git clone --recursive https://github.com/RekGRpth/pg_background.git \
     && git clone --recursive https://github.com/RekGRpth/pg_cron.git \
+    && git clone --recursive https://github.com/RekGRpth/pgqbw.git \
     && git clone --recursive https://github.com/RekGRpth/pgqd.git \
     && git clone --recursive https://github.com/RekGRpth/pgq.git \
     && git clone --recursive https://github.com/RekGRpth/pg-safeupdate.git \
@@ -72,20 +73,6 @@ RUN apk add --no-cache --virtual .build-deps \
     && ./configure \
     && cd / \
     $(find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" | while read -r NAME; do cd "$NAME" && make install; done) \
-#    && cd /usr/src/pgagent \
-#    && make install \
-#    && cd /usr/src/pg_background \
-#    && make install \
-#    && cd /usr/src/pg_cron \
-#    && make install \
-#    && cd /usr/src/pgqd \
-#    && make install \
-#    && cd /usr/src/pgq \
-#    && make install \
-#    && cd /usr/src/pg-safeupdate \
-#    && make install \
-#    && cd /usr/src/pgsql-http \
-#    && make install \
     && echo "#shared_preload_libraries = 'safeupdate,pg_cron'" >> /usr/local/share/postgresql/postgresql.conf.sample \
     && echo "#cron.database_name = 'cron'" >> /usr/local/share/postgresql/postgresql.conf.sample \
     && runDeps="$( \
