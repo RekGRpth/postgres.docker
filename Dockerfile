@@ -47,6 +47,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && git clone --recursive https://github.com/RekGRpth/pgq.git \
     && git clone --recursive https://github.com/RekGRpth/pg-safeupdate.git \
     && git clone --recursive https://github.com/RekGRpth/pgsql-http.git \
+    && git clone --recursive https://github.com/RekGRpth/pgtap.git \
     && git clone --recursive https://github.com/RekGRpth/postgres.git \
     && cd /usr/src/postgres \
     && ./configure \
