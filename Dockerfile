@@ -41,6 +41,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && git clone --recursive https://github.com/RekGRpth/pgagent.git \
     && git clone --recursive https://github.com/RekGRpth/pg_background.git \
     && git clone --recursive https://github.com/RekGRpth/pg_cron.git \
+    && git clone --recursive https://github.com/RekGRpth/pg_partman.git \
     && git clone --recursive https://github.com/RekGRpth/pgqbw.git \
     && git clone --recursive https://github.com/RekGRpth/pgqd.git \
     && git clone --recursive https://github.com/RekGRpth/pgq.git \
