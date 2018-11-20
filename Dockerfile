@@ -23,6 +23,7 @@ RUN apk add --no-cache --virtual .build-deps \
         gcc \
         git \
         icu-dev \
+        krb5-dev \
         libc-dev \
         libedit-dev \
         libtool \
@@ -30,9 +31,11 @@ RUN apk add --no-cache --virtual .build-deps \
         libxml2-utils \
         libxslt \
         libxslt-dev \
+        linux-pam-dev \
         m4 \
         make \
         musl-dev \
+        openldap-dev \
         perl-dev \
         perl-utils \
         python \
@@ -63,12 +66,16 @@ RUN apk add --no-cache --virtual .build-deps \
         --enable-thread-safety \
         --prefix=/usr/local \
         --with-gnu-ld \
+        --with-gssapi \
         --with-icu \
         --with-includes=/usr/local/include \
+        --with-krb5 \
+        --with-ldap \
         --with-libraries=/usr/local/lib \
         --with-libxml \
         --with-libxslt \
         --with-openssl \
+        --with-pam \
         --with-pgport=5432 \
         --with-system-tzdata=/usr/share/zoneinfo \
         --with-uuid=e2fs \
