@@ -18,9 +18,11 @@ RUN apk add --no-cache --virtual .build-deps \
         boost-dev \
         cmake \
         curl-dev \
+        file \
         flex \
         g++ \
         gcc \
+        gettext-dev \
         git \
         icu-dev \
         krb5-dev \
@@ -41,6 +43,12 @@ RUN apk add --no-cache --virtual .build-deps \
         python \
         util-linux-dev \
         zlib-dev \
+    && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main --virtual .build-deps \
+        libcrypto1.1 \
+    && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing --virtual .build-deps \
+        gdal-dev \
+        geos-dev \
+        proj4-dev \
     && mkdir -p /usr/src \
     && cd /usr/src \
     && git clone --recursive https://github.com/RekGRpth/pgagent.git \
@@ -56,6 +64,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && git clone --recursive https://github.com/RekGRpth/pgsql-http.git \
     && git clone --recursive https://github.com/RekGRpth/pgtap.git \
     && git clone --recursive https://github.com/RekGRpth/pg_variables.git \
+    && git clone --recursive https://github.com/RekGRpth/postgis.git \
     && git clone --recursive https://github.com/RekGRpth/postgres.git \
     && git clone --recursive https://github.com/RekGRpth/postgresql-numeral.git \
     && git clone --recursive https://github.com/RekGRpth/postgresql-unit.git \
@@ -87,11 +96,11 @@ RUN apk add --no-cache --virtual .build-deps \
     && cd /usr/src/pgqd/lib \
     && ./autogen.sh \
     && ./configure \
+    && cd /usr/src/postgis \
+    && ./autogen.sh \
     && cd / \
-    $(find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" | while read -r NAME; do cd "$NAME" && make USE_PGXS=1 install; done) \
+    $(find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" | while read -r NAME; do echo "$NAME"; cd "$NAME" && make USE_PGXS=1 install; done) \
     && cpan TAP::Parser::SourceHandler::pgTAP \
-#    && echo "#shared_preload_libraries = 'safeupdate,pg_cron'" >> /usr/local/share/postgresql/postgresql.conf.sample \
-#    && echo "#cron.database_name = 'cron'" >> /usr/local/share/postgresql/postgresql.conf.sample \
     && runDeps="$( \
         scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
             | tr ',' '\n' \
