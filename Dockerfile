@@ -69,6 +69,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && git clone --recursive https://github.com/RekGRpth/postgresql-numeral.git \
     && git clone --recursive https://github.com/RekGRpth/postgresql-unit.git \
     && cd /usr/src/postgres \
+    && git checkout --track origin/REL_11_STABLE \
     && ./configure \
         --disable-rpath \
         --enable-integer-datetimes \
