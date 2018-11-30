@@ -64,6 +64,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && git clone --recursive https://github.com/RekGRpth/pgsql-http.git \
     && git clone --recursive https://github.com/RekGRpth/pgtap.git \
     && git clone --recursive https://github.com/RekGRpth/pg_variables.git \
+    && git clone --recursive https://github.com/RekGRpth/plsh.git \
     && git clone --recursive https://github.com/RekGRpth/postgis.git \
     && git clone --recursive https://github.com/RekGRpth/postgres.git \
     && git clone --recursive https://github.com/RekGRpth/postgresql-numeral.git \
