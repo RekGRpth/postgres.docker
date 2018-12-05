@@ -15,7 +15,7 @@ RUN apk add --no-cache --virtual .build-deps \
         expat \
     && echo http://dl-cdn.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories \
     && echo http://dl-cdn.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories \
-    && apk update \
+#    && apk update \
     && apk add --no-cache --virtual .build-deps \
         autoconf \
         automake \
@@ -31,6 +31,8 @@ RUN apk add --no-cache --virtual .build-deps \
         geos-dev \
         gettext-dev \
         git \
+        icu-dev \
+        krb5-dev \
         libc-dev \
         libcrypto1.1 \
         libedit-dev \
@@ -39,12 +41,14 @@ RUN apk add --no-cache --virtual .build-deps \
         libxml2-utils \
         libxslt \
         libxslt-dev \
+        linux-pam-dev \
         m4 \
         make \
         musl-dev \
+        openldap-dev \
         perl-dev \
         perl-utils \
-        postgresql-dev \
+#        postgresql-dev \
         proj4-dev \
         python \
         util-linux-dev \
@@ -66,9 +70,33 @@ RUN apk add --no-cache --virtual .build-deps \
     && git clone --recursive https://github.com/RekGRpth/pg_variables.git \
     && git clone --recursive https://github.com/RekGRpth/plsh.git \
     && git clone --recursive https://github.com/RekGRpth/postgis.git \
-#    && git clone --recursive https://github.com/RekGRpth/postgres.git \
+    && git clone --recursive https://github.com/RekGRpth/postgres.git \
     && git clone --recursive https://github.com/RekGRpth/postgresql-numeral.git \
     && git clone --recursive https://github.com/RekGRpth/postgresql-unit.git \
+    && cd /usr/src/postgres \
+    && git checkout --track origin/REL_11_STABLE \
+    && ./configure \
+        --disable-rpath \
+        --enable-integer-datetimes \
+        --enable-thread-safety \
+        --prefix=/usr/local \
+        --with-gnu-ld \
+        --with-gssapi \
+        --with-icu \
+        --with-includes=/usr/local/include \
+        --with-krb5 \
+        --with-ldap \
+        --with-libraries=/usr/local/lib \
+        --with-libxml \
+        --with-libxslt \
+        --with-openssl \
+        --with-pam \
+        --with-pgport=5432 \
+        --with-system-tzdata=/usr/share/zoneinfo \
+        --with-uuid=e2fs \
+    && make -j"$(nproc)" world \
+    && make install-world \
+    && make -C contrib install \
     && cd /usr/src/pgagent \
     && cmake . \
     && cd /usr/src/pgqd/lib \
@@ -87,8 +115,8 @@ RUN apk add --no-cache --virtual .build-deps \
     )" \
     && apk add --no-cache --virtual .postgresql-rundeps \
         $runDeps \
-        postgresql \
-        postgresql-contrib \
+#        postgresql \
+#        postgresql-contrib \
         shadow \
         su-exec \
         tzdata \
