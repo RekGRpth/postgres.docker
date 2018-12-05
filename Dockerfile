@@ -11,11 +11,11 @@ ENV GROUP=postgres \
     TZ=Asia/Yekaterinburg \
     USER=postgres
 
-RUN apk add --no-cache --virtual .build-deps \
-        expat \
-    && echo http://dl-cdn.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories \
+RUN echo http://dl-cdn.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories \
+    && echo http://dl-cdn.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories \
     && echo http://dl-cdn.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories \
-#    && apk update \
+    && apk update --no-cache \
+    && apk upgrade --no-cache \
     && apk add --no-cache --virtual .build-deps \
         autoconf \
         automake \
@@ -41,6 +41,7 @@ RUN apk add --no-cache --virtual .build-deps \
         libxml2-utils \
         libxslt \
         libxslt-dev \
+        linux-headers \
         linux-pam-dev \
         m4 \
         make \
@@ -48,7 +49,6 @@ RUN apk add --no-cache --virtual .build-deps \
         openldap-dev \
         perl-dev \
         perl-utils \
-#        postgresql-dev \
         proj4-dev \
         python \
         util-linux-dev \
@@ -105,27 +105,27 @@ RUN apk add --no-cache --virtual .build-deps \
     && cd /usr/src/postgis \
     && ./autogen.sh \
     && cd / \
-    $(find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" | while read -r NAME; do echo "$NAME"; cd "$NAME" && make USE_PGXS=1 install; done) \
+    $(find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" | while read -r NAME; do echo "$NAME"; cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install; done) \
     && cpan TAP::Parser::SourceHandler::pgTAP \
     && runDeps="$( \
         scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
             | tr ',' '\n' \
             | sort -u \
+            | grep -v liblwgeom \
             | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
     )" \
     && apk add --no-cache --virtual .postgresql-rundeps \
         $runDeps \
-#        postgresql \
-#        postgresql-contrib \
         shadow \
         su-exec \
         tzdata \
-    && apk del .build-deps \
+    && apk del --no-cache .build-deps \
     && cd / \
     && rm -rf \
         /usr/src \
         /usr/local/share/doc \
         /usr/local/share/man \
+        /usr/local/include \
     && find /usr/local -name '*.a' -delete \
     && chmod +x /entrypoint.sh \
     && usermod --home "${HOME}" "${USER}"
