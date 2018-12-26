@@ -1,4 +1,4 @@
-FROM alpine
+FROM rekgrpth/gost
 
 MAINTAINER RekGRpth
 
@@ -11,10 +11,7 @@ ENV GROUP=postgres \
     TZ=Asia/Yekaterinburg \
     USER=postgres
 
-RUN echo http://dl-cdn.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories \
-    && echo http://dl-cdn.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories \
-    && echo http://dl-cdn.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories \
-    && apk update --no-cache \
+RUN apk update --no-cache \
     && apk upgrade --no-cache \
     && apk add --no-cache --virtual .build-deps \
         autoconf \
@@ -114,7 +111,6 @@ RUN echo http://dl-cdn.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories
             | grep -v liblwgeom \
             | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
         ) \
-        ca-certificates \
         shadow \
         su-exec \
         tzdata \
