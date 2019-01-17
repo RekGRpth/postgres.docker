@@ -111,9 +111,9 @@ RUN apk update --no-cache \
             | grep -v liblwgeom \
             | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
         ) \
-        shadow \
-        su-exec \
-        tzdata \
+#        shadow \
+#        su-exec \
+#        tzdata \
     && apk del --no-cache .build-deps \
     && cd / \
     && rm -rf \
