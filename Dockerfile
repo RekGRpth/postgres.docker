@@ -32,6 +32,7 @@ RUN apk update --no-cache \
         gettext-dev \
         git \
         icu-dev \
+        json-c-dev \
         krb5-dev \
         libc-dev \
         libcrypto1.1 \
@@ -48,6 +49,7 @@ RUN apk update --no-cache \
         musl-dev \
         openldap-dev \
         openssl-dev \
+        pcre-dev \
         perl-dev \
         perl-ipc-run \
         perl-utils \
