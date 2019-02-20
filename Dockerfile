@@ -109,6 +109,11 @@ RUN apk update --no-cache \
     && ./configure \
     && cd /usr/src/postgis \
     && ./autogen.sh \
+    && ./configure \
+        --disable-gtktest \
+        --disable-rpath \
+        --prefix=/usr/local \
+        --with-gnu-ld \
     && cd / \
     "$(find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" | while read -r NAME; do echo "$NAME"; cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install; done)" \
     && cpan TAP::Parser::SourceHandler::pgTAP \
@@ -116,7 +121,7 @@ RUN apk update --no-cache \
         $( scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
             | tr ',' '\n' \
             | sort -u \
-            | grep -v liblwgeom \
+#            | grep -v liblwgeom \
             | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
         ) \
 #        shadow \
