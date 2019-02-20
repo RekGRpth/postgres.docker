@@ -19,7 +19,10 @@ RUN apk update --no-cache \
         bison \
         boost-dev \
         cmake \
+        coreutils \
         curl-dev \
+        dpkg \
+        dpkg-dev \
         file \
         flex \
         g++ \
@@ -44,7 +47,9 @@ RUN apk update --no-cache \
         make \
         musl-dev \
         openldap-dev \
+        openssl-dev \
         perl-dev \
+        perl-ipc-run \
         perl-utils \
         proj4-dev \
         python \
@@ -75,6 +80,7 @@ RUN apk update --no-cache \
     && ./configure \
         --disable-rpath \
         --enable-integer-datetimes \
+        --enable-tap-tests \
         --enable-thread-safety \
         --prefix=/usr/local \
         --with-gnu-ld \
