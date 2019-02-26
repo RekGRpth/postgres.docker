@@ -133,7 +133,7 @@ RUN apk update --no-cache \
         /usr/src \
         /usr/local/share/doc \
         /usr/local/share/man \
-        /usr/local/include \
+#        /usr/local/include \
     && find /usr/local -name '*.a' -delete \
     && chmod +x /entrypoint.sh \
     && usermod --home "${HOME}" "${USER}"
