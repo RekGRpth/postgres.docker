@@ -64,6 +64,7 @@ RUN apk update --no-cache \
     && git clone --recursive https://github.com/RekGRpth/pg_cron.git \
     && git clone --recursive https://github.com/RekGRpth/pgjwt.git \
     && git clone --recursive https://github.com/RekGRpth/pg_partman.git \
+    && git clone --recursive https://github.com/RekGRpth/pg_probackup.git \
     && git clone --recursive https://github.com/RekGRpth/pg_proctab.git \
     && git clone --recursive https://github.com/RekGRpth/pgqbw.git \
     && git clone --recursive https://github.com/RekGRpth/pgqd.git \
