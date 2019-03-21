@@ -34,7 +34,7 @@ RUN apk update --no-cache \
         git \
         icu-dev \
         json-c-dev \
-        krb5-dev \
+        libbsd-dev \
         libc-dev \
         libcrypto1.1 \
         libedit-dev \
@@ -94,7 +94,6 @@ RUN apk update --no-cache \
         --with-gssapi \
         --with-icu \
         --with-includes=/usr/local/include \
-        --with-krb5 \
         --with-ldap \
         --with-libraries=/usr/local/lib \
         --with-libxml \
