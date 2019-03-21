@@ -77,6 +77,7 @@ RUN apk update --no-cache \
     && git clone --recursive https://github.com/RekGRpth/pgsql-http.git \
     && git clone --recursive https://github.com/RekGRpth/pgtap.git \
     && git clone --recursive https://github.com/RekGRpth/pg_variables.git \
+    && git clone --recursive https://github.com/RekGRpth/pg_xid.git \
     && git clone --recursive https://github.com/RekGRpth/plsh.git \
     && git clone --recursive https://github.com/RekGRpth/postgis.git \
     && git clone --recursive https://github.com/RekGRpth/postgres.git \
@@ -125,12 +126,8 @@ RUN apk update --no-cache \
         $( scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
             | tr ',' '\n' \
             | sort -u \
-#            | grep -v liblwgeom \
             | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
         ) \
-#        shadow \
-#        su-exec \
-#        tzdata \
     && apk del --no-cache .build-deps \
     && cd / \
     && rm -rf \
