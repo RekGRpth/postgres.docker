@@ -34,6 +34,7 @@ RUN apk update --no-cache \
         git \
         icu-dev \
         json-c-dev \
+        krb5-dev \
         libbsd-dev \
         libc-dev \
         libcrypto1.1 \
