@@ -4,7 +4,7 @@ MAINTAINER RekGRpth
 
 ADD entrypoint.sh /
 
-ENV BACKUP_PATH=/data/postgres/pg_probackup \
+ENV BACKUP_PATH=/data/pg_probackup \
     GROUP=postgres \
     HOME=/data \
     LANG=ru_RU.UTF-8 \
