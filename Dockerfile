@@ -73,6 +73,7 @@ RUN apk update --no-cache \
     && git clone --recursive https://github.com/RekGRpth/pg-safeupdate.git \
     && git clone --recursive https://github.com/RekGRpth/pg_scheduler.git \
     && git clone --recursive https://github.com/RekGRpth/pgsentinel.git \
+    && git clone --recursive https://github.com/RekGRpth/pg_similarity.git \
     && git clone --recursive https://github.com/RekGRpth/pgsql-http.git \
     && git clone --recursive https://github.com/RekGRpth/pgtap.git \
     && git clone --recursive https://github.com/RekGRpth/pg_variables.git \
