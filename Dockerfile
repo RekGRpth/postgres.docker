@@ -61,6 +61,7 @@ RUN apk update --no-cache \
         zlib-dev \
     && mkdir -p /usr/src \
     && cd /usr/src \
+    && git clone --recursive https://github.com/RekGRpth/citus.git \
     && git clone --recursive https://github.com/RekGRpth/pgagent.git \
     && git clone --recursive https://github.com/RekGRpth/pg_background.git \
     && git clone --recursive https://github.com/RekGRpth/pg_cron.git \
@@ -120,6 +121,8 @@ RUN apk update --no-cache \
         --disable-rpath \
         --prefix=/usr/local \
         --with-gnu-ld \
+    && cd /usr/src/citus \
+    && ./configure \
     && cd / \
     "$(find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" | while read -r NAME; do echo "$NAME"; cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install; done)" \
     && cpan TAP::Parser::SourceHandler::pgTAP \
