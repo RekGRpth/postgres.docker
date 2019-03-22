@@ -19,9 +19,11 @@ RUN apk update --no-cache \
         automake \
         bison \
         boost-dev \
+        clang \
         cmake \
         coreutils \
         curl-dev \
+        docker \
         dpkg \
         dpkg-dev \
         file \
@@ -127,7 +129,11 @@ RUN apk update --no-cache \
     && cd /usr/src/timescaledb \
     && cmake . \
     && cd / \
-    "$(find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" | while read -r NAME; do echo "$NAME"; cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install; done)" \
+    && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" | while read -r NAME; do
+        echo "$NAME"
+        cd "$NAME" \
+        && make -j"$(nproc)" USE_PGXS=1 install
+    done \
     && cpan TAP::Parser::SourceHandler::pgTAP \
     && apk add --no-cache --virtual .postgresql-rundeps \
         $( scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
