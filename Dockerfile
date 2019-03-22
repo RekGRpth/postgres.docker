@@ -85,6 +85,7 @@ RUN apk update --no-cache \
     && git clone --recursive https://github.com/RekGRpth/postgres.git \
     && git clone --recursive https://github.com/RekGRpth/postgresql-numeral.git \
     && git clone --recursive https://github.com/RekGRpth/postgresql-unit.git \
+    && git clone --recursive https://github.com/RekGRpth/timescaledb.git \
     && cd /usr/src/postgres \
     && git checkout --track origin/REL_11_STABLE \
     && ./configure \
@@ -123,6 +124,8 @@ RUN apk update --no-cache \
         --with-gnu-ld \
     && cd /usr/src/citus \
     && ./configure \
+    && cd /usr/src/timescaledb \
+    && cmake . \
     && cd / \
     "$(find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" | while read -r NAME; do echo "$NAME"; cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install; done)" \
     && cpan TAP::Parser::SourceHandler::pgTAP \
