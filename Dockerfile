@@ -109,8 +109,9 @@ RUN apk update --no-cache \
         --with-pgport=5432 \
         --with-system-tzdata=/usr/share/zoneinfo \
         --with-uuid=e2fs \
-    && make -j"$(nproc)" world \
-    && make -j"$(nproc)" install-world \
+#    && make -j"$(nproc)" world \
+#    && make -j"$(nproc)" install-world \
+    && make -j"$(nproc)" -C src install \
     && make -j"$(nproc)" -C contrib install \
     && cd /usr/src/pgagent \
     && cmake . \
@@ -129,12 +130,12 @@ RUN apk update --no-cache \
     && cd /usr/src/timescaledb \
     && cmake . \
     && cd / \
-    && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" | while read -r NAME; do
-        echo "$NAME"
+    && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" | while read -r NAME; do \
+        echo "$NAME"; \
         cd "$NAME" \
-        && make -j"$(nproc)" USE_PGXS=1 install
+        && make -j"$(nproc)" USE_PGXS=1 install; \
     done \
-    && cpan TAP::Parser::SourceHandler::pgTAP \
+#    && cpan TAP::Parser::SourceHandler::pgTAP \
     && apk add --no-cache --virtual .postgresql-rundeps \
         $( scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
             | tr ',' '\n' \
