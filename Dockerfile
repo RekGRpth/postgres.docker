@@ -4,11 +4,13 @@ MAINTAINER RekGRpth
 
 ADD entrypoint.sh /
 
-ENV BACKUP_PATH=/data/pg_rman \
+ENV ARCLOG_PATH=/data/postgres/pg_arclog \
+    BACKUP_PATH=/data/pg_rman \
     GROUP=postgres \
     HOME=/data \
     LANG=ru_RU.UTF-8 \
     PGDATA=/data/postgres \
+    SRVLOG_PATH=/data/postgres/pg_log \
     TZ=Asia/Yekaterinburg \
     USER=postgres
 
