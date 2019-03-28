@@ -4,7 +4,7 @@ MAINTAINER RekGRpth
 
 ADD entrypoint.sh /
 
-ENV BACKUP_PATH=/data/pg_probackup \
+ENV BACKUP_PATH=/data/postgres/pg_rman \
     GROUP=postgres \
     HOME=/data \
     LANG=ru_RU.UTF-8 \
@@ -69,11 +69,12 @@ RUN apk update --no-cache \
     && git clone --recursive https://github.com/RekGRpth/pg_cron.git \
     && git clone --recursive https://github.com/RekGRpth/pgjwt.git \
     && git clone --recursive https://github.com/RekGRpth/pg_partman.git \
-    && git clone --recursive https://github.com/RekGRpth/pg_probackup.git \
+#    && git clone --recursive https://github.com/RekGRpth/pg_probackup.git \
     && git clone --recursive https://github.com/RekGRpth/pg_proctab.git \
     && git clone --recursive https://github.com/RekGRpth/pgqbw.git \
     && git clone --recursive https://github.com/RekGRpth/pgqd.git \
     && git clone --recursive https://github.com/RekGRpth/pgq.git \
+    && git clone --recursive https://github.com/RekGRpth/pg_rman.git \
     && git clone --recursive https://github.com/RekGRpth/pg-safeupdate.git \
     && git clone --recursive https://github.com/RekGRpth/pg_scheduler.git \
     && git clone --recursive https://github.com/RekGRpth/pgsentinel.git \
@@ -113,6 +114,7 @@ RUN apk update --no-cache \
 #    && make -j"$(nproc)" install-world \
     && make -j"$(nproc)" -C src install \
     && make -j"$(nproc)" -C contrib install \
+    && make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install \
     && cd /usr/src/pgagent \
     && cmake . \
     && cd /usr/src/pgqd/lib \
