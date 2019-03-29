@@ -69,6 +69,7 @@ RUN apk update --no-cache \
     && git clone --recursive https://github.com/RekGRpth/pgagent.git \
     && git clone --recursive https://github.com/RekGRpth/pg_background.git \
     && git clone --recursive https://github.com/RekGRpth/pg_cron.git \
+    && git clone --recursive https://github.com/RekGRpth/pg_curl.git \
     && git clone --recursive https://github.com/RekGRpth/pgjwt.git \
     && git clone --recursive https://github.com/RekGRpth/pg_partman.git \
 #    && git clone --recursive https://github.com/RekGRpth/pg_probackup.git \
@@ -112,8 +113,6 @@ RUN apk update --no-cache \
         --with-pgport=5432 \
         --with-system-tzdata=/usr/share/zoneinfo \
         --with-uuid=e2fs \
-#    && make -j"$(nproc)" world \
-#    && make -j"$(nproc)" install-world \
     && make -j"$(nproc)" -C src install \
     && make -j"$(nproc)" -C contrib install \
     && make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install \
