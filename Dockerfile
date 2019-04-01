@@ -20,17 +20,17 @@ RUN apk update --no-cache \
         autoconf \
         automake \
         bison \
-        boost-dev \
-        clang \
-        cmake \
+#        boost-dev \
+#        clang \
+#        cmake \
         coreutils \
         curl-dev \
-        docker \
+#        docker \
         dpkg \
         dpkg-dev \
         file \
         flex \
-        g++ \
+#        g++ \
         gcc \
         gdal-dev \
         geos-dev \
@@ -60,38 +60,38 @@ RUN apk update --no-cache \
         perl-ipc-run \
         perl-utils \
         proj4-dev \
-        python \
+#        python \
         util-linux-dev \
         zlib-dev \
     && mkdir -p /usr/src \
     && cd /usr/src \
-    && git clone --recursive https://github.com/RekGRpth/citus.git \
-    && git clone --recursive https://github.com/RekGRpth/pgagent.git \
-    && git clone --recursive https://github.com/RekGRpth/pg_background.git \
-    && git clone --recursive https://github.com/RekGRpth/pg_cron.git \
+#    && git clone --recursive https://github.com/RekGRpth/citus.git \
+#    && git clone --recursive https://github.com/RekGRpth/pgagent.git \
+#    && git clone --recursive https://github.com/RekGRpth/pg_background.git \
+#    && git clone --recursive https://github.com/RekGRpth/pg_cron.git \
     && git clone --recursive https://github.com/RekGRpth/pg_curl.git \
     && git clone --recursive https://github.com/RekGRpth/pgjwt.git \
     && git clone --recursive https://github.com/RekGRpth/pg_partman.git \
 #    && git clone --recursive https://github.com/RekGRpth/pg_probackup.git \
-    && git clone --recursive https://github.com/RekGRpth/pg_proctab.git \
-    && git clone --recursive https://github.com/RekGRpth/pgqbw.git \
-    && git clone --recursive https://github.com/RekGRpth/pgqd.git \
-    && git clone --recursive https://github.com/RekGRpth/pgq.git \
+#    && git clone --recursive https://github.com/RekGRpth/pg_proctab.git \
+#    && git clone --recursive https://github.com/RekGRpth/pgqbw.git \
+#    && git clone --recursive https://github.com/RekGRpth/pgqd.git \
+#    && git clone --recursive https://github.com/RekGRpth/pgq.git \
     && git clone --recursive https://github.com/RekGRpth/pg_rman.git \
-    && git clone --recursive https://github.com/RekGRpth/pg-safeupdate.git \
+#    && git clone --recursive https://github.com/RekGRpth/pg-safeupdate.git \
     && git clone --recursive https://github.com/RekGRpth/pg_scheduler.git \
-    && git clone --recursive https://github.com/RekGRpth/pgsentinel.git \
-    && git clone --recursive https://github.com/RekGRpth/pg_similarity.git \
-    && git clone --recursive https://github.com/RekGRpth/pgsql-http.git \
+#    && git clone --recursive https://github.com/RekGRpth/pgsentinel.git \
+#    && git clone --recursive https://github.com/RekGRpth/pg_similarity.git \
+#    && git clone --recursive https://github.com/RekGRpth/pgsql-http.git \
     && git clone --recursive https://github.com/RekGRpth/pgtap.git \
-    && git clone --recursive https://github.com/RekGRpth/pg_variables.git \
-    && git clone --recursive https://github.com/RekGRpth/pg_xid.git \
+#    && git clone --recursive https://github.com/RekGRpth/pg_variables.git \
+#    && git clone --recursive https://github.com/RekGRpth/pg_xid.git \
     && git clone --recursive https://github.com/RekGRpth/plsh.git \
-    && git clone --recursive https://github.com/RekGRpth/postgis.git \
+#    && git clone --recursive https://github.com/RekGRpth/postgis.git \
     && git clone --recursive https://github.com/RekGRpth/postgres.git \
-    && git clone --recursive https://github.com/RekGRpth/postgresql-numeral.git \
-    && git clone --recursive https://github.com/RekGRpth/postgresql-unit.git \
-    && git clone --recursive https://github.com/RekGRpth/timescaledb.git \
+#    && git clone --recursive https://github.com/RekGRpth/postgresql-numeral.git \
+#    && git clone --recursive https://github.com/RekGRpth/postgresql-unit.git \
+#    && git clone --recursive https://github.com/RekGRpth/timescaledb.git \
     && cd /usr/src/postgres \
     && git checkout --track origin/REL_11_STABLE \
     && ./configure \
@@ -116,22 +116,22 @@ RUN apk update --no-cache \
     && make -j"$(nproc)" -C src install \
     && make -j"$(nproc)" -C contrib install \
     && make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install \
-    && cd /usr/src/pgagent \
-    && cmake . \
-    && cd /usr/src/pgqd/lib \
-    && ./autogen.sh \
-    && ./configure \
-    && cd /usr/src/postgis \
-    && ./autogen.sh \
-    && ./configure \
-        --disable-gtktest \
-        --disable-rpath \
-        --prefix=/usr/local \
-        --with-gnu-ld \
-    && cd /usr/src/citus \
-    && ./configure \
-    && cd /usr/src/timescaledb \
-    && cmake . \
+#    && cd /usr/src/pgagent \
+#    && cmake . \
+#    && cd /usr/src/pgqd/lib \
+#    && ./autogen.sh \
+#    && ./configure \
+#    && cd /usr/src/postgis \
+#    && ./autogen.sh \
+#    && ./configure \
+#        --disable-gtktest \
+#        --disable-rpath \
+#        --prefix=/usr/local \
+#        --with-gnu-ld \
+#    && cd /usr/src/citus \
+#    && ./configure \
+#    && cd /usr/src/timescaledb \
+#    && cmake . \
     && cd / \
     && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" | while read -r NAME; do \
         echo "$NAME"; \
