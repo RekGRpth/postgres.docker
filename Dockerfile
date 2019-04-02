@@ -24,7 +24,7 @@ RUN apk update --no-cache \
 #        clang \
 #        cmake \
         coreutils \
-        curl-dev \
+#        curl-dev \
 #        docker \
         dpkg \
         dpkg-dev \
@@ -43,6 +43,8 @@ RUN apk update --no-cache \
         libc-dev \
         libcrypto1.1 \
         libedit-dev \
+        libssh-dev \
+#        libssh2-dev \
         libtool \
         libxml2-dev \
         libxml2-utils \
@@ -53,6 +55,7 @@ RUN apk update --no-cache \
         m4 \
         make \
         musl-dev \
+        nghttp2-dev \
         openldap-dev \
         openssl-dev \
         pcre-dev \
@@ -66,6 +69,7 @@ RUN apk update --no-cache \
     && mkdir -p /usr/src \
     && cd /usr/src \
 #    && git clone --recursive https://github.com/RekGRpth/citus.git \
+    && git clone --recursive https://github.com/RekGRpth/curl.git \
 #    && git clone --recursive https://github.com/RekGRpth/pgagent.git \
 #    && git clone --recursive https://github.com/RekGRpth/pg_background.git \
 #    && git clone --recursive https://github.com/RekGRpth/pg_cron.git \
@@ -92,6 +96,10 @@ RUN apk update --no-cache \
 #    && git clone --recursive https://github.com/RekGRpth/postgresql-numeral.git \
 #    && git clone --recursive https://github.com/RekGRpth/postgresql-unit.git \
 #    && git clone --recursive https://github.com/RekGRpth/timescaledb.git \
+    && cd /usr/src/curl \
+    && autoreconf -vif \
+    && ./configure --with-libssh --with-nghttp2 --enable-ipv6 --enable-unix-sockets \
+    && make -j"$(nproc)" install \
     && cd /usr/src/postgres \
     && git checkout --track origin/REL_11_STABLE \
     && ./configure \
@@ -133,13 +141,15 @@ RUN apk update --no-cache \
 #    && cd /usr/src/timescaledb \
 #    && cmake . \
     && cd / \
-    && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" | while read -r NAME; do \
+    && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "curl" | sort -u | while read -r NAME; do \
         echo "$NAME"; \
         cd "$NAME" \
         && make -j"$(nproc)" USE_PGXS=1 install; \
     done \
 #    && cpan TAP::Parser::SourceHandler::pgTAP \
     && apk add --no-cache --virtual .postgresql-rundeps \
+        openssh-client \
+        sshpass \
         $( scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
             | tr ',' '\n' \
             | sort -u \
