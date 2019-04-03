@@ -33,7 +33,7 @@ RUN apk update --no-cache \
 #        g++ \
         gcc \
         gdal-dev \
-        geos-dev \
+#        geos-dev \
         gettext-dev \
         git \
         icu-dev \
@@ -43,6 +43,8 @@ RUN apk update --no-cache \
         libc-dev \
         libcrypto1.1 \
         libedit-dev \
+        libidn-dev \
+        libpsl-dev \
         libssh-dev \
 #        libssh2-dev \
         libtool \
