@@ -101,6 +101,10 @@ RUN apk update --no-cache \
     && cd /usr/src/curl \
     && autoreconf -vif \
     && ./configure --with-libssh --with-nghttp2 --enable-ipv6 --enable-unix-sockets \
+    && make -j"$(nproc)" curl-config install \
+    && cd /usr/src/curl/include \
+    && make -j"$(nproc)" install \
+    && cd /usr/src/curl/lib \
     && make -j"$(nproc)" install \
     && cd /usr/src/postgres \
     && git checkout --track origin/REL_11_STABLE \
