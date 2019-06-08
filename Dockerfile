@@ -19,16 +19,45 @@ RUN apk update --no-cache \
     && apk add --no-cache --virtual .build-deps \
         autoconf \
         automake \
+        bison \
         coreutils \
+        dpkg \
+        dpkg-dev \
+        file \
+        flex \
         gcc \
+        gdal-dev \
         gettext-dev \
         git \
+        icu-dev \
+        json-c-dev \
+        krb5-dev \
+        libbsd-dev \
+        libc-dev \
+        libcrypto1.1 \
+        libedit-dev \
+        libidn-dev \
+        libpsl-dev \
         libssh-dev \
         libtool \
+        libxml2-dev \
+        libxml2-utils \
+        libxslt \
+        libxslt-dev \
+        linux-headers \
+        linux-pam-dev \
+        m4 \
         make \
         musl-dev \
+        nghttp2-dev \
+        openldap-dev \
         openssl-dev \
+        pcre-dev \
+        perl-dev \
+        perl-ipc-run \
+        perl-utils \
         postgresql-dev \
+        proj4-dev \
         util-linux-dev \
         zlib-dev \
     && mkdir -p /usr/src \
