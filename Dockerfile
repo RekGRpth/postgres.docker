@@ -64,7 +64,6 @@ RUN apk update --no-cache \
         perl-dev \
         perl-ipc-run \
         perl-utils \
-        postgresql-dev \
         proj4-dev \
 #        python \
         util-linux-dev \
@@ -96,7 +95,7 @@ RUN apk update --no-cache \
 #    && git clone --recursive https://github.com/RekGRpth/pg_xid.git \
     && git clone --recursive https://github.com/RekGRpth/plsh.git \
 #    && git clone --recursive https://github.com/RekGRpth/postgis.git \
-#    && git clone --recursive https://github.com/RekGRpth/postgres.git \
+    && git clone --recursive https://github.com/RekGRpth/postgres.git \
 #    && git clone --recursive https://github.com/RekGRpth/postgresql-numeral.git \
 #    && git clone --recursive https://github.com/RekGRpth/postgresql-unit.git \
 #    && git clone --recursive https://github.com/RekGRpth/timescaledb.git \
@@ -108,30 +107,30 @@ RUN apk update --no-cache \
     && make -j"$(nproc)" install \
     && cd /usr/src/curl/lib \
     && make -j"$(nproc)" install \
-#    && cd /usr/src/postgres \
-#    && git checkout --track origin/REL_11_STABLE \
-#    && ./configure \
-#        --disable-rpath \
-#        --enable-integer-datetimes \
-#        --enable-tap-tests \
-#        --enable-thread-safety \
-#        --prefix=/usr/local \
-#        --with-gnu-ld \
-#        --with-gssapi \
-#        --with-icu \
-#        --with-includes=/usr/local/include \
-#        --with-ldap \
-#        --with-libraries=/usr/local/lib \
-#        --with-libxml \
-#        --with-libxslt \
-#        --with-openssl \
-#        --with-pam \
-#        --with-pgport=5432 \
-#        --with-system-tzdata=/usr/share/zoneinfo \
-#        --with-uuid=e2fs \
-#    && make -j"$(nproc)" -C src install \
-#    && make -j"$(nproc)" -C contrib install \
-#    && make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install \
+    && cd /usr/src/postgres \
+    && git checkout --track origin/REL_11_STABLE \
+    && ./configure \
+        --disable-rpath \
+        --enable-integer-datetimes \
+        --enable-tap-tests \
+        --enable-thread-safety \
+        --prefix=/usr/local \
+        --with-gnu-ld \
+        --with-gssapi \
+        --with-icu \
+        --with-includes=/usr/local/include \
+        --with-ldap \
+        --with-libraries=/usr/local/lib \
+        --with-libxml \
+        --with-libxslt \
+        --with-openssl \
+        --with-pam \
+        --with-pgport=5432 \
+        --with-system-tzdata=/usr/share/zoneinfo \
+        --with-uuid=e2fs \
+    && make -j"$(nproc)" -C src install \
+    && make -j"$(nproc)" -C contrib install \
+    && make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install \
 #    && cd /usr/src/pgagent \
 #    && cmake . \
 #    && cd /usr/src/pgqd/lib \
@@ -157,9 +156,6 @@ RUN apk update --no-cache \
 #    && cpan TAP::Parser::SourceHandler::pgTAP \
     && apk add --no-cache --virtual .postgresql-rundeps \
         openssh-client \
-        postgresql \
-        postgresql-client \
-        postgresql-contrib \
         sshpass \
         $( scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
             | tr ',' '\n' \
