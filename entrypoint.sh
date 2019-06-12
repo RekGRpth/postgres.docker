@@ -12,8 +12,8 @@ if [ "$USER_ID" != "$(id -u "$USER")" ]; then
     usermod --uid "$USER_ID" "$USER"
 fi
 
-find "$HOME" ! -group "$GROUP" -exec chgrp "$GROUP_ID" {} \;
-find "$HOME" ! -user "$USER" -exec chown "$USER_ID" {} \;
+#find "$HOME" ! -group "$GROUP" -exec chgrp "$GROUP_ID" {} \;
+#find "$HOME" ! -user "$USER" -exec chown "$USER_ID" {} \;
 
 if [ ! -s "$PGDATA/PG_VERSION" ]; then
     exec su-exec "$USER" "initdb --data-checksums"
