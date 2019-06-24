@@ -23,6 +23,7 @@ RUN apk update --no-cache \
         bison \
         file \
         flex \
+        g++ \
         gcc \
         gettext-dev \
         git \
