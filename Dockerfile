@@ -21,22 +21,30 @@ RUN apk update --no-cache \
         automake \
         binutils \
         bison \
+        brotli-dev \
+        dev86 \
         file \
         flex \
         g++ \
         gcc \
         gettext-dev \
         git \
+        groff \
         libedit-dev \
+        libidn-dev \
+        linux-headers \
         libpsl-dev \
         libssh-dev \
         libtool \
         libxml2-dev \
         make \
+        mt-st \
         musl-dev \
         openldap-dev \
         openssl-dev \
+        readline-dev \
         util-linux-dev \
+        zfs-dev \
         zlib-dev \
     && mkdir -p /usr/src \
     && cd /usr/src \
