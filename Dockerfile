@@ -40,6 +40,7 @@ RUN apk update --no-cache \
         make \
         mt-st \
         musl-dev \
+        nghttp2-dev \
         openldap-dev \
         openssl-dev \
         readline-dev \
