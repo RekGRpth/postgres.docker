@@ -28,6 +28,7 @@ RUN apk update --no-cache \
         gettext-dev \
         git \
         libedit-dev \
+        libpsl-dev \
         libssh-dev \
         libtool \
         libxml2-dev \
