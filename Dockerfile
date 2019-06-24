@@ -54,10 +54,6 @@ RUN apk update --no-cache \
         --enable-unix-sockets \
         --with-libssh \
         --with-nghttp2 \
-    && make -j"$(nproc)" curl-config install \
-    && cd /usr/src/curl/include \
-    && make -j"$(nproc)" install \
-    && cd /usr/src/curl/lib \
     && make -j"$(nproc)" install \
     && cd /usr/src/postgres \
     && git checkout --track origin/REL_11_STABLE \
