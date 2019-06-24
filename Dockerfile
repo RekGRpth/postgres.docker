@@ -33,6 +33,7 @@ RUN apk update --no-cache \
         libxml2-dev \
         make \
         musl-dev \
+        openldap-dev \
         openssl-dev \
         util-linux-dev \
         zlib-dev \
