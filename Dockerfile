@@ -88,7 +88,7 @@ RUN apk update --no-cache \
         cd "$NAME" \
         && make -j"$(nproc)" USE_PGXS=1 install; \
     done \
-    && strip /usr/local/bin/* /usr/local/lib/* /usr/local/lib/*/* \
+    && strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/postgresql/*.so \
     && apk add --no-cache --virtual .postgresql-rundeps \
         openssh-client \
         sshpass \
