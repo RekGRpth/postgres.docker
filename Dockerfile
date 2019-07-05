@@ -63,6 +63,7 @@ RUN apk update --no-cache \
     && autoreconf -vif \
     && ./configure \
         --enable-ipv6 \
+        --enable-ldap \
         --enable-unix-sockets \
         --with-libssh \
         --with-nghttp2 \
@@ -72,6 +73,7 @@ RUN apk update --no-cache \
     && ./configure \
         --disable-rpath \
         --prefix=/usr/local \
+        --with-ldap \
         --with-libedit-preferred \
         --with-libxml \
         --with-openssl \
