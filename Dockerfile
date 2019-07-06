@@ -45,12 +45,14 @@ RUN apk update --no-cache \
         openssl-dev \
         readline-dev \
         util-linux-dev \
+        wt-dev \
         zfs-dev \
         zlib-dev \
     && mkdir -p /usr/src \
     && cd /usr/src \
     && git clone --recursive https://github.com/RekGRpth/curl.git \
     && git clone --recursive https://github.com/RekGRpth/pg_curl.git \
+    && git clone --recursive https://github.com/RekGRpth/pg_html2pdf.git \
     && git clone --recursive https://github.com/RekGRpth/pgjwt.git \
     && git clone --recursive https://github.com/RekGRpth/pg_partman.git \
     && git clone --recursive https://github.com/RekGRpth/pg_rman.git \
