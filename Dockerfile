@@ -94,6 +94,7 @@ RUN apk update --no-cache \
     && apk add --no-cache --virtual .postgresql-rundeps \
         openssh-client \
         sshpass \
+        ttf-dejavu \
         $( scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
             | tr ',' '\n' \
             | sort -u \
