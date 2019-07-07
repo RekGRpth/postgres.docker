@@ -32,11 +32,11 @@ RUN apk update --no-cache \
         groff \
         libedit-dev \
         libidn-dev \
-        linux-headers \
         libpsl-dev \
         libssh-dev \
         libtool \
         libxml2-dev \
+        linux-headers \
         make \
         mt-st \
         musl-dev \
