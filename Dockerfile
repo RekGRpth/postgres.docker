@@ -45,6 +45,7 @@ RUN apk update --no-cache \
         openssl-dev \
         readline-dev \
         util-linux-dev \
+        wkhtmltopdf-dev \
         wt-dev \
         zfs-dev \
         zlib-dev \
@@ -59,6 +60,7 @@ RUN apk update --no-cache \
     && git clone --recursive https://github.com/RekGRpth/pg_ssl.git \
     && git clone --recursive https://github.com/RekGRpth/pgtap.git \
     && git clone --recursive https://github.com/RekGRpth/pg_task.git \
+    && git clone --recursive https://github.com/RekGRpth/pg_wkhtmltopdf.git \
     && git clone --recursive https://github.com/RekGRpth/plsh.git \
     && git clone --recursive https://github.com/RekGRpth/postgres.git \
     && cd /usr/src/curl \
