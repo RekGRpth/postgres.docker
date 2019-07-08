@@ -15,6 +15,9 @@ fi
 #find "$HOME" ! -group "$GROUP" -exec chgrp "$GROUP_ID" {} \;
 #find "$HOME" ! -user "$USER" -exec chown "$USER_ID" {} \;
 
+ln -fs /usr/local/lib/postgresql/plpgsql.so /usr/lib/postgresql/plpgsql.so
+ln -fs /usr/local/lib/postgresql/postgres_fdw.so /usr/lib/postgresql/postgres_fdw.so
+
 if [ ! -s "$PGDATA/PG_VERSION" ]; then
     exec su-exec "$USER" initdb --data-checksums
 fi

@@ -1,0 +1,37 @@
+From 0144733c9f128108670f3654605f274928d83096 Mon Sep 17 00:00:00 2001
+From: RekGRpth <rekgrpth@gmail.com>
+Date: Fri, 26 Apr 2019 15:35:30 +0500
+Subject: Disconnect from SPI manager on error
+
+
+diff --git a/src/pl/plpgsql/src/pl_handler.c b/src/pl/plpgsql/src/pl_handler.c
+index 61452d9f7f..387b283b03 100644
+--- a/src/pl/plpgsql/src/pl_handler.c
++++ b/src/pl/plpgsql/src/pl_handler.c
+@@ -267,6 +267,13 @@ plpgsql_call_handler(PG_FUNCTION_ARGS)
+ 		/* Decrement use-count, restore cur_estate, and propagate error */
+ 		func->use_count--;
+ 		func->cur_estate = save_cur_estate;
++
++		/*
++		 * Disconnect from SPI manager
++		 */
++		if ((rc = SPI_finish()) != SPI_OK_FINISH)
++			elog(ERROR, "SPI_finish failed: %s", SPI_result_code_string(rc));
++
+ 		PG_RE_THROW();
+ 	}
+ 	PG_END_TRY();
+@@ -364,6 +371,12 @@ plpgsql_inline_handler(PG_FUNCTION_ARGS)
+ 		/* ... so we can free subsidiary storage */
+ 		plpgsql_free_function_memory(func);
+ 
++		/*
++		 * Disconnect from SPI manager
++		 */
++		if ((rc = SPI_finish()) != SPI_OK_FINISH)
++			elog(ERROR, "SPI_finish failed: %s", SPI_result_code_string(rc));
++
+ 		/* And propagate the error */
+ 		PG_RE_THROW();
+ 	}

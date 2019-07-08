@@ -1,8 +1,8 @@
 FROM rekgrpth/gost
 
-#MAINTAINER RekGRpth
-
 ADD entrypoint.sh /
+ADD plpgsql.patch /usr/src/postgres/
+ADD postgres_fdw.patch /usr/src/postgres/
 
 ENV ARCLOG_PATH=/data/postgres/pg_arclog \
     BACKUP_PATH=/data/pg_rman \
@@ -43,8 +43,10 @@ RUN apk update --no-cache \
         nghttp2-dev \
         openldap-dev \
         openssl-dev \
+        postgresql-dev \
         readline-dev \
         util-linux-dev \
+        tar \
         wkhtmltopdf-dev \
         wt-dev \
         zfs-dev \
@@ -62,7 +64,6 @@ RUN apk update --no-cache \
     && git clone --recursive https://github.com/RekGRpth/pg_task.git \
     && git clone --recursive https://github.com/RekGRpth/pg_wkhtmltopdf.git \
     && git clone --recursive https://github.com/RekGRpth/plsh.git \
-    && git clone --recursive https://github.com/RekGRpth/postgres.git \
     && cd /usr/src/curl \
     && autoreconf -vif \
     && ./configure \
@@ -73,7 +74,9 @@ RUN apk update --no-cache \
         --with-nghttp2 \
     && make -j"$(nproc)" install \
     && cd /usr/src/postgres \
-    && git checkout --track origin/REL_12_STABLE \
+    && curl "https://ftp.postgresql.org/pub/source/v$(curl -s https://git.alpinelinux.org/aports/plain/main/postgresql/APKBUILD | grep pkgver= | cut -d = -f 2)/postgresql-$(curl -s https://git.alpinelinux.org/aports/plain/main/postgresql/APKBUILD | grep pkgver= | cut -d = -f 2).tar.bz2" | tar -jx --strip-components 1 \
+    && git apply plpgsql.patch \
+    && git apply postgres_fdw.patch \
     && ./configure \
         --disable-rpath \
         --prefix=/usr/local \
@@ -83,9 +86,10 @@ RUN apk update --no-cache \
         --with-openssl \
         --with-system-tzdata=/usr/share/zoneinfo \
         --with-uuid=e2fs \
-    && make -j"$(nproc)" -C src install \
-    && make -j"$(nproc)" -C contrib install \
-    && make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install \
+    && cd /usr/src/postgres/src/pl/plpgsql \
+    && make -j"$(nproc)" install \
+    && cd /usr/src/postgres/contrib/postgres_fdw \
+    && make -j"$(nproc)" install \
     && cd / \
     && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "curl" | sort -u | while read -r NAME; do \
         echo "$NAME"; \
@@ -95,6 +99,8 @@ RUN apk update --no-cache \
     && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/postgresql/*.so || true) \
     && apk add --no-cache --virtual .postgresql-rundeps \
         openssh-client \
+        postgresql \
+        postgresql-contrib \
         sshpass \
         ttf-dejavu \
         $( scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
