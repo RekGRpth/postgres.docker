@@ -1,6 +1,6 @@
 FROM rekgrpth/gost
 
-MAINTAINER RekGRpth
+#MAINTAINER RekGRpth
 
 ADD entrypoint.sh /
 
@@ -73,7 +73,7 @@ RUN apk update --no-cache \
         --with-nghttp2 \
     && make -j"$(nproc)" install \
     && cd /usr/src/postgres \
-    && git checkout --track origin/REL_11_STABLE \
+    && git checkout --track origin/REL_12_STABLE \
     && ./configure \
         --disable-rpath \
         --prefix=/usr/local \

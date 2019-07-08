@@ -16,7 +16,7 @@ fi
 #find "$HOME" ! -user "$USER" -exec chown "$USER_ID" {} \;
 
 if [ ! -s "$PGDATA/PG_VERSION" ]; then
-    exec su-exec "$USER" "initdb --data-checksums"
+    exec su-exec "$USER" initdb --data-checksums
 fi
 
 exec su-exec "$USER" "$@"
