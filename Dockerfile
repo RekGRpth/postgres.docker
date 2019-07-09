@@ -1,17 +1,13 @@
-FROM rekgrpth/gost
-
-ADD entrypoint.sh /
-
-ENV ARCLOG_PATH=/data/postgres/pg_arclog \
-    BACKUP_PATH=/data/pg_rman \
+FROM rekgrpth/pdf
+ENV ARCLOG_PATH=${HOME}/postgres/pg_arclog \
+    BACKUP_PATH=${HOME}/pg_rman \
     GROUP=postgres \
-    HOME=/data \
-    LANG=ru_RU.UTF-8 \
-    PGDATA=/data/postgres \
-    SRVLOG_PATH=/data/postgres/pg_log \
-    TZ=Asia/Yekaterinburg \
+    PGDATA=${HOME}/postgres \
+    SRVLOG_PATH=${HOME}/postgres/pg_log \
     USER=postgres
-
+ADD entrypoint.sh /
+ENTRYPOINT [ "/entrypoint.sh" ]
+CMD [ "postgres" ]
 RUN apk update --no-cache \
     && apk upgrade --no-cache \
     && apk add --no-cache --virtual .build-deps \
@@ -29,6 +25,7 @@ RUN apk update --no-cache \
         git \
         groff \
         libedit-dev \
+        libharu-dev \
         libidn-dev \
         libpsl-dev \
         libssh-dev \
@@ -43,8 +40,8 @@ RUN apk update --no-cache \
         openssl-dev \
         readline-dev \
         util-linux-dev \
-        wkhtmltopdf-dev \
-        wt-dev \
+#        wkhtmltopdf-dev \
+#        wt-dev \
         zfs-dev \
         zlib-dev \
     && mkdir -p /usr/src \
@@ -88,20 +85,19 @@ RUN apk update --no-cache \
     && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "curl" | sort -u | while read -r NAME; do \
         echo "$NAME"; \
         cd "$NAME" \
-        && make -j"$(nproc)" USE_PGXS=1 install; \
+        && make -j"$(nproc)" USE_PGXS=1 install || exit 1; \
     done \
     && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/postgresql/*.so || true) \
     && apk add --no-cache --virtual .postgresql-rundeps \
         openssh-client \
         sshpass \
-        ttf-dejavu \
+#        ttf-dejavu \
         $( scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
             | tr ',' '\n' \
             | sort -u \
             | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
         ) \
     && apk del --no-cache .build-deps \
-    && cd / \
     && rm -rf \
         /usr/src \
         /usr/local/share/doc \
@@ -109,11 +105,3 @@ RUN apk update --no-cache \
     && find /usr/local -name '*.a' -delete \
     && chmod +x /entrypoint.sh \
     && usermod --home "${HOME}" "${USER}"
-
-VOLUME "${HOME}"
-
-WORKDIR "${HOME}"
-
-ENTRYPOINT [ "/entrypoint.sh" ]
-
-CMD [ "postgres" ]
