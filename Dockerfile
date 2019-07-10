@@ -1,4 +1,4 @@
-FROM rekgrpth/pdf
+FROM rekgrpth/gost
 ENV ARCLOG_PATH=${HOME}/postgres/pg_arclog \
     BACKUP_PATH=${HOME}/pg_rman \
     GROUP=postgres \
@@ -40,8 +40,8 @@ RUN apk update --no-cache \
         openssl-dev \
         readline-dev \
         util-linux-dev \
-#        wkhtmltopdf-dev \
-#        wt-dev \
+        wkhtmltopdf-dev \
+        wt-dev \
         zfs-dev \
         zlib-dev \
     && mkdir -p /usr/src \
@@ -91,7 +91,7 @@ RUN apk update --no-cache \
     && apk add --no-cache --virtual .postgresql-rundeps \
         openssh-client \
         sshpass \
-#        ttf-dejavu \
+        ttf-dejavu \
         $( scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
             | tr ',' '\n' \
             | sort -u \
