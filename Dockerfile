@@ -48,7 +48,6 @@ RUN apk update --no-cache \
     && cd /usr/src \
     && git clone --recursive https://github.com/RekGRpth/curl.git \
     && git clone --recursive https://github.com/RekGRpth/pg_curl.git \
-    && git clone --recursive https://github.com/RekGRpth/pg_html2pdf.git \
     && git clone --recursive https://github.com/RekGRpth/pgjwt.git \
     && git clone --recursive https://github.com/RekGRpth/pg_partman.git \
     && git clone --recursive https://github.com/RekGRpth/pg_rman.git \
@@ -56,6 +55,7 @@ RUN apk update --no-cache \
     && git clone --recursive https://github.com/RekGRpth/pgtap.git \
     && git clone --recursive https://github.com/RekGRpth/pg_task.git \
     && git clone --recursive https://github.com/RekGRpth/pg_wkhtmltopdf.git \
+    && git clone --recursive https://github.com/RekGRpth/pg_wthtmltopdf.git \
     && git clone --recursive https://github.com/RekGRpth/plsh.git \
     && git clone --recursive https://github.com/RekGRpth/postgres.git \
     && cd /usr/src/curl \
