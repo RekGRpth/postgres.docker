@@ -25,7 +25,6 @@ RUN apk update --no-cache \
         git \
         groff \
         libedit-dev \
-        libharu-dev \
         libidn-dev \
         libpsl-dev \
         libssh-dev \
@@ -41,7 +40,6 @@ RUN apk update --no-cache \
         readline-dev \
         util-linux-dev \
         wkhtmltopdf-dev \
-        wt-dev \
         zfs-dev \
         zlib-dev \
     && mkdir -p /usr/src \
@@ -55,7 +53,6 @@ RUN apk update --no-cache \
     && git clone --recursive https://github.com/RekGRpth/pgtap.git \
     && git clone --recursive https://github.com/RekGRpth/pg_task.git \
     && git clone --recursive https://github.com/RekGRpth/pg_wkhtmltopdf.git \
-    && git clone --recursive https://github.com/RekGRpth/pg_wthtmltopdf.git \
     && git clone --recursive https://github.com/RekGRpth/plsh.git \
     && git clone --recursive https://github.com/RekGRpth/postgres.git \
     && cd /usr/src/curl \
@@ -91,7 +88,7 @@ RUN apk update --no-cache \
     && apk add --no-cache --virtual .postgresql-rundeps \
         openssh-client \
         sshpass \
-        ttf-dejavu \
+        ttf-liberation \
         $( scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
             | tr ',' '\n' \
             | sort -u \
