@@ -79,12 +79,7 @@ RUN apk update --no-cache \
     && make -j"$(nproc)" -C contrib install \
     && make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install \
     && cd / \
-    && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "curl" | sort -u | while read -r NAME; do \
-        echo "$NAME"; \
-        cd "$NAME" \
-        && make -j"$(nproc)" USE_PGXS=1 install || exit 1; \
-    done \
-    && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/postgresql/*.so || true) \
+    && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "curl" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
     && apk add --no-cache --virtual .postgresql-rundeps \
         openssh-client \
         sshpass \
