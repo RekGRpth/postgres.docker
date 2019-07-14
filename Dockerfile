@@ -1,13 +1,13 @@
 FROM rekgrpth/gost
+ADD entrypoint.sh /
+CMD [ "postgres" ]
 ENV ARCLOG_PATH=${HOME}/postgres/pg_arclog \
     BACKUP_PATH=${HOME}/pg_rman \
     GROUP=postgres \
     PGDATA=${HOME}/postgres \
     SRVLOG_PATH=${HOME}/postgres/pg_log \
     USER=postgres
-ADD entrypoint.sh /
-ENTRYPOINT [ "/entrypoint.sh" ]
-CMD [ "postgres" ]
+VOLUME "${HOME}"
 RUN apk update --no-cache \
     && apk upgrade --no-cache \
     && apk add --no-cache --virtual .build-deps \
@@ -83,13 +83,9 @@ RUN apk update --no-cache \
     && apk add --no-cache --virtual .postgresql-rundeps \
         openssh-client \
         sshpass \
-        ttf-liberation \
         $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }') \
     && apk del --no-cache .build-deps \
-    && rm -rf \
-        /usr/src \
-        /usr/local/share/doc \
-        /usr/local/share/man \
-    && find /usr/local -name '*.a' -delete \
+    && rm -rf /usr/src /usr/local/share/doc /usr/local/share/man \
+#    && find /usr/local -name '*.a' -delete \
     && chmod +x /entrypoint.sh \
     && usermod --home "${HOME}" "${USER}"

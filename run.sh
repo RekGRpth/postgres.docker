@@ -17,5 +17,5 @@ docker run \
     --network my \
     --publish 5432:5432 \
     --restart always \
-    --volume postgres:/data \
+    --volume postgres:/home \
     rekgrpth/postgres
