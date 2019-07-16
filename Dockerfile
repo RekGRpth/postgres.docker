@@ -83,6 +83,7 @@ RUN apk update --no-cache \
     && apk add --no-cache --virtual .postgresql-rundeps \
         openssh-client \
         sshpass \
+        ttf-liberation \
         $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }') \
     && apk del --no-cache .build-deps \
     && rm -rf /usr/src /usr/local/share/doc /usr/local/share/man \
