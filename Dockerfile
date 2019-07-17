@@ -1,4 +1,4 @@
-FROM rekgrpth/gost
+FROM rekgrpth/pdf
 ADD entrypoint.sh /
 CMD [ "postgres" ]
 ENV ARCLOG_PATH=${HOME}/postgres/pg_arclog \
@@ -44,14 +44,14 @@ RUN apk update --no-cache \
         openldap-dev \
         openssl-dev \
         readline-dev \
-        ttf-liberation \
+#        ttf-liberation \
         util-linux-dev \
         zfs-dev \
         zlib-dev \
     && mkdir -p /usr/src \
     && cd /usr/src \
-    && git clone --recursive https://github.com/RekGRpth/curl.git \
-    && git clone --recursive https://github.com/RekGRpth/mupdf.git \
+#    && git clone --recursive https://github.com/RekGRpth/curl.git \
+#    && git clone --recursive https://github.com/RekGRpth/mupdf.git \
     && git clone --recursive https://github.com/RekGRpth/pg_curl.git \
     && git clone --recursive https://github.com/RekGRpth/pgjwt.git \
     && git clone --recursive https://github.com/RekGRpth/pg_mupdf.git \
@@ -62,21 +62,21 @@ RUN apk update --no-cache \
     && git clone --recursive https://github.com/RekGRpth/pg_task.git \
     && git clone --recursive https://github.com/RekGRpth/plsh.git \
     && git clone --recursive https://github.com/RekGRpth/postgres.git \
-    && cd /usr/src/curl \
-    && autoreconf -vif \
-    && ./configure \
-        --enable-ipv6 \
-        --enable-ldap \
-        --enable-unix-sockets \
-        --with-libssh \
-        --with-nghttp2 \
-    && make -j"$(nproc)" install \
-    && cd /usr/src/mupdf \
-    && make -j"$(nproc)" USE_SYSTEM_LIBS=yes prefix=/usr/local CURL_LIBS='-lcurl -lpthread' build=release install \
-    && ln -fs libmupdf.so.0 /usr/local/lib/libmupdf.so \
-    && ln -fs libmupdfthird.so.0 /usr/local/lib/libmupdfthird.so \
-    && ln -fs libmupdf-threads.so.0 /usr/local/lib/libmupdf-threads.so \
-    && ln -fs libmupdf-pkcs7.so.0 /usr/local/lib/libmupdf-pkcs7.so \
+#    && cd /usr/src/curl \
+#    && autoreconf -vif \
+#    && ./configure \
+#        --enable-ipv6 \
+#        --enable-ldap \
+#        --enable-unix-sockets \
+#        --with-libssh \
+#        --with-nghttp2 \
+#    && make -j"$(nproc)" install \
+#    && cd /usr/src/mupdf \
+#    && make -j"$(nproc)" USE_SYSTEM_LIBS=yes prefix=/usr/local CURL_LIBS='-lcurl -lpthread' build=release install \
+#    && ln -fs libmupdf.so.0 /usr/local/lib/libmupdf.so \
+#    && ln -fs libmupdfthird.so.0 /usr/local/lib/libmupdfthird.so \
+#    && ln -fs libmupdf-threads.so.0 /usr/local/lib/libmupdf-threads.so \
+#    && ln -fs libmupdf-pkcs7.so.0 /usr/local/lib/libmupdf-pkcs7.so \
     && cd /usr/src/postgres \
     && git checkout --track origin/REL_11_STABLE \
     && ./configure \
