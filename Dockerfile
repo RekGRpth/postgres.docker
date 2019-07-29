@@ -8,7 +8,8 @@ ENV ARCLOG_PATH=${HOME}/postgres/pg_arclog \
     SRVLOG_PATH=${HOME}/postgres/pg_log \
     USER=postgres
 VOLUME "${HOME}"
-RUN apk update --no-cache \
+RUN set -ex \
+    && apk update --no-cache \
     && apk upgrade --no-cache \
     && mkdir -p "${HOME}" \
     && addgroup -S "${GROUP}" \
