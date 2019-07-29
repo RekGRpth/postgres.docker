@@ -10,6 +10,9 @@ ENV ARCLOG_PATH=${HOME}/postgres/pg_arclog \
 VOLUME "${HOME}"
 RUN apk update --no-cache \
     && apk upgrade --no-cache \
+    && mkdir -p "${HOME}" \
+    && addgroup -S "${GROUP}" \
+    && adduser -D -S -h "${HOME}" -s /sbin/nologin -G "${GROUP}" "${USER}" \
     && apk add --no-cache --virtual .build-deps \
         autoconf \
         automake \
@@ -82,5 +85,4 @@ RUN apk update --no-cache \
     && apk del --no-cache .build-deps \
     && rm -rf /usr/src /usr/local/share/doc /usr/local/share/man \
     && find /usr/local -name '*.a' -delete \
-    && chmod +x /entrypoint.sh \
-    && usermod --home "${HOME}" "${USER}"
+    && chmod +x /entrypoint.sh
