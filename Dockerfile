@@ -23,7 +23,7 @@ RUN set -ex \
         dev86 \
         file \
         flex \
-        freeglut-dev \
+#        freeglut-dev \
         freetype-dev \
         g++ \
         gcc \
