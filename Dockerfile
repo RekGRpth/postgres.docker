@@ -23,16 +23,11 @@ RUN set -ex \
         dev86 \
         file \
         flex \
-#        freeglut-dev \
-        freetype-dev \
         g++ \
         gcc \
         gettext-dev \
         git \
         groff \
-        harfbuzz-dev \
-        jbig2dec-dev \
-        jpeg-dev \
         libedit-dev \
         libidn-dev \
         libpsl-dev \
@@ -44,7 +39,6 @@ RUN set -ex \
         mt-st \
         musl-dev \
         nghttp2-dev \
-        openjpeg-dev \
         openldap-dev \
         openssl-dev \
         readline-dev \
@@ -53,9 +47,10 @@ RUN set -ex \
         zlib-dev \
     && mkdir -p /usr/src \
     && cd /usr/src \
+    && git clone --recursive https://github.com/RekGRpth/curl.git \
     && git clone --recursive https://github.com/RekGRpth/pg_curl.git \
     && git clone --recursive https://github.com/RekGRpth/pgjwt.git \
-    && git clone --recursive https://github.com/RekGRpth/pg_mupdf.git \
+#    && git clone --recursive https://github.com/RekGRpth/pg_mupdf.git \
     && git clone --recursive https://github.com/RekGRpth/pg_partman.git \
     && git clone --recursive https://github.com/RekGRpth/pg_rman.git \
     && git clone --recursive https://github.com/RekGRpth/pg_ssl.git \
@@ -77,6 +72,19 @@ RUN set -ex \
     && make -j"$(nproc)" -C src install \
     && make -j"$(nproc)" -C contrib install \
     && make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install \
+    && cd /usr/src/curl \
+    && autoreconf -vif \
+    && ./configure \
+        --enable-ipv6 \
+        --enable-ldap \
+        --enable-unix-sockets \
+        --with-libssh \
+        --with-nghttp2 \
+    && make -j"$(nproc)" curl-config install \
+    && cd /usr/src/curl/include \
+    && make -j"$(nproc)" install \
+    && cd /usr/src/curl/lib \
+    && make -j"$(nproc)" install \
     && cd / \
     && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "curl" ! -name "mupdf" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
     && apk add --no-cache --virtual .postgresql-rundeps \
