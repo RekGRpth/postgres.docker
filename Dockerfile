@@ -87,7 +87,7 @@ RUN set -ex \
     && make -j"$(nproc)" install \
     && cd / \
     && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "curl" ! -name "mupdf" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
-    && (strip /usr/local/bin/* /usr/local/lib/*.so || true) \
+    && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/postgresql/*.so || true) \
     && apk add --no-cache --virtual .postgresql-rundeps \
         openssh-client \
         sshpass \
