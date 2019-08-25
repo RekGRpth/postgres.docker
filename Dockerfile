@@ -58,6 +58,19 @@ RUN set -ex \
     && git clone --recursive https://github.com/RekGRpth/pg_task.git \
     && git clone --recursive https://github.com/RekGRpth/plsh.git \
     && git clone --recursive https://github.com/RekGRpth/postgres.git \
+    && cd /usr/src/curl \
+    && autoreconf -vif \
+    && ./configure \
+        --enable-ipv6 \
+        --enable-ldap \
+        --enable-unix-sockets \
+        --with-libssh \
+        --with-nghttp2 \
+    && make -j"$(nproc)" curl-config install \
+    && cd /usr/src/curl/include \
+    && make -j"$(nproc)" install \
+    && cd /usr/src/curl/lib \
+    && make -j"$(nproc)" install \
     && cd /usr/src/postgres \
     && git checkout --track origin/REL_11_STABLE \
     && ./configure \
@@ -72,19 +85,6 @@ RUN set -ex \
     && make -j"$(nproc)" -C src install \
     && make -j"$(nproc)" -C contrib install \
     && make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install \
-    && cd /usr/src/curl \
-    && autoreconf -vif \
-    && ./configure \
-        --enable-ipv6 \
-        --enable-ldap \
-        --enable-unix-sockets \
-        --with-libssh \
-        --with-nghttp2 \
-    && make -j"$(nproc)" curl-config install \
-    && cd /usr/src/curl/include \
-    && make -j"$(nproc)" install \
-    && cd /usr/src/curl/lib \
-    && make -j"$(nproc)" install \
     && cd / \
     && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "curl" ! -name "mupdf" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
     && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/postgresql/*.so || true) \
