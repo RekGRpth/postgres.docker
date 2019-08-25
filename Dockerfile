@@ -29,6 +29,7 @@ RUN set -ex \
         git \
         groff \
         libedit-dev \
+        libidn2-dev \
         libidn-dev \
         libpsl-dev \
         libssh-dev \
