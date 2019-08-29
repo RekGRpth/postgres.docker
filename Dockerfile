@@ -9,8 +9,6 @@ ENV ARCLOG_PATH=${HOME}/postgres/pg_arclog \
     USER=postgres
 VOLUME "${HOME}"
 RUN set -ex \
-    && apk update --no-cache \
-    && apk upgrade --no-cache \
     && mkdir -p "${HOME}" \
     && addgroup -S "${GROUP}" \
     && adduser -D -S -h "${HOME}" -s /sbin/nologin -G "${GROUP}" "${USER}" \
