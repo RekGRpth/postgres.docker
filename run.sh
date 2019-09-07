@@ -18,4 +18,6 @@ docker run \
     --publish 5432:5432 \
     --restart always \
     --volume postgres:/home \
+    --volume /etc/certs/$(hostname -d).crt:/etc/ssl/server.crt \
+    --volume /etc/certs/$(hostname -d).key:/etc/ssl/server.key \
     rekgrpth/postgres
