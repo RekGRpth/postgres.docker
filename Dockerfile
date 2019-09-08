@@ -4,7 +4,7 @@ CMD [ "postgres" ]
 ENV ARCLOG_PATH=${HOME}/postgres/pg_arclog \
     BACKUP_PATH=${HOME}/pg_rman \
     GROUP=postgres \
-    PGDATA=${HOME}/postgres \
+    PGDATA=${HOME}/data \
     SRVLOG_PATH=${HOME}/postgres/pg_log \
     USER=postgres
 VOLUME "${HOME}"
