@@ -71,7 +71,7 @@ RUN set -ex \
     && cd /usr/src/curl/lib \
     && make -j"$(nproc)" install \
     && cd /usr/src/postgres \
-    && git checkout REL_11_STABLE \
+    && git checkout --track origin/REL_12_STABLE \
     && ./configure \
         --disable-rpath \
         --prefix=/usr/local \
