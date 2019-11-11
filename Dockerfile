@@ -53,7 +53,6 @@ RUN set -ex \
     && git clone --recursive https://github.com/RekGRpth/pg_partman.git \
     && git clone --recursive https://github.com/RekGRpth/pg_rman.git \
     && git clone --recursive https://github.com/RekGRpth/pg_ssl.git \
-    && git clone --recursive https://github.com/RekGRpth/pgtap.git \
     && git clone --recursive https://github.com/RekGRpth/pg_task.git \
     && git clone --recursive https://github.com/RekGRpth/plsh.git \
     && git clone --recursive https://github.com/RekGRpth/postgres.git \
