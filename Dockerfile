@@ -1,7 +1,8 @@
 FROM rekgrpth/pdf
 ADD entrypoint.sh /
 CMD [ "postgres" ]
-ENV GROUP=postgres \
+ENV BACKUP_PATH=${HOME}/pg_rman \
+    GROUP=postgres \
     PGDATA=${HOME}/pg_data \
     USER=postgres
 VOLUME "${HOME}"
