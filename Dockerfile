@@ -1,11 +1,8 @@
 FROM rekgrpth/pdf
 ADD entrypoint.sh /
 CMD [ "postgres" ]
-ENV ARCLOG_PATH=${HOME}/postgres/pg_arclog \
-    BACKUP_PATH=${HOME}/pg_rman \
-    GROUP=postgres \
-    PGDATA=${HOME}/data \
-    SRVLOG_PATH=${HOME}/postgres/pg_log \
+ENV GROUP=postgres \
+    PGDATA=${HOME}/pg_data \
     USER=postgres
 VOLUME "${HOME}"
 RUN set -ex \
