@@ -10,6 +10,8 @@ docker network create --opt com.docker.network.bridge.name=docker docker
 docker run \
     --detach \
     --env GROUP_ID=$(id -g) \
+    --env LANG=ru_RU.UTF-8 \
+    --env TZ=Asia/Yekaterinburg \
     --env USER_ID=$(id -u) \
     --hostname postgres \
     --link nginx:$(hostname -f) \
