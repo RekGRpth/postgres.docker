@@ -24,7 +24,7 @@ RUN set -ex \
         gettext-dev \
         git \
         groff \
-        icu-dev \
+#        icu-dev \
         libedit-dev \
         libidn2-dev \
         libidn-dev \
@@ -73,7 +73,7 @@ RUN set -ex \
     && ./configure \
         --disable-rpath \
         --prefix=/usr/local \
-        --with-icu \
+#        --with-icu \
         --with-ldap \
         --with-libedit-preferred \
         --with-libxml \
