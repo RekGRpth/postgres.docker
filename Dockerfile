@@ -48,6 +48,7 @@ RUN set -ex \
     && git clone --recursive https://github.com/RekGRpth/curl.git \
     && git clone --recursive https://github.com/RekGRpth/pg_curl.git \
     && git clone --recursive https://github.com/RekGRpth/pg_htmldoc.git \
+    && git clone --recursive https://github.com/RekGRpth/pg_jobmon.git \
     && git clone --recursive https://github.com/RekGRpth/pgjwt.git \
     && git clone --recursive https://github.com/RekGRpth/pg_partman.git \
     && git clone --recursive https://github.com/RekGRpth/pg_rman.git \
