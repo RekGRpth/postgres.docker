@@ -46,6 +46,7 @@ RUN set -ex \
     && mkdir -p /usr/src \
     && cd /usr/src \
     && git clone --recursive https://github.com/RekGRpth/curl.git \
+    && git clone --recursive https://github.com/RekGRpth/pg_auto_failover.git \
     && git clone --recursive https://github.com/RekGRpth/pg_curl.git \
     && git clone --recursive https://github.com/RekGRpth/pg_htmldoc.git \
     && git clone --recursive https://github.com/RekGRpth/pg_jobmon.git \
