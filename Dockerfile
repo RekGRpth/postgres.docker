@@ -75,6 +75,7 @@ RUN set -ex \
     && git checkout REL_12_STABLE \
     && ./configure \
         --disable-rpath \
+        --enable-cassert \
         --prefix=/usr/local \
 #        --with-icu \
         --with-ldap \
