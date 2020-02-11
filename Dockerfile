@@ -79,7 +79,7 @@ RUN set -ex \
     && make -j"$(nproc)" install \
     && cd /usr/src/postgres \
     && git checkout REL_12_STABLE \
-    && LDFLAGS="-lexecinfo" ./configure \
+    && ./configure \
         --disable-rpath \
         --enable-cassert \
         --prefix=/usr/local \
