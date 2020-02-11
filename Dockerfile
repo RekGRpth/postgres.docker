@@ -16,6 +16,7 @@ RUN set -ex \
         binutils \
         bison \
         brotli-dev \
+        c-ares-dev \
         dev86 \
         file \
         flex \
@@ -26,6 +27,7 @@ RUN set -ex \
         groff \
 #        icu-dev \
         libedit-dev \
+        libexecinfo-dev \
         libidn2-dev \
         libidn-dev \
         libpsl-dev \
@@ -47,6 +49,7 @@ RUN set -ex \
     && cd /usr/src \
     && git clone --recursive https://github.com/RekGRpth/curl.git \
     && git clone --recursive https://github.com/RekGRpth/pg_auto_failover.git \
+    && git clone --recursive https://github.com/RekGRpth/pg_backtrace.git \
     && git clone --recursive https://github.com/RekGRpth/pg_curl.git \
     && git clone --recursive https://github.com/RekGRpth/pg_htmldoc.git \
     && git clone --recursive https://github.com/RekGRpth/pg_jobmon.git \
@@ -60,9 +63,12 @@ RUN set -ex \
     && git clone --recursive https://github.com/RekGRpth/repmgr.git \
     && cd /usr/src/curl \
     && autoreconf -vif \
-    && ./configure \
+    && LDFLAGS="-lexecinfo" ./configure \
+        --enable-ares \
+#        --enable-esni \
         --enable-ipv6 \
         --enable-ldap \
+        --enable-libgcc \
         --enable-unix-sockets \
         --with-libssh \
         --with-nghttp2 \
@@ -73,7 +79,7 @@ RUN set -ex \
     && make -j"$(nproc)" install \
     && cd /usr/src/postgres \
     && git checkout REL_12_STABLE \
-    && ./configure \
+    && LDFLAGS="-lexecinfo" ./configure \
         --disable-rpath \
         --enable-cassert \
         --prefix=/usr/local \
@@ -88,9 +94,9 @@ RUN set -ex \
     && make -j"$(nproc)" -C contrib install \
     && make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install \
     && cd /usr/src/repmgr \
-    && ./configure \
+    && LDFLAGS="-lexecinfo" ./configure \
     && cd / \
-    && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "curl" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
+    && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "curl" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" LDFLAGS="-lexecinfo" USE_PGXS=1 install || exit 1; done \
     && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/postgresql/*.so || true) \
     && apk add --no-cache --virtual .postgresql-rundeps \
         openssh-client \
