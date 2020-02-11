@@ -27,7 +27,7 @@ RUN set -ex \
         groff \
 #        icu-dev \
         libedit-dev \
-        libexecinfo-dev \
+#        libexecinfo-dev \
         libidn2-dev \
         libidn-dev \
         libpsl-dev \
@@ -49,7 +49,7 @@ RUN set -ex \
     && cd /usr/src \
     && git clone --recursive https://github.com/RekGRpth/curl.git \
     && git clone --recursive https://github.com/RekGRpth/pg_auto_failover.git \
-    && git clone --recursive https://github.com/RekGRpth/pg_backtrace.git \
+#    && git clone --recursive https://github.com/RekGRpth/pg_backtrace.git \
     && git clone --recursive https://github.com/RekGRpth/pg_curl.git \
     && git clone --recursive https://github.com/RekGRpth/pg_htmldoc.git \
     && git clone --recursive https://github.com/RekGRpth/pg_jobmon.git \
