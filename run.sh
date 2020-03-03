@@ -11,9 +11,9 @@ docker service create \
     --env TZ=Asia/Yekaterinburg \
     --env USER_ID=$(id -u) \
     --hostname postgres \
+    --mount type=bind,source=/etc/certs,destination=/etc/ssl \
+    --mount type=volume,source=postgres,destination=/home \
     --name postgres \
     --network docker \
     --publish target=5432,published=5432 \
-    --mount type=bind,source=/etc/certs,destination=/etc/ssl \
-    --mount type=volume,source=postgres,destination=/home \
     rekgrpth/postgres
