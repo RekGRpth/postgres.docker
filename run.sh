@@ -2,24 +2,18 @@
 
 #docker build --tag rekgrpth/postgres . || exit $?
 #docker push rekgrpth/postgres || exit $?
-docker stop postgres
-docker rm postgres
 docker pull rekgrpth/postgres || exit $?
 docker volume create postgres || exit $?
-docker network create --opt com.docker.network.bridge.name=docker docker
-docker run \
-    --detach \
+docker network create -d overlay docker
+docker service create \
     --env GROUP_ID=$(id -g) \
     --env LANG=ru_RU.UTF-8 \
     --env TZ=Asia/Yekaterinburg \
     --env USER_ID=$(id -u) \
     --hostname postgres \
-    --link nginx:$(hostname -f) \
     --name postgres \
     --network docker \
-    --publish 5432:5432 \
-    --restart always \
-    --volume /etc/certs/$(hostname -d).crt:/etc/ssl/server.crt \
-    --volume /etc/certs/$(hostname -d).key:/etc/ssl/server.key \
-    --volume postgres:/home \
+    --publish target=5432,published=5432 \
+    --mount type=bind,source=/etc/certs,destination=/etc/ssl \
+    --mount type=volume,source=postgres,destination=/home \
     rekgrpth/postgres
