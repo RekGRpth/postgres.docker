@@ -4,7 +4,7 @@
 #docker push rekgrpth/postgres || exit $?
 docker pull rekgrpth/postgres || exit $?
 docker volume create postgres || exit $?
-docker network create -d overlay docker
+docker network create --attachable --driver overlay docker
 docker service create \
     --env GROUP_ID=$(id -g) \
     --env LANG=ru_RU.UTF-8 \
