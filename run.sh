@@ -15,5 +15,5 @@ docker service create \
     --mount type=volume,source=postgres,destination=/home \
     --name postgres \
     --network docker \
-    --publish target=5432,published=5432 \
+    --publish target=5432,published=5432,mode=host \
     rekgrpth/postgres
