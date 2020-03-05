@@ -14,9 +14,8 @@ docker run \
     --env TZ=Asia/Yekaterinburg \
     --env USER_ID=$(id -u) \
     --hostname postgres \
-    --link nginx:$(hostname -f) \
     --name postgres \
-    --network docker \
+    --network name=docker \
     --publish target=5432,published=5432,mode=host \
     --restart always \
     --volume /etc/certs/:/etc/certs \
