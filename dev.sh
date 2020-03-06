@@ -4,7 +4,7 @@
 #docker push rekgrpth/postgres || exit $?
 docker pull rekgrpth/postgres || exit $?
 docker volume create postgres || exit $?
-docker network create --attachable --driver overlay docker || echo $?
+docker network create --attachable --opt com.docker.network.bridge.name=docker docker || echo $?
 docker stop postgres || echo $?
 docker rm postgres || echo $?
 docker run \
