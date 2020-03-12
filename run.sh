@@ -20,4 +20,5 @@ docker run \
     --restart always \
     --volume /etc/certs/:/etc/certs \
     --volume postgres:/home \
+    --volume /run/postgresql:/run/postgresql \
     rekgrpth/postgres
