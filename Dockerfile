@@ -2,6 +2,7 @@ FROM rekgrpth/pdf
 ADD entrypoint.sh /
 CMD [ "postgres" ]
 ENV BACKUP_PATH=${HOME}/pg_rman \
+#    CFLAGS="-rdynamic -fno-omit-frame-pointer" \
     GROUP=postgres \
     PGDATA=${HOME}/pg_data \
     USER=postgres
@@ -17,7 +18,7 @@ RUN set -ex \
         bison \
         brotli-dev \
         c-ares-dev \
-        dev86 \
+#        dev86 \
         file \
         flex \
         g++ \
@@ -80,8 +81,10 @@ RUN set -ex \
     && cd /usr/src/postgres \
     && git checkout REL_12_STABLE \
     && ./configure \
-        --disable-rpath \
+#        --disable-rpath \
         --enable-cassert \
+        --enable-debug \
+#        --enable-dtrace \
         --prefix=/usr/local \
 #        --with-icu \
         --with-ldap \
