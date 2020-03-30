@@ -78,7 +78,7 @@ RUN set -ex \
     && cd /usr/src/postgres \
     && git checkout REL_12_STABLE \
     && ./configure \
-        --enable-cassert \
+#        --enable-cassert \
         --enable-debug \
         --prefix=/usr/local \
 #        --with-icu \
