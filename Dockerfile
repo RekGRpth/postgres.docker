@@ -1,5 +1,5 @@
 FROM rekgrpth/pdf
-ADD entrypoint.sh /
+ADD docker_entrypoint.sh /usr/local/bin/
 CMD [ "postgres" ]
 ENV BACKUP_PATH=${HOME}/pg_rman \
     GROUP=postgres \
@@ -103,4 +103,4 @@ RUN set -ex \
     && apk del --no-cache .build-deps \
     && rm -rf /usr/src /usr/local/share/doc /usr/local/share/man \
     && find /usr/local -name '*.a' -delete \
-    && chmod +x /entrypoint.sh
+    && chmod +x /usr/local/bin/docker_entrypoint.sh
