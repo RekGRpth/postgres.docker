@@ -12,8 +12,8 @@ docker service create \
     --env USER_ID=$(id -u) \
     --hostname postgres \
     --mount type=bind,source=/etc/certs,destination=/etc/certs \
+    --mount type=bind,source=/run/postgresql,destination=/run/postgresql \
     --mount type=volume,source=postgres,destination=/home \
-    --mount type=volume,source=/run/postgresql,destination=/run/postgresql \
     --name postgres \
     --network name=docker \
     --publish target=5432,published=5432,mode=host \
