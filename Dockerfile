@@ -25,6 +25,7 @@ RUN set -ex \
         git \
         groff \
 #        icu-dev \
+        krb5-dev \
         libedit-dev \
         libidn2-dev \
         libidn-dev \
