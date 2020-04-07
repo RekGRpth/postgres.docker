@@ -41,6 +41,7 @@ RUN set -ex \
         openldap-dev \
         openssl-dev \
         readline-dev \
+        rtmpdump-dev \
         util-linux-dev \
         zfs-dev \
         zlib-dev \
@@ -68,9 +69,15 @@ RUN set -ex \
         --enable-ipv6 \
         --enable-ldap \
         --enable-libgcc \
+        --enable-sspi \
         --enable-unix-sockets \
+        --with-gssapi \
+        --with-libmetalink \
+        --with-librtmp \
         --with-libssh \
         --with-nghttp2 \
+        --with-ngtcp2 \
+        --with-quiche \
     && make -j"$(nproc)" curl-config install \
     && cd /usr/src/curl/include \
     && make -j"$(nproc)" install \
