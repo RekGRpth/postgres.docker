@@ -18,6 +18,7 @@ RUN set -ex \
         brotli-dev \
         c-ares-dev \
         file \
+        fish-dev \
         flex \
         g++ \
         gcc \
@@ -27,13 +28,16 @@ RUN set -ex \
 #        icu-dev \
         krb5-dev \
         libedit-dev \
+        libgss-dev \
         libidn2-dev \
         libidn-dev \
         libpsl-dev \
         libssh-dev \
         libtool \
         libxml2-dev \
+#        libxslt-dev \
         linux-headers \
+        linux-pam-dev \
         make \
         mt-st \
         musl-dev \
@@ -69,15 +73,15 @@ RUN set -ex \
         --enable-ipv6 \
         --enable-ldap \
         --enable-libgcc \
-        --enable-sspi \
+#        --enable-sspi \
         --enable-unix-sockets \
         --with-gssapi \
         --with-libmetalink \
         --with-librtmp \
         --with-libssh \
         --with-nghttp2 \
-        --with-ngtcp2 \
-        --with-quiche \
+#        --with-ngtcp2 \
+#        --with-quiche \
     && make -j"$(nproc)" curl-config install \
     && cd /usr/src/curl/include \
     && make -j"$(nproc)" install \
@@ -89,11 +93,14 @@ RUN set -ex \
 #        --enable-cassert \
 #        --enable-debug \
         --prefix=/usr/local \
+        --with-gssapi \
 #        --with-icu \
         --with-ldap \
         --with-libedit-preferred \
         --with-libxml \
+#        --with-libxslt \
         --with-openssl \
+        --with-pam \
         --with-system-tzdata=/usr/share/zoneinfo \
         --with-uuid=e2fs \
     && make -j"$(nproc)" -C src install \
