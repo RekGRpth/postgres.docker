@@ -18,16 +18,16 @@ if [ "$USER" != "" ]; then
     if [ "$PGMONITOR" = "true" ]; then
         if [ "$MONITOR" = "" ]; then
             if [ ! -s "$PGDATA/PG_VERSION" ]; then
-                exec su-exec "$USER" pg_autoctl -vvv create monitor --no-ssl --auth trust --nodename "$(hostname)"
+                su-exec "$USER" pg_autoctl -vvv create monitor --no-ssl --auth trust --nodename "$(hostname)"
             fi
         else
             if [ ! -s "$PGDATA/PG_VERSION" ]; then
-                exec su-exec "$USER" pg_autoctl -vvv create postgres --no-ssl --auth trust --nodename "$(hostname)" --monitor "$MONITOR"
+                su-exec "$USER" pg_autoctl -vvv create postgres --no-ssl --auth trust --nodename "$(hostname)" --monitor "$MONITOR"
             fi
         fi
     else
         if [ ! -s "$PGDATA/PG_VERSION" ]; then
-            exec su-exec "$USER" initdb
+            su-exec "$USER" initdb
         fi
     fi
     exec su-exec "$USER" "$@"
