@@ -118,4 +118,6 @@ RUN set -ex \
     && apk del --no-cache .build-deps \
     && rm -rf /usr/src /usr/local/share/doc /usr/local/share/man \
     && find /usr/local -name '*.a' -delete \
-    && chmod +x /usr/local/bin/docker_entrypoint.sh
+    && chmod +x /usr/local/bin/docker_entrypoint.sh \
+    && mkdir -p /run/postgresql \
+    && chown "${USER}":"${GROUP}" /run/postgresql

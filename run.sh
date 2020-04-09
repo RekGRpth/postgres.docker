@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -ex
 
 #docker build --tag rekgrpth/postgres . || exit $?
 #docker push rekgrpth/postgres || exit $?
@@ -7,6 +7,7 @@ docker volume create postgres || exit $?
 docker network create --attachable --opt com.docker.network.bridge.name=docker docker || echo $?
 docker stop postgres || echo $?
 docker rm postgres || echo $?
+rm /run/postgresql/* || echo $?
 docker run \
     --detach \
     --env GROUP_ID=$(id -g) \
