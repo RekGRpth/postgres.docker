@@ -15,18 +15,10 @@ if [ "$USER" != "" ]; then
         chown "$USER_ID" "$HOME"
         chown "$USER_ID" /run/postgresql
     fi
-    if [ "$PGMONITOR" = "true" ]; then
-        if [ "$MONITOR" = "" ]; then
-            if [ ! -s "$PGDATA/PG_VERSION" ]; then
-                su-exec "$USER" pg_autoctl -vvv create monitor --no-ssl --auth trust --nodename "$(hostname)"
-            fi
+    if [ ! -s "$PGDATA/PG_VERSION" ]; then
+        if [ "$MONITOR" != "" ]; then
+            su-exec "$USER" pg_autoctl "$MONITOR" --nodename "$(hostname)"
         else
-            if [ ! -s "$PGDATA/PG_VERSION" ]; then
-                su-exec "$USER" pg_autoctl -vvv create postgres --no-ssl --auth trust --nodename "$(hostname)" --monitor "$MONITOR"
-            fi
-        fi
-    else
-        if [ ! -s "$PGDATA/PG_VERSION" ]; then
             su-exec "$USER" initdb
         fi
     fi
