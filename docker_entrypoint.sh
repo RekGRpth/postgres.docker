@@ -16,7 +16,7 @@ if [ "$USER" != "" ]; then
         chown "$USER_ID" /run/postgresql
     fi
     if [ "$MONITOR" != "" ]; then
-        su-exec "$USER" pg_autoctl "$MONITOR" --nodename "$(hostname)"
+        su-exec "$USER" pg_autoctl $MONITOR --nodename "$(hostname)"
     else
         if [ ! -s "$PGDATA/PG_VERSION" ]; then
             su-exec "$USER" initdb
