@@ -21,6 +21,10 @@ if [ "$USER" != "" ]; then
         else
             su-exec "$USER" initdb
         fi
+    else
+        if [ "$MONITOR" != "" ]; then
+            pg_autoctl -vvv do monitor register
+        fi
     fi
     exec su-exec "$USER" "$@"
 else
