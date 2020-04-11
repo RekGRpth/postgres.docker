@@ -17,13 +17,13 @@ if [ "$USER" != "" ]; then
     fi
     if [ ! -s "$PGDATA/PG_VERSION" ]; then
         if [ "$PGINIT" != "" ]; then
-            su-exec "$USER" $PGINIT --nodename "$(hostname)"
+            eval su-exec "$USER" $PGINIT --nodename "$(hostname)"
         else
             su-exec "$USER" initdb
         fi
     else
         if [ "$PGEXEC" != "" ]; then
-            su-exec "$USER" $PGEXEC
+            eval su-exec "$USER" $PGEXEC
         fi
     fi
     exec su-exec "$USER" "$@"
