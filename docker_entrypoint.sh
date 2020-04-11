@@ -16,14 +16,14 @@ if [ "$USER" != "" ]; then
         chown "$USER_ID" /run/postgresql
     fi
     if [ ! -s "$PGDATA/PG_VERSION" ]; then
-        if [ "$MONITOR" != "" ]; then
-            su-exec "$USER" pg_autoctl $MONITOR --nodename "$(hostname)"
+        if [ "$PGINIT" != "" ]; then
+            su-exec "$USER" $PGINIT --nodename "$(hostname)"
         else
             su-exec "$USER" initdb
         fi
     else
-        if [ "$MONITOR" != "" ]; then
-            pg_autoctl -vvv do monitor register
+        if [ "$PGEXEC" != "" ]; then
+            su-exec "$USER" $PGEXEC
         fi
     fi
     exec su-exec "$USER" "$@"
