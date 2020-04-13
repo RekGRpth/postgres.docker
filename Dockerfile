@@ -6,7 +6,7 @@ ENV BACKUP_PATH=${HOME}/pg_rman \
     PGDATA=${HOME}/pg_data \
     USER=postgres
 VOLUME "${HOME}"
-RUN set -ex \
+RUN set -x \
     && mkdir -p "${HOME}" \
     && addgroup -S "${GROUP}" \
     && adduser -D -S -h "${HOME}" -s /sbin/nologin -G "${GROUP}" "${USER}" \

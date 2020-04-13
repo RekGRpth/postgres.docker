@@ -1,4 +1,4 @@
-#!/bin/sh -ex
+#!/bin/sh -x
 
 #docker build --tag rekgrpth/postgres . || exit $?
 #docker push rekgrpth/postgres || exit $?
