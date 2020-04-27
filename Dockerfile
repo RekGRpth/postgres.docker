@@ -6,7 +6,8 @@ ENV BACKUP_PATH=${HOME}/pg_rman \
     PGDATA=${HOME}/pg_data \
     USER=postgres
 VOLUME "${HOME}"
-RUN set -ex \
+RUN exec 2>&1 \
+    && set -ex \
     && mkdir -p "${HOME}" \
     && addgroup -S "${GROUP}" \
     && adduser -D -S -h "${HOME}" -s /sbin/nologin -G "${GROUP}" "${USER}" \
@@ -120,4 +121,5 @@ RUN set -ex \
     && find /usr/local -name '*.a' -delete \
     && chmod +x /usr/local/bin/docker_entrypoint.sh \
     && mkdir -p /run/postgresql \
-    && chown "${USER}":"${GROUP}" /run/postgresql
+    && chown "${USER}":"${GROUP}" /run/postgresql \
+    && echo done

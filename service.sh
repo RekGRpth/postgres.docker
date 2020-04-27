@@ -1,8 +1,8 @@
 #!/bin/sh -ex
 
-#docker build --tag rekgrpth/postgres . || exit $?
-#docker push rekgrpth/postgres || exit $?
-docker pull rekgrpth/postgres || exit $?
+#docker build --tag rekgrpth/postgres .
+#docker push rekgrpth/postgres
+docker pull rekgrpth/postgres
 docker volume create monitor || echo $?
 docker volume create postgres || echo $?
 docker network create --attachable --driver overlay docker || echo $?

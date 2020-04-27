@@ -1,9 +1,9 @@
 #!/bin/sh -ex
 
-#docker build --tag rekgrpth/postgres . || exit $?
-#docker push rekgrpth/postgres || exit $?
-docker pull rekgrpth/postgres || exit $?
-docker volume create postgres || exit $?
+#docker build --tag rekgrpth/postgres .
+#docker push rekgrpth/postgres
+docker pull rekgrpth/postgres
+docker volume create postgres
 docker network create --attachable --opt com.docker.network.bridge.name=docker docker || echo $?
 docker stop postgres || echo $?
 docker rm postgres || echo $?
