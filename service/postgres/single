@@ -1,0 +1,11 @@
+#!/bin/sh
+
+exec 2>&1
+realpath "$0"
+set -ex
+rm -f "$PGDATA/postmaster.pid"
+install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql
+if [ ! -d "$PGDATA/base" ]; then
+    /etc/service/postgres/init
+fi
+exec chpst -u "$USER":"$GROUP" postmaster

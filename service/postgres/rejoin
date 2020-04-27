@@ -1,0 +1,10 @@
+#!/bin/sh
+
+exec 2>&1
+realpath "$0"
+set -ex
+primary="$(redis-cli -h "$REDIS_HOST" -c get primary)"
+test -n "$primary"
+chpst -u "$USER":"$GROUP" pg_ctl --options="-c listen_addresses=''" --wait start
+chpst -u "$USER":"$GROUP" pg_ctl --wait --mode=fast stop
+chpst -u "$USER":"$GROUP" repmgr node rejoin --config-file="$HOME/repmgr.conf" --verbose --force-rewind --no-wait --dbname="host=$primary user=repmgr dbname=repmgr connect_timeout=2" || mv -f "$PGDATA" "${PGDATA}_$(date "+%F %T")"

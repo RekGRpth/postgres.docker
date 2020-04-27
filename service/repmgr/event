@@ -1,0 +1,53 @@
+#!/bin/sh
+
+exec 2>&1
+realpath "$0"
+set -ex
+node="$1"
+shift
+event="$1"
+shift
+status="$1"
+shift
+timestamp="$1"
+shift
+details="$1"
+#case "$event" in
+#    cluster_created) ;;
+#    primary_register) redis-cli -h "$REDIS_HOST" -c set primary "$(hostname)" ;;
+#    primary_unregister) ;;
+#    standby_clone) ;;
+#    standby_register) ;;
+#    standby_register_sync) ;;
+#    standby_unregister) ;;
+#    standby_promote) redis-cli -h "$REDIS_HOST" -c set primary "$(hostname)" ;;
+#    standby_follow) ;;
+#    standby_switchover) ;;
+#    witness_register) ;;
+#    witness_unregister) ;;
+#    node_rejoin) ;;
+#    cluster_cleanup) ;;
+#    repmgrd_start) test "$details" = "monitoring cluster primary \"$(hostname)\" (ID: $node)" && redis-cli -h "$REDIS_HOST" -c set primary "$(hostname)" ;;
+#    repmgrd_shutdown) ;;
+#    repmgrd_reload) ;;
+#    repmgrd_failover_promote) redis-cli -h "$REDIS_HOST" -c set primary "$(hostname)" ;;
+#    repmgrd_failover_follow) ;;
+#    repmgrd_failover_aborted) ;;
+#    repmgrd_standby_reconnect) ;;
+#    repmgrd_promote_error) ;;
+#    repmgrd_local_disconnect) ;;
+#    repmgrd_local_reconnect) ;;
+#    repmgrd_upstream_disconnect) ;;
+#    repmgrd_upstream_reconnect) ;;
+#    standby_disconnect_manual) ;;
+#    standby_failure) ;;
+#    standby_recovery) ;;
+#    child_node_disconnect) ;;
+#    child_node_reconnect) ;;
+#    child_node_new_connect) ;;
+#    child_nodes_disconnect_command) ;;
+#    *) ;;
+#esac
+primary="$(psql --quiet --tuples-only --no-align --user=repmgr --dbname=repmgr --command="select node_name from nodes where active and type = 'primary'")"
+test -n "$primary" && redis-cli -h "$REDIS_HOST" -c set primary "$primary"
+test -f /run/postgresql/pgbouncer.run && /etc/service/pgbouncer/data

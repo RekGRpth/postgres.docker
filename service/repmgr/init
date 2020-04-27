@@ -1,0 +1,15 @@
+#!/bin/sh
+
+exec 2>&1
+realpath "$0"
+set -ex
+chpst -u "$USER":"$GROUP" /etc/service/repmgr/hba
+chpst -u "$USER":"$GROUP" cat >>"$PGDATA/postgresql.conf" <<EOF
+
+hot_standby = on
+max_replication_slots = 10
+max_wal_senders = 10
+shared_preload_libraries = 'repmgr'
+wal_level = 'hot_standby'
+wal_log_hints = on
+EOF

@@ -1,0 +1,22 @@
+#!/bin/sh
+
+exec 2>&1
+install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql /var/log/postgresql
+rm -f /run/postgresql/postgres.run
+realpath "$0"
+set -ex
+chmod 755 supervise
+chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
+rm -f "$PGDATA/postmaster.pid"
+primary="$(redis-cli -h "$REDIS_HOST" -c get primary)"
+test -n "$primary" || redis-cli -h "$REDIS_HOST" -c set primary "$(hostname)"
+primary="$(redis-cli -h "$REDIS_HOST" -c get primary)"
+test -n "$primary"
+if [ "$primary" != "$(hostname)" ]; then
+    test -d "$PGDATA/base" || /etc/service/postgres/standby
+    test -f "$PGDATA/standby.signal" || /etc/service/postgres/rejoin
+else
+    test -d "$PGDATA/base" || /etc/service/postgres/primary
+fi
+test -d "$PGDATA/base"
+exec chpst -u "$USER":"$GROUP" -L /run/postgresql/postgres.run postmaster

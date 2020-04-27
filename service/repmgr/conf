@@ -1,0 +1,26 @@
+#!/bin/sh
+
+exec 2>&1
+realpath "$0"
+set -ex
+cat >"$HOME/repmgr.conf" <<EOF
+conninfo='host=$(hostname) user=repmgr dbname=repmgr connect_timeout=2'
+data_directory='$(echo -n "$PGDATA")'
+event_notification_command='/etc/service/repmgr/event "%n" "%e" "%s" "%t" "%d"'
+failover='automatic'
+failover_validation_command='/etc/service/repmgr/valid "%n" "%a"'
+follow_command='repmgr standby follow --config-file="$(echo -n "$HOME")/repmgr.conf" --wait --upstream-node-id=%n'
+node_id=$(echo -n "$NODE_ID")
+node_name='$(hostname)'
+promote_command='repmgr standby promote --config-file="$(echo -n "$HOME")/repmgr.conf"'
+repmgrd_service_start_command='sv start repmgr'
+repmgrd_service_stop_command='sv force-stop repmgr'
+service_promote_command='pg_ctl --wait promote'
+service_reload_command='sv reload postgres'
+service_restart_command='sv force-restart postgres'
+service_start_command='sv start postgres'
+service_stop_command='sv force-stop postgres'
+ssh_options='-q -o ConnectTimeout=10'
+standby_disconnect_on_failover=true
+use_replication_slots=true
+EOF

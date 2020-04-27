@@ -1,6 +1,6 @@
 FROM rekgrpth/pdf
-ADD docker_entrypoint.sh /usr/local/bin/
-CMD [ "postgres" ]
+ADD service /etc/service
+CMD [ "runsvdir", "/etc/service" ]
 ENV BACKUP_PATH=${HOME}/pg_rman \
     GROUP=postgres \
     PGDATA=${HOME}/pg_data \
@@ -114,12 +114,19 @@ RUN exec 2>&1 \
     && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/postgresql/*.so || true) \
     && apk add --no-cache --virtual .postgresql-rundeps \
         openssh-client \
+        openssh-server \
+        redis \
+        rsync \
+        runit \
         sshpass \
         $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }') \
     && apk del --no-cache .build-deps \
     && rm -rf /usr/src /usr/local/share/doc /usr/local/share/man \
     && find /usr/local -name '*.a' -delete \
     && chmod +x /usr/local/bin/docker_entrypoint.sh \
-    && mkdir -p /run/postgresql \
-    && chown "${USER}":"${GROUP}" /run/postgresql \
+    && sed -i -e 's|#PasswordAuthentication yes|PasswordAuthentication no|g' /etc/ssh/sshd_config \
+    && sed -i -e 's|#   StrictHostKeyChecking ask|   StrictHostKeyChecking no|g' /etc/ssh/ssh_config \
+    && echo "   UserKnownHostsFile=/dev/null" >>/etc/ssh/ssh_config \
+#    && sed -i -e 's|postgres:!:|postgres::|g' /etc/shadow \
+    && chmod -R 0755 /etc/service \
     && echo done

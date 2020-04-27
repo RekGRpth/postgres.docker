@@ -1,0 +1,22 @@
+#!/bin/sh
+
+exec 2>&1
+install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql
+rm -f /run/postgresql/repmgr.run
+test -f /run/postgresql/postgres.run || exit $?
+realpath "$0"
+set -ex
+chmod 755 supervise
+chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
+chpst -u "$USER":"$GROUP" pg_ctl status
+primary="$(redis-cli -h "$REDIS_HOST" -c get primary)"
+test -n "$primary"
+if [ "$primary" != "$(hostname)" ]; then
+    test -f "$HOME/repmgr.conf" || /etc/service/repmgr/standby
+    chpst -u "$USER":"$GROUP" repmgr standby register --config-file="$HOME/repmgr.conf" --verbose --force
+else
+    test -f "$HOME/repmgr.conf" || /etc/service/repmgr/primary
+    test ! -f "$PGDATA/standby.signal" || /etc/service/repmgr/promote
+    chpst -u "$USER":"$GROUP" repmgr primary register --config-file="$HOME/repmgr.conf" --verbose --force
+fi
+exec chpst -u "$USER":"$GROUP" -L /run/postgresql/repmgr.run repmgrd --config-file="$HOME/repmgr.conf" --verbose --daemonize=false
