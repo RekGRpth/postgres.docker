@@ -9,7 +9,7 @@ chpst -u "$USER":"$GROUP" cat >>"$PGDATA/postgresql.conf" <<EOF
 hot_standby = on
 max_replication_slots = 10
 max_wal_senders = 10
-shared_preload_libraries = 'repmgr'
+shared_preload_libraries = 'pg_backtrace,pg_task,repmgr'
 wal_level = 'hot_standby'
 wal_log_hints = on
 EOF
