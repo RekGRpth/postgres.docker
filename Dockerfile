@@ -11,6 +11,8 @@ RUN exec 2>&1 \
     && mkdir -p "${HOME}" \
     && addgroup -S "${GROUP}" \
     && adduser -D -S -h "${HOME}" -s /sbin/nologin -G "${GROUP}" "${USER}" \
+    && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing --virtual .pandoc-build-deps \
+        pandoc \
     && apk add --no-cache --virtual .build-deps \
         autoconf \
         automake \
@@ -114,11 +116,10 @@ RUN exec 2>&1 \
     && ./configure \
         --disable-debug \
         --with-pam \
-    && make -j"$(nproc)" USE_PGXS=1 pgbouncer install \
     && cd /usr/src/repmgr \
     && ./configure \
     && cd / \
-    && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "curl" ! -name "pgbouncer" ! -name "postgres" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
+    && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "curl" ! -name "postgres" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
     && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/postgresql/*.so || true) \
     && apk add --no-cache --virtual .postgresql-rundeps \
         openssh-client \
@@ -129,6 +130,7 @@ RUN exec 2>&1 \
         sshpass \
         $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }') \
     && apk del --no-cache .build-deps \
+    && apk del --no-cache .pandoc-build-deps \
     && rm -rf /usr/src /usr/local/share/doc /usr/local/share/man \
     && find /usr/local -name '*.a' -delete \
     && chmod +x /usr/local/bin/docker_entrypoint.sh \
