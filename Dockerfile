@@ -114,7 +114,7 @@ RUN exec 2>&1 \
     && ./configure \
         --disable-debug \
         --with-pam \
-    && make -j"$(nproc)" USE_PGXS=1 install pgbouncer \
+    && make -j"$(nproc)" USE_PGXS=1 pgbouncer install \
     && cd /usr/src/repmgr \
     && ./configure \
     && cd / \
