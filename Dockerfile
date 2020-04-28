@@ -111,7 +111,9 @@ RUN exec 2>&1 \
     && make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install \
     && cd /usr/src/pgbouncer \
     && ./autogen.sh \
-    && ./configure --disable-debug \
+    && ./configure \
+        --disable-debug \
+        --with-pam \
     && cd /usr/src/repmgr \
     && ./configure \
     && cd / \
