@@ -108,6 +108,7 @@ RUN exec 2>&1 \
     && make -j"$(nproc)" -C contrib install \
     && make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install \
     && cd /usr/src/pgbouncer \
+    && ./autogen.sh \
     && ./configure \
     && cd /usr/src/repmgr \
     && ./configure \
