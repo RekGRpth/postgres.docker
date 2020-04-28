@@ -1,0 +1,8 @@
+#!/bin/sh
+
+exec 2>&1
+realpath "$0"
+set -ex
+pg_rman backup -b full
+pg_rman validate
+pg_rman purge

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+exec 2>&1
+#install -d -m 0750 -o "$USER" -g "$GROUP" "$HOME/crontabs"
+realpath "$0"
+set -ex
+test -f "$BACKUP_PATH/system_identifier" || /etc/service/cron/init
+exec /usr/sbin/crond -f

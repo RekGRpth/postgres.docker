@@ -122,6 +122,7 @@ RUN exec 2>&1 \
     && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "curl" ! -name "postgres" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
     && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/postgresql/*.so || true) \
     && apk add --no-cache --virtual .postgresql-rundeps \
+        dcron \
         openssh-client \
         openssh-server \
         redis \
@@ -137,6 +138,8 @@ RUN exec 2>&1 \
     && sed -i -e 's|#PasswordAuthentication yes|PasswordAuthentication no|g' /etc/ssh/sshd_config \
     && sed -i -e 's|#   StrictHostKeyChecking ask|   StrictHostKeyChecking no|g' /etc/ssh/ssh_config \
     && echo "   UserKnownHostsFile=/dev/null" >>/etc/ssh/ssh_config \
-#    && sed -i -e 's|postgres:!:|postgres::|g' /etc/shadow \
+    && sed -i -e 's|postgres:!:|postgres::|g' /etc/shadow \
     && chmod -R 0755 /etc/service \
+#    && usermod --append --groups cron "${USER}" \
+#    && ln -sf "${HOME}/crontabs" /var/spool/cron/ \
     && echo done
