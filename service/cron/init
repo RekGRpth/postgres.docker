@@ -5,7 +5,7 @@ realpath "$0"
 set -ex
 chpst -u "$USER":"$GROUP" pg_rman init
 chpst -u "$USER":"$GROUP" /etc/service/cron/conf
-crontab -c "$HOME/crontabs" - -u "$USER" <<EOF
+crontab -c "$HOME/crontabs" -u "$USER" - <<EOF
 0   0   *   *   1-6  /etc/service/cron/incremental
 0   0   *   *   0,7  /etc/service/cron/full
 EOF

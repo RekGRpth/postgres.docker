@@ -1,6 +1,7 @@
 #!/bin/sh
 
 exec 2>&1
+test -f /run/postgresql/postgres.run || exit $?
 install -d -m 0750 -o "$USER" -g "$GROUP" "$HOME/crontabs"
 realpath "$0"
 set -ex
