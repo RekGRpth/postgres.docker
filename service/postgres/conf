@@ -16,6 +16,7 @@ auto_explain.log_triggers = on
 auto_explain.log_verbose = on
 datestyle = 'iso, dmy'
 listen_addresses = '*'
+log_directory = '$(echo -n "$HOME")/pg_log'
 log_filename = 'postgresql-%Y-%m-%d.log'
 logging_collector = on
 log_line_prefix = '%m [%p] %r %u@%d/%a '
