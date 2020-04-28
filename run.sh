@@ -3,8 +3,8 @@
 #docker build --tag rekgrpth/postgres .
 #docker push rekgrpth/postgres
 docker pull rekgrpth/postgres
-docker volume create postgres
 docker network create --attachable --opt com.docker.network.bridge.name=docker docker || echo $?
+docker volume create postgres
 docker stop postgres || echo $?
 docker rm postgres || echo $?
 docker run \
