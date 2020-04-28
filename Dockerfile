@@ -114,10 +114,11 @@ RUN exec 2>&1 \
     && ./configure \
         --disable-debug \
         --with-pam \
+    && make -j"$(nproc)" USE_PGXS=1 install pgbouncer \
     && cd /usr/src/repmgr \
     && ./configure \
     && cd / \
-    && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "curl" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
+    && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "curl" ! -name "pgbouncer" ! -name "postgres" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
     && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/postgresql/*.so || true) \
     && apk add --no-cache --virtual .postgresql-rundeps \
         openssh-client \
