@@ -48,6 +48,7 @@ RUN exec 2>&1 \
         openssl-dev \
         readline-dev \
         rtmpdump-dev \
+        udns-dev \
         util-linux-dev \
         zfs-dev \
         zlib-dev \
