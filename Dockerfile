@@ -29,6 +29,7 @@ RUN exec 2>&1 \
 #        icu-dev \
         krb5-dev \
         libedit-dev \
+        libevent-dev \
         libgss-dev \
         libidn2-dev \
         libidn-dev \
