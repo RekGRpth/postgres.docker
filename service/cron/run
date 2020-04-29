@@ -1,8 +1,9 @@
 #!/bin/sh
 
 exec 2>&1
-test -f /run/postgresql/postgres.run || exit $?
 install -d -m 0750 -o "$USER" -g "$GROUP" "$HOME/crontabs"
+install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql
+test -f /run/postgresql/postgres.run || exit $?
 realpath "$0"
 set -ex
 test -f "$BACKUP_PATH/system_identifier" || /etc/service/cron/init
