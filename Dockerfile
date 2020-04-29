@@ -126,6 +126,8 @@ RUN exec 2>&1 \
     && cd / \
     && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "curl" ! -name "postgres" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
     && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/postgresql/*.so || true) \
+    && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing --virtual .mustach-rundeps \
+        mustach-dev \
     && apk add --no-cache --virtual .postgresql-rundeps \
         dcron \
         openssh-client \
@@ -134,7 +136,7 @@ RUN exec 2>&1 \
         rsync \
         runit \
         sshpass \
-        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }') \
+        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | grep -v 'libmustach.so' | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }') \
     && apk del --no-cache .build-deps \
     && apk del --no-cache .edge-main-build-deps \
     && apk del --no-cache .edge-testing-build-deps \
@@ -146,6 +148,4 @@ RUN exec 2>&1 \
     && echo "   UserKnownHostsFile=/dev/null" >>/etc/ssh/ssh_config \
     && sed -i -e 's|postgres:!:|postgres::|g' /etc/shadow \
     && chmod -R 0755 /etc/service \
-#    && usermod --append --groups cron "${USER}" \
-#    && ln -sf "${HOME}/crontabs" /var/spool/cron/ \
     && echo done
