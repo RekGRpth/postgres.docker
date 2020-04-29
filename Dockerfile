@@ -11,7 +11,11 @@ RUN exec 2>&1 \
     && mkdir -p "${HOME}" \
     && addgroup -S "${GROUP}" \
     && adduser -D -S -h "${HOME}" -s /sbin/nologin -G "${GROUP}" "${USER}" \
-    && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing --virtual .pandoc-build-deps \
+    && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main --virtual .edge-main-build-deps \
+        json-c \
+        json-c-dev \
+    && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing --virtual .edge-testing-build-deps \
+        mustach-dev \
         pandoc \
     && apk add --no-cache --virtual .build-deps \
         autoconf \
@@ -63,6 +67,7 @@ RUN exec 2>&1 \
     && git clone --recursive https://github.com/RekGRpth/pg_htmldoc.git \
     && git clone --recursive https://github.com/RekGRpth/pg_jobmon.git \
     && git clone --recursive https://github.com/RekGRpth/pgjwt.git \
+    && git clone --recursive https://github.com/RekGRpth/pg_mustach.git \
     && git clone --recursive https://github.com/RekGRpth/pg_partman.git \
     && git clone --recursive https://github.com/RekGRpth/pg_rman.git \
     && git clone --recursive https://github.com/RekGRpth/pg_ssl.git \
@@ -131,7 +136,8 @@ RUN exec 2>&1 \
         sshpass \
         $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }') \
     && apk del --no-cache .build-deps \
-    && apk del --no-cache .pandoc-build-deps \
+    && apk del --no-cache .edge-main-build-deps \
+    && apk del --no-cache .edge-testing-build-deps \
     && rm -rf /usr/src /usr/local/share/doc /usr/local/share/man \
     && find /usr/local -name '*.a' -delete \
     && chmod +x /usr/local/bin/docker_entrypoint.sh \
