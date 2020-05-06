@@ -9,10 +9,14 @@ set -ex
 chmod 755 supervise
 chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
 rm -f "$PGDATA/postmaster.pid"
-primary="$(redis-cli -h "$REDIS_HOST" -c get primary)"
-test -n "$primary" || redis-cli -h "$REDIS_HOST" -c set primary "$(hostname)"
-primary="$(redis-cli -h "$REDIS_HOST" -c get primary)"
+(cat /etc/hosts | grep "$(hostname)"; cat /etc/hosts.gfs | grep -v "$(hostname)") | sort -u >/etc/hosts.all
+cat /etc/hosts.all >/etc/hosts.gfs
+cat /etc/hosts.gfs >/etc/hosts
+primary="$(test -f "$HOME/gfs/primary" && cat "$HOME/gfs/primary")"
+test -n "$primary" || echo -n "$(hostname)" >"$HOME/gfs/primary"
+primary="$(test -f "$HOME/gfs/primary" && cat "$HOME/gfs/primary")"
 test -n "$primary"
+chown "$USER":"$GROUP" "$HOME/gfs/primary"
 if [ "$primary" != "$(hostname)" ]; then
     test -d "$PGDATA/base" || /etc/service/postgres/standby
     test -f "$PGDATA/standby.signal" || /etc/service/postgres/rejoin

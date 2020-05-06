@@ -10,7 +10,7 @@ event_notification_command='/etc/service/repmgr/event "%n" "%e" "%s" "%t" "%d"'
 failover='automatic'
 failover_validation_command='/etc/service/repmgr/valid "%n" "%a"'
 follow_command='repmgr standby follow --config-file="$(echo -n "$HOME")/repmgr.conf" --wait --upstream-node-id=%n'
-node_id=$(echo -n "$NODE_ID")
+node_id=$(hostname | grep -oE '\d+')
 node_name='$(hostname)'
 promote_command='repmgr standby promote --config-file="$(echo -n "$HOME")/repmgr.conf"'
 repmgrd_service_start_command='sv start repmgr'

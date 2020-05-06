@@ -132,7 +132,6 @@ RUN exec 2>&1 \
         dcron \
         openssh-client \
         openssh-server \
-        redis \
         rsync \
         runit \
         sshpass \
