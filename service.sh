@@ -5,7 +5,6 @@
 docker pull rekgrpth/postgres
 docker network create --attachable --driver overlay docker || echo $?
 docker volume create postgres
-docker volume create --driver glusterfs gfs
 docker service rm postgres || echo $?
 docker service create \
     --env GROUP_ID="$(id -g)" \
