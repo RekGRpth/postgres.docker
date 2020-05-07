@@ -129,7 +129,6 @@ RUN exec 2>&1 \
     && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing --virtual .mustach-rundeps \
         mustach-dev \
     && apk add --no-cache --virtual .postgresql-rundeps \
-        dcron \
         openssh-client \
         openssh-server \
         rsync \
@@ -147,4 +146,5 @@ RUN exec 2>&1 \
     && echo "   UserKnownHostsFile=/dev/null" >>/etc/ssh/ssh_config \
     && sed -i -e 's|postgres:!:|postgres::|g' /etc/shadow \
     && chmod -R 0755 /etc/service \
+    && ln -fs "${HOME}/crontab" "/etc/crontabs/${USER}" \
     && echo done
