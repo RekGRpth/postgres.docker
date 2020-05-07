@@ -4,6 +4,4 @@ exec 2>&1
 realpath "$0"
 set -ex
 cat >"$HOME/incrontab" <<EOF
-#0   0   *   *   1-6  /etc/service/cron/incremental
-#0   0   *   *   0,7  /etc/service/cron/full
 EOF
