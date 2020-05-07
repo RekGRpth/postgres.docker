@@ -1,0 +1,7 @@
+#!/bin/sh
+
+exec 2>&1
+realpath "$0"
+set -ex
+#test -f "$HOME/incrontab" || chpst -u "$USER":"$GROUP" /etc/service/incron/init
+exec /usr/sbin/incrond -n
