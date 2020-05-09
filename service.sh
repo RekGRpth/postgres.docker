@@ -15,7 +15,6 @@ docker service create \
     --mode global \
     --mount type=bind,source=/etc/certs,destination=/etc/certs,readonly \
     --mount type=bind,source=/mnt/gfs/postgres,destination=/home/gfs \
-    --mount type=bind,source=/mnt/gfs/postgres/hosts,destination=/etc/hosts.gfs \
     --mount type=volume,source=postgres,destination=/home \
     --name postgres \
     --network name=docker \

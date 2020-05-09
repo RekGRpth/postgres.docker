@@ -9,9 +9,6 @@ set -ex
 chmod 755 supervise
 chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
 rm -f "$PGDATA/postmaster.pid"
-(cat /etc/hosts | grep "$(hostname)"; cat /etc/hosts.gfs | grep -v "$(hostname)") | sort -u >/etc/hosts.all
-cat /etc/hosts.all >/etc/hosts.gfs
-cat /etc/hosts.gfs >/etc/hosts
 primary="$(test -f "$HOME/gfs/primary" && cat "$HOME/gfs/primary")"
 test -n "$primary" || echo -n "$(hostname)" >"$HOME/gfs/primary"
 primary="$(test -f "$HOME/gfs/primary" && cat "$HOME/gfs/primary")"

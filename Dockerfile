@@ -129,7 +129,6 @@ RUN exec 2>&1 \
     && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing --virtual .mustach-rundeps \
         mustach-dev \
     && apk add --no-cache --virtual .postgresql-rundeps \
-        incron \
         openssh-client \
         openssh-server \
         rsync \
@@ -148,8 +147,4 @@ RUN exec 2>&1 \
     && sed -i -e 's|postgres:!:|postgres::|g' /etc/shadow \
     && chmod -R 0755 /etc/service \
     && ln -fs "${HOME}/crontab" "/var/spool/cron/crontabs/${USER}" \
-    && ln -fs "${HOME}/incrontab" "/var/spool/incron/${USER}" \
-    && echo "/etc/hosts.gfs IN_MODIFY,IN_NO_LOOP /etc/service/incron/update" >/var/spool/incron/root \
-    && echo "root" >>/etc/incron.allow \
-    && echo "${USER}" >>/etc/incron.allow \
     && echo done
