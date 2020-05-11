@@ -3,6 +3,6 @@
 exec 2>&1
 realpath "$0"
 set -ex
-pg_rman backup -b incremental
+pg_rman backup --backup-mode=incremental --full-backup-on-error
 pg_rman validate
 pg_rman purge
