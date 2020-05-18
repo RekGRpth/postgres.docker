@@ -42,6 +42,7 @@ RUN exec 2>&1 \
         libpsl-dev \
         libssh-dev \
         libtool \
+        libunwind-dev \
         libxml2-dev \
 #        libxslt-dev \
         linux-headers \
