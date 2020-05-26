@@ -139,7 +139,7 @@ RUN exec 2>&1 \
     && apk del --no-cache .build-deps \
     && apk del --no-cache .edge-main-build-deps \
     && apk del --no-cache .edge-testing-build-deps \
-    && rm -rf /usr/src /usr/local/share/doc /usr/local/share/man \
+    && rm -rf /usr/src /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man \
     && find /usr/local -name '*.a' -delete \
     && chmod +x /usr/local/bin/docker_entrypoint.sh \
     && sed -i -e 's|#PasswordAuthentication yes|PasswordAuthentication no|g' /etc/ssh/sshd_config \
