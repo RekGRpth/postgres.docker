@@ -9,7 +9,7 @@ set -ex
 chmod 755 supervise
 chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
 chpst -u "$USER":"$GROUP" pg_ctl status
-primary="$(test -f "$HOME/gfs/primary" && cat "$HOME/gfs/primary")"
+primary="$(cat "$HOME/gfs/primary")"
 test -n "$primary"
 if [ "$primary" != "$(hostname)" ]; then
     test -f "$HOME/repmgr.conf" || /etc/service/repmgr/standby

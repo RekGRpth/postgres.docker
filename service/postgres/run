@@ -3,17 +3,25 @@
 exec 2>&1
 install -d -m 0750 -o "$USER" -g "$GROUP" "$HOME/pg_arclog" "$HOME/pg_log" "$HOME/pg_rman" "$PGDATA"
 install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql /var/log/postgresql
+touch "$HOME/gfs/primary"
+chown "$USER":"$GROUP" "$HOME/gfs/primary"
 rm -f /run/postgresql/postgres.run
 realpath "$0"
 set -ex
 chmod 755 supervise
 chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
 rm -f "$PGDATA/postmaster.pid"
-primary="$(test -f "$HOME/gfs/primary" && cat "$HOME/gfs/primary")"
+primary="$(cat "$HOME/gfs/primary")"
 test -n "$primary" || echo -n "$(hostname)" >"$HOME/gfs/primary"
-primary="$(test -f "$HOME/gfs/primary" && cat "$HOME/gfs/primary")"
+primary="$(cat "$HOME/gfs/primary")"
 test -n "$primary"
-chown "$USER":"$GROUP" "$HOME/gfs/primary"
+if [ "$primary" != "$(hostname)" ] && chpst -u "$USER":"$GROUP" pg_isready --host="$primary" --port=5432 --username=postgres --dbname=postgres --timeout=10; then
+    echo exists
+else
+    echo -n "$(hostname)" >"$HOME/gfs/primary"
+    primary="$(cat "$HOME/gfs/primary")"
+    test -n "$primary"
+fi
 if [ "$primary" != "$(hostname)" ]; then
     test -d "$PGDATA/base" || /etc/service/postgres/standby
     test -f "$PGDATA/standby.signal" || /etc/service/postgres/rejoin
