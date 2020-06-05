@@ -11,9 +11,6 @@ RUN exec 2>&1 \
     && mkdir -p "${HOME}" \
     && addgroup -S "${GROUP}" \
     && adduser -D -S -h "${HOME}" -s /sbin/nologin -G "${GROUP}" "${USER}" \
-    && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main --virtual .edge-main-build-deps \
-        json-c \
-        json-c-dev \
     && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing --virtual .edge-testing-build-deps \
         mustach-dev \
         pandoc \
@@ -24,15 +21,17 @@ RUN exec 2>&1 \
         bison \
         brotli-dev \
         c-ares-dev \
+        clang \
         file \
-        fish-dev \
+#        fish-dev \
         flex \
         g++ \
         gcc \
         gettext-dev \
         git \
         groff \
-#        icu-dev \
+        icu-dev \
+        json-c-dev \
         krb5-dev \
         libedit-dev \
         libevent-dev \
@@ -47,6 +46,8 @@ RUN exec 2>&1 \
 #        libxslt-dev \
         linux-headers \
         linux-pam-dev \
+        llvm \
+        llvm-dev \
         make \
         mt-st \
         musl-dev \
@@ -105,11 +106,12 @@ RUN exec 2>&1 \
 #        --enable-debug \
         --prefix=/usr/local \
         --with-gssapi \
-#        --with-icu \
+        --with-icu \
         --with-ldap \
         --with-libedit-preferred \
         --with-libxml \
 #        --with-libxslt \
+        --with-llvm \
         --with-openssl \
         --with-pam \
         --with-system-tzdata=/usr/share/zoneinfo \
@@ -137,7 +139,6 @@ RUN exec 2>&1 \
         sshpass \
         $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | grep -v 'libmustach.so' | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }') \
     && apk del --no-cache .build-deps \
-    && apk del --no-cache .edge-main-build-deps \
     && apk del --no-cache .edge-testing-build-deps \
     && rm -rf /usr/src /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man \
     && find /usr/local -name '*.a' -delete \
