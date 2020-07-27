@@ -33,4 +33,5 @@ ssl_ca_file = '/etc/certs/ca.pem'
 ssl_cert_file = '/etc/certs/cert.pem'
 ssl_key_file = '/etc/certs/key.pem'
 ssl = on
+track_activity_query_size = 102400
 EOF
