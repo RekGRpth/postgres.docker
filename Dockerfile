@@ -148,5 +148,5 @@ RUN exec 2>&1 \
     && echo "   UserKnownHostsFile=/dev/null" >>/etc/ssh/ssh_config \
     && sed -i -e 's|postgres:!:|postgres::|g' /etc/shadow \
     && chmod -R 0755 /etc/service \
-    && ln -fs "${HOME}/crontab" "/var/spool/cron/crontabs/${USER}" \
+    && rm -f /var/spool/cron/crontabs/root \
     && echo done
