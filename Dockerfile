@@ -43,7 +43,7 @@ RUN exec 2>&1 \
         libtool \
         libunwind-dev \
         libxml2-dev \
-#        libxslt-dev \
+        libxslt-dev \
         linux-headers \
         linux-pam-dev \
         llvm \
@@ -104,13 +104,14 @@ RUN exec 2>&1 \
     && ./configure \
 #        --enable-cassert \
 #        --enable-debug \
+        --enable-thread-safety \
         --prefix=/usr/local \
         --with-gssapi \
         --with-icu \
         --with-ldap \
         --with-libedit-preferred \
         --with-libxml \
-#        --with-libxslt \
+        --with-libxslt \
         --with-llvm \
         --with-openssl \
         --with-pam \
