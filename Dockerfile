@@ -10,7 +10,7 @@ RUN exec 2>&1 \
     && set -ex \
     && mkdir -p "${HOME}" \
     && addgroup -S "${GROUP}" \
-    && adduser -D -S -h "${HOME}" -s /sbin/nologin -G "${GROUP}" "${USER}" \
+    && adduser -D -S -h "${HOME}" -s /bin/ash -G "${GROUP}" "${USER}" \
     && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing --virtual .edge-testing-build-deps \
         mustach-dev \
         pandoc \
