@@ -18,7 +18,7 @@ docker run \
     --mount type=bind,source=/run/postgresql,destination=/run/postgresql \
     --mount type=volume,source=postgres,destination=/home \
     --name postgres \
-    --network name=docker \
+    --network name=docker,alias=postgres."$(hostname -d)" \
     --publish target=5432,published=5432,mode=host \
     --restart always \
     rekgrpth/postgres /etc/service/postgres/single
