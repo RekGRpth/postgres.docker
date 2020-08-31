@@ -32,10 +32,12 @@ shared_preload_libraries = 'pg_backtrace,pg_task,pg_partman_bgw,pg_stat_statemen
 track_activity_query_size = 102400
 EOF
 
-test -d /etc/certs && cat >>"$PGDATA/postgresql.conf" <<EOF
+if [ -d /etc/certs ]; then
+    cat >>"$PGDATA/postgresql.conf" <<EOF
 
 ssl_ca_file = '/etc/certs/ca.pem'
 ssl_cert_file = '/etc/certs/cert.pem'
 ssl_key_file = '/etc/certs/key.pem'
 ssl = on
 EOF
+fi
