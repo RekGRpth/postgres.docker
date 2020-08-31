@@ -29,9 +29,13 @@ plpgsql.extra_warnings = all
 plpgsql.print_strict_params = on
 session_preload_libraries = 'auto_explain'
 shared_preload_libraries = 'pg_backtrace,pg_task,pg_partman_bgw,pg_stat_statements'
+track_activity_query_size = 102400
+EOF
+
+test -d /etc/certs && cat >>"$PGDATA/postgresql.conf" <<EOF
+
 ssl_ca_file = '/etc/certs/ca.pem'
 ssl_cert_file = '/etc/certs/cert.pem'
 ssl_key_file = '/etc/certs/key.pem'
 ssl = on
-track_activity_query_size = 102400
 EOF
