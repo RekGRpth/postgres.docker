@@ -21,4 +21,4 @@ docker service create \
     --publish target=5432,published=5432,mode=host \
     --publish target=5433,published=5433,mode=host \
     --replicas-max-per-node 1 \
-    rekgrpth/postgres
+    rekgrpth/postgres runsvdir /etc/multi

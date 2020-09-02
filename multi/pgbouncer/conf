@@ -11,17 +11,9 @@ application_name_add_host = 1
 auth_hba_file = $(echo -n "$PGDATA")/pg_hba.conf
 auth_type = hba
 auth_user = postgres
-client_tls_ca_file = /etc/certs/ca.pem
-client_tls_cert_file = /etc/certs/cert.pem
-client_tls_key_file = /etc/certs/key.pem
-client_tls_sslmode = prefer
 listen_addr = *
 listen_port = 5433
 log_stats = 0
-server_tls_ca_file = /etc/certs/ca.pem
-server_tls_cert_file = /etc/certs/cert.pem
-server_tls_key_file = /etc/certs/key.pem
-server_tls_sslmode = prefer
 stats_users = postgres
 unix_socket_dir = /run/postgresql
 unix_socket_group = postgres
@@ -29,3 +21,17 @@ unix_socket_mode = 0777
 [databases]
 %include $(echo -n "$HOME")/databases.ini
 EOF
+
+if [ -d /etc/certs ]; then
+    cat >>"$HOME/pgbouncer.ini" <<EOF
+
+client_tls_ca_file = /etc/certs/ca.pem
+client_tls_cert_file = /etc/certs/cert.pem
+client_tls_key_file = /etc/certs/key.pem
+client_tls_sslmode = prefer
+server_tls_ca_file = /etc/certs/ca.pem
+server_tls_cert_file = /etc/certs/cert.pem
+server_tls_key_file = /etc/certs/key.pem
+server_tls_sslmode = prefer
+EOF
+fi
