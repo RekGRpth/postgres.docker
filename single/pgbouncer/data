@@ -1,0 +1,12 @@
+#!/bin/sh
+
+exec 2>&1
+realpath "$0"
+set -ex
+test -f /run/postgresql/postgres.run
+pg_ctl status
+psql --quiet --tuples-only --no-align --command="select now()"
+psql --quiet --tuples-only --no-align --command="select datname from pg_database where not datistemplate and datallowconn" | while read -r datname; do
+    echo "$datname = dbname=$datname"
+done >"$HOME/databases.ini"
+sv reload pgbouncer

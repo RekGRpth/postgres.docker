@@ -3,7 +3,7 @@
 exec 2>&1
 realpath "$0"
 set -ex
-chpst -u "$USER":"$GROUP" /etc/service/repmgr/hba
+chpst -u "$USER":"$GROUP" /etc/multi/repmgr/hba
 chpst -u "$USER":"$GROUP" cat >>"$PGDATA/postgresql.conf" <<EOF
 
 hot_standby = on

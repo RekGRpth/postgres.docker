@@ -5,4 +5,4 @@ realpath "$0"
 set -ex
 chpst -u "$USER":"$GROUP" createuser --superuser repmgr
 chpst -u "$USER":"$GROUP" createdb repmgr --owner=repmgr
-chpst -u "$USER":"$GROUP" /etc/service/repmgr/conf
+chpst -u "$USER":"$GROUP" /etc/multi/repmgr/conf

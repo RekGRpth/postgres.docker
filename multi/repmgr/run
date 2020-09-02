@@ -12,11 +12,11 @@ chpst -u "$USER":"$GROUP" pg_ctl status
 primary="$(cat "$HOME/gfs/primary")"
 test -n "$primary"
 if [ "$primary" != "$(hostname)" ]; then
-    test -f "$HOME/repmgr.conf" || /etc/service/repmgr/standby
+    test -f "$HOME/repmgr.conf" || /etc/multi/repmgr/standby
     chpst -u "$USER":"$GROUP" repmgr standby register --config-file="$HOME/repmgr.conf" --verbose --force
 else
-    test -f "$HOME/repmgr.conf" || /etc/service/repmgr/primary
-    test ! -f "$PGDATA/standby.signal" || /etc/service/repmgr/promote
+    test -f "$HOME/repmgr.conf" || /etc/multi/repmgr/primary
+    test ! -f "$PGDATA/standby.signal" || /etc/multi/repmgr/promote
     chpst -u "$USER":"$GROUP" repmgr primary register --config-file="$HOME/repmgr.conf" --verbose --force
 fi
 exec chpst -u "$USER":"$GROUP" -L /run/postgresql/repmgr.run repmgrd --config-file="$HOME/repmgr.conf" --verbose --daemonize=false

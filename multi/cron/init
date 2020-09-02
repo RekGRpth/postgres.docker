@@ -1,0 +1,11 @@
+#!/bin/sh
+
+exec 2>&1
+realpath "$0"
+set -ex
+pg_rman init
+/etc/multi/cron/conf
+cat >"$HOME/crontab" <<EOF
+0   0   *   *   1-6  /etc/multi/cron/incremental
+0   0   *   *   0,7  /etc/multi/cron/full
+EOF

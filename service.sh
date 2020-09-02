@@ -20,4 +20,4 @@ docker service create \
     --network name=docker \
     --publish target=5432,published=5432,mode=host \
     --publish target=5433,published=5433,mode=host \
-    rekgrpth/postgres
+    rekgrpth/postgres runsvdir /etc/multi

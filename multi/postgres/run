@@ -23,10 +23,10 @@ else
     test -n "$primary"
 fi
 if [ "$primary" != "$(hostname)" ]; then
-    test -d "$PGDATA/base" || /etc/service/postgres/standby
-    test -f "$PGDATA/standby.signal" || /etc/service/postgres/rejoin
+    test -d "$PGDATA/base" || /etc/multi/postgres/standby
+    test -f "$PGDATA/standby.signal" || /etc/multi/postgres/rejoin
 else
-    test -d "$PGDATA/base" || /etc/service/postgres/primary
+    test -d "$PGDATA/base" || /etc/multi/postgres/primary
 fi
 test -d "$PGDATA/base"
 exec chpst -u "$USER":"$GROUP" -L /run/postgresql/postgres.run postmaster

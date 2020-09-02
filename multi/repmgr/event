@@ -14,4 +14,4 @@ shift
 details="$1"
 primary="$(psql --quiet --tuples-only --no-align --user=repmgr --dbname=repmgr --command="select node_name from nodes where active and type = 'primary'")"
 test -n "$primary" && echo -n "$primary" >"$HOME/gfs/primary"
-test -f /run/postgresql/pgbouncer.run && /etc/service/pgbouncer/data
+test -f /run/postgresql/pgbouncer.run && /etc/multi/pgbouncer/data

@@ -6,9 +6,9 @@ set -ex
 cat >"$HOME/repmgr.conf" <<EOF
 conninfo='host=$(hostname) user=repmgr dbname=repmgr connect_timeout=2'
 data_directory='$(echo -n "$PGDATA")'
-event_notification_command='/etc/service/repmgr/event "%n" "%e" "%s" "%t" "%d"'
+event_notification_command='/etc/multi/repmgr/event "%n" "%e" "%s" "%t" "%d"'
 failover='automatic'
-failover_validation_command='/etc/service/repmgr/valid "%n" "%a"'
+failover_validation_command='/etc/multi/repmgr/valid "%n" "%a"'
 follow_command='repmgr standby follow --config-file="$(echo -n "$HOME")/repmgr.conf" --wait --upstream-node-id=%n'
 node_id=$(hostname | grep -oE '\d+')
 node_name='$(hostname)'
