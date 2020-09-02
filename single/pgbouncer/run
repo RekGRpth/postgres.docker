@@ -10,4 +10,5 @@ chmod 755 supervise
 chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
 chpst -u "$USER":"$GROUP" pg_ctl status
 test -f "$HOME/pgbouncer.ini" || chpst -u "$USER":"$GROUP" /etc/single/pgbouncer/conf
+chpst -u "$USER":"$GROUP" /etc/single/pgbouncer/data
 exec chpst -u "$USER":"$GROUP" -L /run/postgresql/pgbouncer.run pgbouncer "$HOME/pgbouncer.ini"

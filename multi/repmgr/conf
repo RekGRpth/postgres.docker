@@ -13,13 +13,13 @@ follow_command='repmgr standby follow --config-file="$(echo -n "$HOME")/repmgr.c
 node_id=$(hostname | grep -oE '\d+')
 node_name='$(hostname)'
 promote_command='repmgr standby promote --config-file="$(echo -n "$HOME")/repmgr.conf"'
-repmgrd_service_start_command='sv start repmgr'
-repmgrd_service_stop_command='sv force-stop repmgr'
+repmgrd_service_start_command='sv start /etc/multi/repmgr'
+repmgrd_service_stop_command='sv force-stop /etc/multi/repmgr'
 service_promote_command='pg_ctl --wait promote'
-service_reload_command='sv reload postgres'
-service_restart_command='sv force-restart postgres'
-service_start_command='sv start postgres'
-service_stop_command='sv force-stop postgres'
+service_reload_command='sv reload /etc/multi/postgres'
+service_restart_command='sv force-restart /etc/multi/postgres'
+service_start_command='sv start /etc/multi/postgres'
+service_stop_command='sv force-stop /etc/multi/postgres'
 ssh_options='-q -o ConnectTimeout=10'
 standby_disconnect_on_failover=true
 use_replication_slots=true
