@@ -75,6 +75,7 @@ RUN exec 2>&1 \
     && git clone --recursive https://github.com/RekGRpth/pg_rman.git \
     && git clone --recursive https://github.com/RekGRpth/pg_ssl.git \
     && git clone --recursive https://github.com/RekGRpth/pg_task.git \
+    && git clone --recursive https://github.com/RekGRpth/pldebugger.git \
     && git clone --recursive https://github.com/RekGRpth/plsh.git \
     && git clone --recursive https://github.com/RekGRpth/postgres.git \
     && git clone --recursive https://github.com/RekGRpth/repmgr.git \
