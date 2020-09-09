@@ -30,6 +30,7 @@ plpgsql.print_strict_params = on
 session_preload_libraries = 'auto_explain'
 shared_preload_libraries = 'pg_backtrace,pg_task,pg_partman_bgw,pg_stat_statements'
 track_activity_query_size = 102400
+wal_level = minimal
 EOF
 
 if [ -d /etc/certs ]; then
