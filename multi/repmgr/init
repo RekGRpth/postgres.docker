@@ -10,6 +10,5 @@ hot_standby = on
 max_replication_slots = 10
 max_wal_senders = 10
 shared_preload_libraries = 'pg_backtrace,pg_task,repmgr,pg_partman_bgw,pg_stat_statements'
-wal_level = 'hot_standby'
 wal_log_hints = on
 EOF
