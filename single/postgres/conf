@@ -5,9 +5,6 @@ realpath "$0"
 set -ex
 cat >>"$PGDATA/postgresql.conf" <<EOF
 
-archive_cleanup_command = 'pg_archivecleanup -d "$(echo -n "$HOME")/pg_arclog" "%r" 2>>"$(echo -n "$HOME")/pg_log/pg_archivecleanup.log"'
-archive_command = 'test ! -f "$(echo -n "$HOME")/pg_arclog/%f" && cp "%p" "$(echo -n "$HOME")/pg_arclog/%f"'
-archive_mode = on
 auto_explain.log_analyze = on
 auto_explain.log_buffers = on
 auto_explain.log_min_duration = 100
@@ -30,7 +27,6 @@ plpgsql.print_strict_params = on
 session_preload_libraries = 'auto_explain'
 shared_preload_libraries = 'pg_backtrace,pg_task,pg_partman_bgw,pg_stat_statements'
 track_activity_query_size = 102400
-wal_level = minimal
 EOF
 
 if [ -d /etc/certs ]; then
