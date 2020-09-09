@@ -21,6 +21,7 @@ log_truncate_on_rotation = on
 max_connections = 128
 max_logical_replication_workers = 0
 max_sync_workers_per_subscription = 0
+max_wal_senders = 0
 max_worker_processes = 128
 plpgsql.extra_warnings = all
 plpgsql.print_strict_params = on
