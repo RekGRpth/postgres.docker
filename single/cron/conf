@@ -4,7 +4,9 @@ exec 2>&1
 realpath "$0"
 set -ex
 cat >"$BACKUP_PATH/pg_rman.ini" <<EOF
+ARCLOG_PATH='$(echo -n "$HOME")/pg_arclog'
 COMPRESS_DATA=true
+KEEP_ARCLOG_DAYS=1
 KEEP_DATA_DAYS=60
 KEEP_DATA_GENERATIONS=9
 KEEP_SRVLOG_DAYS=1
