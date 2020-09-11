@@ -5,6 +5,9 @@ realpath "$0"
 set -ex
 cat >>"$PGDATA/postgresql.conf" <<EOF
 
+archive_cleanup_command = 'pg_archivecleanup -d "$(echo -n "$HOME")/pg_arclog" "%r" 2>>"$(echo -n "$HOME")/pg_log/pg_archivecleanup.log"'
+archive_command = 'test ! -f "$(echo -n "$HOME")/pg_arclog/%f" && cp "%p" "$(echo -n "$HOME")/pg_arclog/%f"'
+archive_mode = on
 auto_explain.log_analyze = on
 auto_explain.log_buffers = on
 auto_explain.log_min_duration = 100
@@ -21,7 +24,6 @@ log_truncate_on_rotation = on
 max_connections = 128
 max_logical_replication_workers = 0
 max_sync_workers_per_subscription = 0
-max_wal_senders = 0
 max_worker_processes = 128
 plpgsql.extra_warnings = all
 plpgsql.print_strict_params = on
