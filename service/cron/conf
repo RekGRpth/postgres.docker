@@ -26,6 +26,10 @@ cat >>"$PGDATA/postgresql.conf" <<EOF
 archive_cleanup_command = 'pg_archivecleanup -d "$(echo -n "$HOME")/pg_arclog" "%r" 2>>"$(echo -n "$HOME")/pg_log/pg_archivecleanup.log"'
 archive_command = 'test ! -f "$(echo -n "$HOME")/pg_arclog/%f" && cp "%p" "$(echo -n "$HOME")/pg_arclog/%f"'
 archive_mode = on
-wal_level = replica
+log_directory = '$(echo -n "$HOME")/pg_log'
+log_filename = 'postgresql-%Y-%m-%d.log'
+logging_collector = on
+log_truncate_on_rotation = on
 max_wal_senders = 10
+wal_level = replica
 EOF
