@@ -38,9 +38,12 @@ case "$MODE" in
         sv start /etc/service/repmgr
         sv start /etc/service/ssh
     ;;
-    * )
+    "single" )
         sv force-stop /etc/service/repmgr
         sv force-stop /etc/service/ssh
+        test -d "$PGDATA/base" || /etc/single/postgres/init
+    ;;
+    * )
         test -d "$PGDATA/base" || /etc/single/postgres/init
     ;;
 esac
