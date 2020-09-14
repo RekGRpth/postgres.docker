@@ -1,0 +1,7 @@
+#!/bin/sh
+
+exec 2>&1
+realpath "$0"
+set -ex
+/etc/service/postgres/init
+/etc/service/repmgr/init

@@ -1,0 +1,26 @@
+#!/bin/sh
+
+exec 2>&1
+realpath "$0"
+set -ex
+test -f /run/postgresql/postgres.run
+case "$MODE" in
+    "multi" )
+        primary="$(cat "$HOME/gfs/primary")"
+        test -n "$primary"
+    ;;
+esac
+pg_ctl status
+psql --quiet --tuples-only --no-align --command="select now()"
+psql --quiet --tuples-only --no-align --command="select datname from pg_database where not datistemplate and datallowconn" | while read -r datname; do
+    case "$MODE" in
+        "multi" )
+            psql --quiet --tuples-only --no-align --user=repmgr --dbname=repmgr --command="select concat('$datname-', type, ' = host=', node_name, ' dbname=$datname') from nodes where active"
+            echo "$datname = host=$primary dbname=$datname"
+        ;;
+        * )
+            echo "$datname = dbname=$datname"
+        ;;
+    esac
+done >"$HOME/databases.ini"
+sv reload /etc/service/pgbouncer

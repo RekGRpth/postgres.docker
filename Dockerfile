@@ -1,7 +1,6 @@
 FROM rekgrpth/pdf
-ADD multi /etc/multi
-ADD single /etc/single
-CMD [ "runsvdir", "/etc/single" ]
+ADD service /etc/service
+CMD [ "/etc/service/postgres/run.sh" ]
 ENV BACKUP_PATH=${HOME}/pg_rman \
     GROUP=postgres \
     PGDATA=${HOME}/pg_data \
@@ -150,6 +149,6 @@ RUN exec 2>&1 \
     && sed -i -e 's|#   StrictHostKeyChecking ask|   StrictHostKeyChecking no|g' /etc/ssh/ssh_config \
     && echo "   UserKnownHostsFile=/dev/null" >>/etc/ssh/ssh_config \
     && sed -i -e 's|postgres:!:|postgres::|g' /etc/shadow \
-    && chmod -R 0755 /etc/multi /etc/single \
+    && chmod -R 0755 /etc/service \
     && rm -f /var/spool/cron/crontabs/root \
     && echo done

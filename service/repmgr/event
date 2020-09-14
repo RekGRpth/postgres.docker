@@ -1,0 +1,17 @@
+#!/bin/sh
+
+exec 2>&1
+realpath "$0"
+set -ex
+node="$1"
+shift
+event="$1"
+shift
+status="$1"
+shift
+timestamp="$1"
+shift
+details="$1"
+primary="$(psql --quiet --tuples-only --no-align --user=repmgr --dbname=repmgr --command="select node_name from nodes where active and type = 'primary'")"
+test -n "$primary" && echo -n "$primary" >"$HOME/gfs/primary"
+test -f /run/postgresql/pgbouncer.run && /etc/service/pgbouncer/data

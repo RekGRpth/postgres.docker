@@ -11,6 +11,7 @@ docker run \
     --detach \
     --env GROUP_ID="$(id -g)" \
     --env LANG=ru_RU.UTF-8 \
+    --env MODE=single \
     --env TZ=Asia/Yekaterinburg \
     --env USER_ID="$(id -u)" \
     --hostname postgres \
@@ -21,4 +22,4 @@ docker run \
     --network name=docker,alias=postgres."$(hostname -d)" \
     --publish target=5432,published=5432,mode=host \
     --restart always \
-    rekgrpth/postgres
+    rekgrpth/postgres runsvdir /etc/service

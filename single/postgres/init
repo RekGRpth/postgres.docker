@@ -1,8 +1,0 @@
-#!/bin/sh
-
-exec 2>&1
-realpath "$0"
-set -ex
-cd "$PGDATA" && chpst -u "$USER":"$GROUP" initdb
-chpst -u "$USER":"$GROUP" /etc/single/postgres/conf
-chpst -u "$USER":"$GROUP" /etc/single/postgres/hba

@@ -1,0 +1,48 @@
+#!/bin/sh
+
+exec 2>&1
+install -d -m 0750 -o "$USER" -g "$GROUP" "$PGDATA"
+case "$MODE" in
+    "single" | "multi" )
+        install -d -m 0750 -o "$USER" -g "$GROUP" "$HOME/pg_arclog" "$HOME/pg_log" "$HOME/pg_rman"
+    ;;
+esac
+install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql /var/log/postgresql
+rm -f /run/postgresql/postgres.run
+realpath "$0"
+set -ex
+chmod 755 supervise
+chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
+rm -f "$PGDATA/postmaster.pid"
+case "$MODE" in
+    "multi" )
+        touch "$HOME/gfs/primary"
+        chown "$USER":"$GROUP" "$HOME/gfs/primary"
+        primary="$(cat "$HOME/gfs/primary")"
+        test -n "$primary" || echo -n "$(hostname)" >"$HOME/gfs/primary"
+        primary="$(cat "$HOME/gfs/primary")"
+        test -n "$primary"
+        if [ "$primary" != "$(hostname)" ] && chpst -u "$USER":"$GROUP" pg_isready --host="$primary" --port=5432 --username=postgres --dbname=postgres --timeout=10; then
+            echo exists
+        else
+            echo -n "$(hostname)" >"$HOME/gfs/primary"
+            primary="$(cat "$HOME/gfs/primary")"
+            test -n "$primary"
+        fi
+        if [ "$primary" != "$(hostname)" ]; then
+            test -d "$PGDATA/base" || /etc/service/postgres/standby
+            test -f "$PGDATA/standby.signal" || /etc/service/postgres/rejoin
+        else
+            test -d "$PGDATA/base" || /etc/service/postgres/primary
+        fi
+        mv -f /etc/repmgr/norun /etc/repmgr/run
+        mv -f /etc/ssh/norun /etc/ssh/run
+    ;;
+    * )
+        mv -f /etc/repmgr/run /etc/repmgr/norun
+        mv -f /etc/ssh/run /etc/ssh/norun
+        test -d "$PGDATA/base" || /etc/single/postgres/init
+    ;;
+esac
+test -d "$PGDATA/base"
+exec chpst -u "$USER":"$GROUP" -L /run/postgresql/postgres.run postmaster

@@ -1,0 +1,42 @@
+#!/bin/sh
+
+exec 2>&1
+realpath "$0"
+set -ex
+cat >>"$PGDATA/postgresql.conf" <<EOF
+
+auto_explain.log_analyze = on
+auto_explain.log_buffers = on
+auto_explain.log_min_duration = 100
+auto_explain.log_nested_statements = on
+auto_explain.log_triggers = on
+auto_explain.log_verbose = on
+datestyle = 'iso, dmy'
+listen_addresses = '*'
+log_directory = '$(echo -n "$HOME")/pg_log'
+log_filename = 'postgresql-%Y-%m-%d.log'
+logging_collector = on
+log_line_prefix = '%m [%p] %r %u@%d/%a '
+log_truncate_on_rotation = on
+max_connections = 128
+max_logical_replication_workers = 0
+max_sync_workers_per_subscription = 0
+max_wal_senders = 0
+max_worker_processes = 128
+plpgsql.extra_warnings = all
+plpgsql.print_strict_params = on
+session_preload_libraries = 'auto_explain'
+shared_preload_libraries = 'pg_backtrace,pg_task,pg_partman_bgw,pg_stat_statements'
+track_activity_query_size = 102400
+wal_level = minimal
+EOF
+
+if [ -d /etc/certs ]; then
+    cat >>"$PGDATA/postgresql.conf" <<EOF
+
+ssl_ca_file = '/etc/certs/ca.pem'
+ssl_cert_file = '/etc/certs/cert.pem'
+ssl_key_file = '/etc/certs/key.pem'
+ssl = on
+EOF
+fi

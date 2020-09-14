@@ -1,8 +1,0 @@
-#!/bin/sh
-
-exec 2>&1
-realpath "$0"
-set -ex
-pg_rman backup --backup-mode=full --host="$(cat ~/gfs/primary)"
-pg_rman validate
-pg_rman purge

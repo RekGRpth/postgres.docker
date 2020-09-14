@@ -1,0 +1,10 @@
+#!/bin/sh
+
+exec 2>&1
+install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql
+test -f /run/postgresql/postgres.run || exit $?
+realpath "$0"
+set -ex
+test -f "$BACKUP_PATH/system_identifier" || chpst -u "$USER":"$GROUP" /etc/service/cron/init
+chpst -u "$USER":"$GROUP" crontab "$HOME/crontab"
+exec /usr/sbin/crond -d 8 -f
