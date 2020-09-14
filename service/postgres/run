@@ -41,10 +41,10 @@ case "$MODE" in
     "single" )
         sv force-stop /etc/service/repmgr
         sv force-stop /etc/service/ssh
-        test -d "$PGDATA/base" || /etc/single/postgres/init
+        test -d "$PGDATA/base" || /etc/service/postgres/init
     ;;
     * )
-        test -d "$PGDATA/base" || /etc/single/postgres/init
+        test -d "$PGDATA/base" || /etc/service/postgres/init
     ;;
 esac
 test -d "$PGDATA/base"
