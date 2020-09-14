@@ -6,6 +6,6 @@ set -ex
 pg_rman init
 /etc/service/cron/conf
 cat >"$HOME/crontab" <<EOF
+0   0   *   *   0  /etc/service/cron/full
 0   0   *   *   1-6  /etc/service/cron/incremental
-0   0   *   *   0,7  /etc/service/cron/full
 EOF
