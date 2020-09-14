@@ -5,14 +5,14 @@ install -d -m 0750 -o "$USER" -g "$GROUP" "$PGDATA"
 case "$MODE" in
     "single" | "multi" )
         install -d -m 0750 -o "$USER" -g "$GROUP" "$HOME/pg_arclog" "$HOME/pg_log" "$HOME/pg_rman"
+        chmod 755 supervise
+        chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
     ;;
 esac
 install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql /var/log/postgresql
 rm -f /run/postgresql/postgres.run
 realpath "$0"
 set -ex
-chmod 755 supervise
-chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
 rm -f "$PGDATA/postmaster.pid"
 case "$MODE" in
     "multi" )
