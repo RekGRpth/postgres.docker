@@ -35,12 +35,12 @@ case "$MODE" in
         else
             test -d "$PGDATA/base" || /etc/service/postgres/primary
         fi
-        mv -f /etc/service/repmgr/norun /etc/service/repmgr/run
-        mv -f /etc/service/ssh/norun /etc/service/ssh/run
+        sv start /etc/service/repmgr
+        sv start /etc/service/ssh
     ;;
     * )
-        mv -f /etc/service/repmgr/run /etc/service/repmgr/norun
-        mv -f /etc/service/ssh/run /etc/service/ssh/norun
+        sv force-stop /etc/service/repmgr
+        sv force-stop /etc/service/ssh
         test -d "$PGDATA/base" || /etc/single/postgres/init
     ;;
 esac
