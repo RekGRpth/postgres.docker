@@ -1,6 +1,6 @@
 FROM rekgrpth/pdf
 ADD service /etc/service
-CMD [ "/etc/service/postgres/run.sh" ]
+CMD [ "/etc/service/postgres/run" ]
 ENV BACKUP_PATH=${HOME}/pg_rman \
     GROUP=postgres \
     PGDATA=${HOME}/pg_data \
