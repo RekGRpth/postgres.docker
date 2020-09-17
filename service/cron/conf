@@ -33,3 +33,4 @@ log_truncate_on_rotation = on
 max_wal_senders = 10
 wal_level = replica
 EOF
+sv force-restart /etc/service/postgres
