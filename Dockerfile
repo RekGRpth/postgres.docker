@@ -101,7 +101,7 @@ RUN exec 2>&1 \
     && cd /usr/src/curl/lib \
     && make -j"$(nproc)" install \
     && cd /usr/src/postgres \
-    && git checkout REL_12_STABLE \
+    && git checkout REL_13_STABLE \
     && ./configure \
 #        --enable-cassert \
 #        --enable-debug \
