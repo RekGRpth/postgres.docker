@@ -11,7 +11,6 @@ docker run \
     --detach \
     --env GROUP_ID="$(id -g)" \
     --env LANG=ru_RU.UTF-8 \
-    --env MODE=single \
     --env TZ=Asia/Yekaterinburg \
     --env USER_ID="$(id -u)" \
     --hostname postgres \

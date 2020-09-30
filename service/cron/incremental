@@ -3,13 +3,17 @@
 exec 2>&1
 realpath "$0"
 set -ex
-case "$MODE" in
-    "multi" )
-        pg_rman backup --backup-mode=incremental --full-backup-on-error --host="$(cat ~/gfs/primary)"
-    ;;
-    * )
-        pg_rman backup --backup-mode=incremental --full-backup-on-error
-    ;;
-esac
+if [ -n "$PG_AUTO_FAILOVER" ] && [ "$(pg_autoctl config get pg_autoctl.role)" != "monitor" ]; then
+    case "$(pg_autoctl show state --group "$(pg_autoctl config get pg_autoctl.group)" --formation "$(pg_autoctl config get pg_autoctl.formation)" --json --local | jq -r .current_group_state)" in
+        "single" | "primary")
+            pg_rman backup --backup-mode=incremental --full-backup-on-error
+        ;;
+#        "secondary")
+#            pg_rman backup --backup-mode=incremental --full-backup-on-error --host="$(pg_autoctl show state --group "$(pg_autoctl config get pg_autoctl.group)" --formation "$(pg_autoctl config get pg_autoctl.formation)" --json | jq -r '.[] | select(.current_group_state == "primary") | .nodehost')"
+#        ;;
+    esac
+else
+    pg_rman backup --backup-mode=incremental --full-backup-on-error
+fi
 pg_rman validate
 pg_rman purge

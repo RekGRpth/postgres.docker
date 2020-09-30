@@ -1,9 +1,0 @@
-#!/bin/sh
-
-exec 2>&1
-realpath "$0"
-set -ex
-chpst -u "$USER":"$GROUP" /etc/service/repmgr/conf
-primary="$(cat "$HOME/gfs/primary")"
-test -n "$primary"
-chpst -u "$USER":"$GROUP" repmgr standby clone --config-file="$HOME/repmgr.conf" --verbose --fast-checkpoint --dbname="host=$primary user=repmgr dbname=repmgr connect_timeout=2"

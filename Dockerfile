@@ -1,6 +1,6 @@
 FROM rekgrpth/pdf
 ADD service /etc/service
-CMD [ "/etc/service/postgres/run" ]
+CMD /etc/service/postgres/run
 ENV BACKUP_PATH=${HOME}/pg_rman \
     GROUP=postgres \
     PGDATA=${HOME}/pg_data \
@@ -63,6 +63,7 @@ RUN exec 2>&1 \
     && mkdir -p /usr/src \
     && cd /usr/src \
     && git clone --recursive https://github.com/RekGRpth/curl.git \
+    && git clone --recursive https://github.com/RekGRpth/pg_auto_failover.git \
     && git clone --recursive https://github.com/RekGRpth/pg_backtrace.git \
     && git clone --recursive https://github.com/RekGRpth/pgbouncer.git \
     && git clone --recursive https://github.com/RekGRpth/pg_curl.git \
@@ -77,7 +78,6 @@ RUN exec 2>&1 \
     && git clone --recursive https://github.com/RekGRpth/pldebugger.git \
     && git clone --recursive https://github.com/RekGRpth/plsh.git \
     && git clone --recursive https://github.com/RekGRpth/postgres.git \
-    && git clone --recursive https://github.com/RekGRpth/repmgr.git \
     && cd /usr/src/curl \
     && autoreconf -vif \
     && ./configure \
@@ -126,29 +126,18 @@ RUN exec 2>&1 \
     && ./configure \
         --disable-debug \
         --with-pam \
-    && cd /usr/src/repmgr \
-    && ./configure \
     && cd / \
     && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "curl" ! -name "postgres" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
     && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/postgresql/*.so || true) \
     && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing --virtual .mustach-rundeps \
         mustach-dev \
     && apk add --no-cache --virtual .postgresql-rundeps \
-        openssh-client \
-        openssh-server \
-        rsync \
         runit \
-        sshpass \
         $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | grep -v 'libmustach.so' | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }') \
     && apk del --no-cache .build-deps \
     && apk del --no-cache .edge-testing-build-deps \
     && rm -rf /usr/src /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man \
     && find /usr/local -name '*.a' -delete \
-    && chmod +x /usr/local/bin/docker_entrypoint.sh \
-    && sed -i -e 's|#PasswordAuthentication yes|PasswordAuthentication no|g' /etc/ssh/sshd_config \
-    && sed -i -e 's|#   StrictHostKeyChecking ask|   StrictHostKeyChecking no|g' /etc/ssh/ssh_config \
-    && echo "   UserKnownHostsFile=/dev/null" >>/etc/ssh/ssh_config \
-    && sed -i -e 's|postgres:!:|postgres::|g' /etc/shadow \
     && chmod -R 0755 /etc/service \
     && rm -f /var/spool/cron/crontabs/root \
     && echo done

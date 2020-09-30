@@ -5,7 +5,14 @@ realpath "$0"
 set -ex
 pg_rman init
 /etc/service/cron/conf
-cat >"$HOME/crontab" <<EOF
+if [ -z "$PG_AUTO_FAILOVER" ] || [ "$(pg_autoctl config get pg_autoctl.role)" != "monitor" ]; then
+    cat >"$HOME/crontab" <<EOF
 0   0   *   *   0  /etc/service/cron/full
 0   0   *   *   1-6  /etc/service/cron/incremental
 EOF
+else
+    cat >"$HOME/crontab" <<EOF
+0   0   *   *   *  /etc/service/cron/full
+0   1-23   *   *   *  /etc/service/cron/incremental
+EOF
+fi

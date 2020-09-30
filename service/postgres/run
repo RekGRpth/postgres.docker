@@ -1,51 +1,27 @@
 #!/bin/sh
 
 exec 2>&1
-install -d -m 0750 -o "$USER" -g "$GROUP" "$PGDATA"
-case "$MODE" in
-    "single" | "multi" )
-        install -d -m 0750 -o "$USER" -g "$GROUP" "$HOME/pg_arclog" "$HOME/pg_log" "$HOME/pg_rman"
-        chmod 755 supervise
-        chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
-    ;;
-esac
+if [ -z "$PG_AUTO_FAILOVER" ]; then
+    install -d -m 0750 -o "$USER" -g "$GROUP" "$PGDATA"
+else
+    install -d -m 1775 -o "$USER" -g "$GROUP" "/tmp/pg_autoctl$PGDATA"
+fi
 install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql /var/log/postgresql
-rm -f /run/postgresql/postgres.run
+if [ "$(pgrep runsvdir | wc -l)" -gt "0" ]; then
+    install -d -m 0750 -o "$USER" -g "$GROUP" "$HOME/pg_arclog" "$HOME/pg_log" "$HOME/pg_rman"
+    chmod 755 supervise
+    chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
+fi
+rm -f /run/postgresql/postgres.run "$PGDATA/postmaster.pid"
 realpath "$0"
 set -ex
-rm -f "$PGDATA/postmaster.pid"
-case "$MODE" in
-    "multi" )
-        touch "$HOME/gfs/primary"
-        chown "$USER":"$GROUP" "$HOME/gfs/primary"
-        primary="$(cat "$HOME/gfs/primary")"
-        test -n "$primary" || echo -n "$(hostname)" >"$HOME/gfs/primary"
-        primary="$(cat "$HOME/gfs/primary")"
-        test -n "$primary"
-        if [ "$primary" != "$(hostname)" ] && chpst -u "$USER":"$GROUP" pg_isready --host="$primary" --port=5432 --username=postgres --dbname=postgres --timeout=10; then
-            echo exists
-        else
-            echo -n "$(hostname)" >"$HOME/gfs/primary"
-            primary="$(cat "$HOME/gfs/primary")"
-            test -n "$primary"
-        fi
-        if [ "$primary" != "$(hostname)" ]; then
-            test -d "$PGDATA/base" || /etc/service/postgres/standby
-            test -f "$PGDATA/standby.signal" || /etc/service/postgres/rejoin
-        else
-            test -d "$PGDATA/base" || /etc/service/postgres/primary
-        fi
-        sv start /etc/service/repmgr
-        sv start /etc/service/ssh
-    ;;
-    "single" )
-        sv force-stop /etc/service/repmgr
-        sv force-stop /etc/service/ssh
-        test -d "$PGDATA/base" || /etc/service/postgres/init
-    ;;
-    * )
-        test -d "$PGDATA/base" || /etc/service/postgres/init
-    ;;
-esac
+test -d "$PGDATA/base" || chpst -u "$USER":"$GROUP" /etc/service/postgres/init
 test -d "$PGDATA/base"
-exec chpst -u "$USER":"$GROUP" -L /run/postgresql/postgres.run postmaster
+if [ -z "$PG_AUTO_FAILOVER" ]; then
+    exec chpst -u "$USER":"$GROUP" -L /run/postgresql/postgres.run postmaster
+else
+    if [ -z "$PG_AUTO_FAILOVER_MONITOR" ]; then
+        sv force-stop pgbouncer
+    fi
+    exec chpst -u "$USER":"$GROUP" -L /run/postgresql/postgres.run pg_autoctl run
+fi

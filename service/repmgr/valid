@@ -1,8 +1,0 @@
-#!/bin/sh
-
-exec 2>&1
-realpath "$0"
-set -ex
-node="$1"
-shift
-name="$1"

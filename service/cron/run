@@ -8,4 +8,4 @@ set -ex
 chpst -u "$USER":"$GROUP" pg_ctl status
 test -f "$BACKUP_PATH/system_identifier" || chpst -u "$USER":"$GROUP" /etc/service/cron/init
 chpst -u "$USER":"$GROUP" crontab "$HOME/crontab"
-exec /usr/sbin/crond -d 8 -f
+exec crond -d 8 -f

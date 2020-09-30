@@ -1,8 +1,0 @@
-#!/bin/sh
-
-exec 2>&1
-realpath "$0"
-set -ex
-chpst -u "$USER":"$GROUP" createuser --superuser repmgr
-chpst -u "$USER":"$GROUP" createdb repmgr --owner=repmgr
-chpst -u "$USER":"$GROUP" /etc/service/repmgr/conf

@@ -27,10 +27,10 @@ client_tls_ca_file = /etc/certs/ca.pem
 client_tls_cert_file = /etc/certs/cert.pem
 client_tls_key_file = /etc/certs/key.pem
 client_tls_sslmode = prefer
-server_tls_ca_file = /etc/certs/ca.pem
-server_tls_cert_file = /etc/certs/cert.pem
-server_tls_key_file = /etc/certs/key.pem
-server_tls_sslmode = prefer
+#server_tls_ca_file = /etc/certs/ca.pem
+#server_tls_cert_file = /etc/certs/cert.pem
+#server_tls_key_file = /etc/certs/key.pem
+#server_tls_sslmode = prefer
 EOF
 fi
 

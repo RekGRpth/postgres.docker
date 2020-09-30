@@ -4,23 +4,16 @@ exec 2>&1
 realpath "$0"
 set -ex
 test -f /run/postgresql/postgres.run
-case "$MODE" in
-    "multi" )
-        primary="$(cat "$HOME/gfs/primary")"
-        test -n "$primary"
-    ;;
-esac
 pg_ctl status
-psql --quiet --tuples-only --no-align --command="select now()"
-psql --quiet --tuples-only --no-align --command="select datname from pg_database where not datistemplate and datallowconn" | while read -r datname; do
-    case "$MODE" in
-        "multi" )
-            psql --quiet --tuples-only --no-align --user=repmgr --dbname=repmgr --command="select concat('$datname-', type, ' = host=', node_name, ' dbname=$datname') from nodes where active"
-            echo "$datname = host=$primary dbname=$datname"
-        ;;
-        * )
-            echo "$datname = dbname=$datname"
-        ;;
-    esac
-done >"$HOME/databases.ini"
-sv reload /etc/service/pgbouncer
+if [ -n "$PG_AUTO_FAILOVER" ]; then
+    echo "* = host=$(pg_autoctl show state --group "$(pg_autoctl config get pg_autoctl.group)" --formation "$(pg_autoctl config get pg_autoctl.formation)" --json | jq -r '.[] | select(.current_group_state == "primary" , .current_group_state == "single") | .nodehost') port=$(pg_autoctl show state --group "$(pg_autoctl config get pg_autoctl.group)" --formation "$(pg_autoctl config get pg_autoctl.formation)" --json | jq -r '.[] | select(.current_group_state == "primary" , .current_group_state == "single") | .nodeport') " >"$HOME/databases.ini"
+else
+    echo "* = " >"$HOME/databases.ini"
+fi
+#psql --quiet --tuples-only --no-align --command="select datname from pg_database where not datistemplate and datallowconn" | while read -r DATNAME; do
+#    if [ -n "$PG_AUTO_FAILOVER" ]; then
+#        echo "$DATNAME = dbname=$DATNAME host=$(pg_autoctl show state --group "$(pg_autoctl config get pg_autoctl.group)" --formation "$(pg_autoctl config get pg_autoctl.formation)" --json | jq -r '.[] | select(.current_group_state == "primary" , .current_group_state == "single") | .nodehost') port=$(pg_autoctl show state --group "$(pg_autoctl config get pg_autoctl.group)" --formation "$(pg_autoctl config get pg_autoctl.formation)" --json | jq -r '.[] | select(.current_group_state == "primary" , .current_group_state == "single") | .nodeport') "
+#    else
+#        echo "$DATNAME = dbname=$DATNAME"
+#    fi
+#done >"$HOME/databases.ini"
