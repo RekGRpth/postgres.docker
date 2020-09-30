@@ -23,11 +23,20 @@ max_worker_processes = 128
 plpgsql.extra_warnings = all
 plpgsql.print_strict_params = on
 session_preload_libraries = 'auto_explain'
-shared_preload_libraries = 'pg_backtrace,pg_task,pg_partman_bgw,pg_stat_statements'
 track_activity_query_size = 102400
 wal_level = minimal
 EOF
+if [ -n "$PG_AUTO_FAILOVER" ] && [ -z "$PG_AUTO_FAILOVER_MONITOR" ]; then
+    cat >>"$PGDATA/postgresql.conf" <<EOF
 
+shared_preload_libraries = 'pg_backtrace,pg_task,pg_partman_bgw,pg_stat_statements,pgautofailover'
+EOF
+else
+    cat >>"$PGDATA/postgresql.conf" <<EOF
+
+shared_preload_libraries = 'pg_backtrace,pg_task,pg_partman_bgw,pg_stat_statements'
+EOF
+fi
 if [ -z "$PG_AUTO_FAILOVER" ] && [ -d /etc/certs ]; then
     cat >>"$PGDATA/postgresql.conf" <<EOF
 
