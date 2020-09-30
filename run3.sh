@@ -9,6 +9,7 @@ docker stop postgres3 || echo $?
 docker rm postgres3 || echo $?
 docker run \
     --detach \
+    --env CLUSTER_NAME=postgres3 \
     --env GROUP_ID="$(id -g)" \
     --env LANG=ru_RU.UTF-8 \
     --env PG_AUTO_FAILOVER=true \

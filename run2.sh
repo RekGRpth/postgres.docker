@@ -9,6 +9,7 @@ docker stop postgres2 || echo $?
 docker rm postgres2 || echo $?
 docker run \
     --detach \
+    --env CLUSTER_NAME=postgres2 \
     --env GROUP_ID="$(id -g)" \
     --env LANG=ru_RU.UTF-8 \
     --env PG_AUTO_FAILOVER=true \
