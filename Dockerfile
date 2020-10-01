@@ -132,6 +132,7 @@ RUN exec 2>&1 \
     && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing --virtual .mustach-rundeps \
         mustach-dev \
     && apk add --no-cache --virtual .postgresql-rundeps \
+        jq \
         runit \
         $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | grep -v 'libmustach.so' | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }') \
     && apk del --no-cache .build-deps \
