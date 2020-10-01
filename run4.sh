@@ -9,7 +9,7 @@ docker stop postgres4 || echo $?
 docker rm postgres4 || echo $?
 docker run \
     --detach \
-    --env CLUSTER_NAME=postgres4 \
+    --env CLUSTER_NAME=test \
     --env GROUP_ID="$(id -g)" \
     --env LANG=ru_RU.UTF-8 \
     --env PG_AUTO_FAILOVER=true \

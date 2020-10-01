@@ -9,7 +9,7 @@ docker stop postgres0 || echo $?
 docker rm postgres0 || echo $?
 docker run \
     --detach \
-    --env CLUSTER_NAME=postgres0 \
+    --env CLUSTER_NAME=monitor \
     --env GROUP_ID="$(id -g)" \
     --env LANG=ru_RU.UTF-8 \
     --env PG_AUTO_FAILOVER=true \
