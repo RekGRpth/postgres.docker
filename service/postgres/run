@@ -18,10 +18,12 @@ set -ex
 test -d "$PGDATA/base" || chpst -u "$USER":"$GROUP" /etc/service/postgres/init
 test -d "$PGDATA/base"
 if [ -z "$PG_AUTO_FAILOVER" ]; then
+    rm -rf /etc/service/pglisten
     exec chpst -u "$USER":"$GROUP" -L /run/postgresql/postgres.run postmaster
 else
     if [ -z "$PG_AUTO_FAILOVER_MONITOR" ]; then
-        sv force-stop pgbouncer
+        rm -rf /etc/service/pgbouncer
+        rm -rf /etc/service/pglisten
     fi
     exec chpst -u "$USER":"$GROUP" -L /run/postgresql/postgres.run pg_autoctl run
 fi

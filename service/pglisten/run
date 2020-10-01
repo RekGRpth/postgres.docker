@@ -1,0 +1,14 @@
+#!/bin/sh
+
+exec 2>&1
+install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql /var/log/pgbouncer
+test -f /run/postgresql/pgbouncer.run || exit $?
+chmod 755 supervise
+chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
+realpath "$0"
+set -ex
+#exec chpst -u "$USER":"$GROUP" pglisten --listen=state --conninfo="$(pg_autoctl show uri --monitor)" | jq --unbuffered --raw-output "select(.formation == \""$(pg_autoctl config get pg_autoctl.formation)"\" and .groupId == $(pg_autoctl config get pg_autoctl.group) and .health == \"good\" and .reportedState == \"primary\" and .goalState == \"primary\") | [\"* = \", \"host=\", .host, \" port=\", .port] | join(\"\")" >"$HOME/databases.ini"
+chpst -u "$USER":"$GROUP" pglisten --listen=state --conninfo="$(pg_autoctl show uri --monitor)" | jq --unbuffered --raw-output "select(.formation == \""$(pg_autoctl config get pg_autoctl.formation)"\" and .groupId == $(pg_autoctl config get pg_autoctl.group) and .health == \"good\" and .reportedState == \"primary\" and .goalState == \"primary\") | {host:.host, port:.port} | join(\" \")" | while read -r HOST PORT; do
+    echo "* = host=$HOST port=$PORT" >"$HOME/databases.ini"
+    sv reload pgbouncer
+done
