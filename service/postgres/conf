@@ -30,7 +30,7 @@ if [ -n "$SERVER_CERT" ]; then echo "ssl_cert_file = '$SERVER_CERT'" >>"$PGDATA/
 if [ -n "$SERVER_KEY" ]; then echo "ssl_key_file = '$SERVER_KEY'" >>"$PGDATA/postgresql.conf"; fi
 if [ -n "$SSL_CA_FILE" ]; then echo "ssl_ca_file = '$SSL_CA_FILE'" >>"$PGDATA/postgresql.conf"; fi
 if [ -n "$SSL_CRL_FILE" ]; then echo "ssl_crl_file = '$SSL_CRL_FILE'" >>"$PGDATA/postgresql.conf"; fi
-if [ -n "$PG_AUTO_FAILOVER" ] && [ -z "$PG_AUTO_FAILOVER_MONITOR" ]; then echo "shared_preload_libraries = 'pg_backtrace,pg_task,pg_partman_bgw,pg_stat_statements,pgautofailover'" >>"$PGDATA/postgresql.conf"
+if [ -n "$PG_AUTOCTL" ] && [ -z "$PG_AUTOCTL_MONITOR" ]; then echo "shared_preload_libraries = 'pg_backtrace,pg_task,pg_partman_bgw,pg_stat_statements,pgautofailover'" >>"$PGDATA/postgresql.conf"
 else echo "shared_preload_libraries = 'pg_backtrace,pg_task,pg_partman_bgw,pg_stat_statements'" >>"$PGDATA/postgresql.conf"; fi
 if [ "$(pgrep runsvdir | wc -l)" -gt "0" ]; then cat >>"$PGDATA/postgresql.conf" <<EOF
 
