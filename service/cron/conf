@@ -5,12 +5,12 @@ realpath "$0"
 set -ex
 cat >"$BACKUP_PATH/pg_rman.ini" <<EOF
 
-ARCLOG_PATH='$(echo -n "$HOME")/pg_arclog'
+ARCLOG_PATH='$HOME/pg_arclog'
 COMPRESS_DATA=true
 KEEP_ARCLOG_DAYS=1
 KEEP_DATA_GENERATIONS=9
 KEEP_SRVLOG_DAYS=1
-SRVLOG_PATH='$(echo -n "$HOME")/pg_log'
+SRVLOG_PATH='$HOME/pg_log'
 WITH_SERVERLOG=true
 EOF
 cat >>"$BACKUP_PATH/pg_rman.ini" <<EOF
@@ -20,10 +20,10 @@ STANDBY_PORT=5432
 EOF
 test -f "$PGDATA/standby.signal" || cat >>"$PGDATA/postgresql.conf" <<EOF
 
-archive_cleanup_command = 'pg_archivecleanup -d "$(echo -n "$HOME")/pg_arclog" "%r" 2>>"$(echo -n "$HOME")/pg_log/pg_archivecleanup.log"'
-archive_command = 'test ! -f "$(echo -n "$HOME")/pg_arclog/%f" && cp "%p" "$(echo -n "$HOME")/pg_arclog/%f"'
+archive_cleanup_command = 'pg_archivecleanup -d "$HOME/pg_arclog" "%r" 2>>"$HOME/pg_log/pg_archivecleanup.log"'
+archive_command = 'test ! -f "$HOME/pg_arclog/%f" && cp "%p" "$HOME/pg_arclog/%f"'
 archive_mode = on
-log_directory = '$(echo -n "$HOME")/pg_log'
+log_directory = '$HOME/pg_log'
 log_filename = 'postgresql-%Y-%m-%d.log'
 logging_collector = on
 log_truncate_on_rotation = on

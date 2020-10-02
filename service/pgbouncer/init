@@ -3,12 +3,12 @@
 exec 2>&1
 realpath "$0"
 set -ex
-touch "$HOME/databases.ini"
-cat >"$HOME/pgbouncer.ini" <<EOF
+touch "$HOME/.databases.ini"
+cat >"$HOME/.pgbouncer.ini" <<EOF
 [pgbouncer]
 admin_users = postgres
 application_name_add_host = 1
-auth_hba_file = $(echo -n "$PGDATA")/pg_hba.conf
+auth_hba_file = $PGDATA/pg_hba.conf
 auth_type = hba
 auth_user = postgres
 listen_addr = *
@@ -19,22 +19,16 @@ unix_socket_dir = /run/postgresql
 unix_socket_group = postgres
 unix_socket_mode = 0777
 EOF
+if [ -n "$SERVER_CERT" ]; then echo "client_tls_cert_file = $SERVER_CERT" >>"$HOME/.pgbouncer.ini"; fi
+if [ -n "$SERVER_KEY" ]; then echo "client_tls_key_file = $SERVER_KEY" >>"$HOME/.pgbouncer.ini"; fi
+if [ -n "$SSL_CA_FILE" ]; then echo "client_tls_ca_file = $SSL_CA_FILE" >>"$HOME/.pgbouncer.ini"; fi
+if [ -n "$SSL_MODE" ]; then echo "client_tls_sslmode = $SSL_MODE" >>"$HOME/.pgbouncer.ini"; fi
+if [ -n "$PG_AUTOCTL_SERVER_CERT" ]; then echo "client_tls_cert_file = $PG_AUTOCTL_SERVER_CERT" >>"$HOME/.pgbouncer.ini"; fi
+if [ -n "$PG_AUTOCTL_SERVER_KEY" ]; then echo "client_tls_key_file = $PG_AUTOCTL_SERVER_KEY" >>"$HOME/.pgbouncer.ini"; fi
+if [ -n "$PG_AUTOCTL_SSL_CA_FILE" ]; then echo "client_tls_ca_file = $PG_AUTOCTL_SSL_CA_FILE" >>"$HOME/.pgbouncer.ini"; fi
+if [ -n "$PG_AUTOCTL_SSL_MODE" ]; then echo "client_tls_sslmode = $PG_AUTOCTL_SSL_MODE" >>"$HOME/.pgbouncer.ini"; fi
+cat >>"$HOME/.pgbouncer.ini" <<EOF
 
-if [ -d /etc/certs ]; then
-    cat >>"$HOME/pgbouncer.ini" <<EOF
-
-client_tls_ca_file = /etc/certs/ca.pem
-client_tls_cert_file = /etc/certs/cert.pem
-client_tls_key_file = /etc/certs/key.pem
-client_tls_sslmode = prefer
-#server_tls_ca_file = /etc/certs/ca.pem
-#server_tls_cert_file = /etc/certs/cert.pem
-#server_tls_key_file = /etc/certs/key.pem
-#server_tls_sslmode = prefer
-EOF
-fi
-
-cat >>"$HOME/pgbouncer.ini" <<EOF
 [databases]
-%include $(echo -n "$HOME")/databases.ini
+%include $HOME/.databases.ini
 EOF

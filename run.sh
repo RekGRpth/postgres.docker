@@ -11,6 +11,10 @@ docker run \
     --detach \
     --env GROUP_ID="$(id -g)" \
     --env LANG=ru_RU.UTF-8 \
+    --env SERVER_CERT=/etc/certs/cert.pem \
+    --env SERVER_KEY=/etc/certs/key.pem \
+    --env SSL_CA_FILE=/etc/certs/ca.pem \
+    --env SSL_MODE=prefer \
     --env TZ=Asia/Yekaterinburg \
     --env USER_ID="$(id -u)" \
     --hostname postgres \

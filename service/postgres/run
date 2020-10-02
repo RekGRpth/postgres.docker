@@ -1,10 +1,10 @@
 #!/bin/sh
 
 exec 2>&1
-if [ -z "$PG_AUTO_FAILOVER" ]; then
+if [ -z "$PG_AUTOCTL" ]; then
     install -d -m 0750 -o "$USER" -g "$GROUP" "$PGDATA"
 else
-    install -d -m 1775 -o "$USER" -g "$GROUP" "/tmp/pg_autoctl$PGDATA"
+    install -d -m 1775 -o "$USER" -g "$GROUP" "/tmp/pg_autoctl"
 fi
 install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql /var/log/postgresql
 if [ "$(pgrep runsvdir | wc -l)" -gt "0" ]; then
@@ -17,11 +17,11 @@ realpath "$0"
 set -ex
 test -d "$PGDATA/base" || chpst -u "$USER":"$GROUP" /etc/service/postgres/init
 test -d "$PGDATA/base"
-if [ -z "$PG_AUTO_FAILOVER" ]; then
+if [ -z "$PG_AUTOCTL" ]; then
     rm -rf /etc/service/pglisten
     exec chpst -u "$USER":"$GROUP" -L /run/postgresql/postgres.run postmaster
 else
-    if [ -z "$PG_AUTO_FAILOVER_MONITOR" ]; then
+    if [ -z "$PG_AUTOCTL_MONITOR" ]; then
         rm -rf /etc/service/pgbouncer
         rm -rf /etc/service/pglisten
     fi

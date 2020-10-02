@@ -26,6 +26,10 @@ session_preload_libraries = 'auto_explain'
 track_activity_query_size = 102400
 wal_level = minimal
 EOF
+if [ -n "$SERVER_CERT" ]; then echo "ssl_cert_file = '$SERVER_CERT'" >>"$PGDATA/postgresql.conf"; fi
+if [ -n "$SERVER_KEY" ]; then echo "ssl_key_file = '$SERVER_KEY'" >>"$PGDATA/postgresql.conf"; fi
+if [ -n "$SSL_CA_FILE" ]; then echo "ssl_ca_file = '$SSL_CA_FILE'" >>"$PGDATA/postgresql.conf"; fi
+if [ -n "$SSL_CRL_FILE" ]; then echo "ssl_crl_file = '$SSL_CRL_FILE'" >>"$PGDATA/postgresql.conf"; fi
 if [ -n "$PG_AUTO_FAILOVER" ] && [ -z "$PG_AUTO_FAILOVER_MONITOR" ]; then
     cat >>"$PGDATA/postgresql.conf" <<EOF
 
@@ -36,19 +40,4 @@ else
 
 shared_preload_libraries = 'pg_backtrace,pg_task,pg_partman_bgw,pg_stat_statements'
 EOF
-fi
-if [ -z "$PG_AUTO_FAILOVER" ] && [ -d /etc/certs ]; then
-    cat >>"$PGDATA/postgresql.conf" <<EOF
-
-ssl_ca_file = '/etc/certs/ca.pem'
-ssl_cert_file = '/etc/certs/cert.pem'
-ssl_key_file = '/etc/certs/key.pem'
-ssl = on
-EOF
-    if [ -f /etc/certs/crl.pem ]; then
-        cat >>"$PGDATA/postgresql.conf" <<EOF
-
-ssl_crl_file = '/etc/certs/crl.pem'
-EOF
-    fi
 fi
