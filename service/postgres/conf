@@ -30,14 +30,18 @@ if [ -n "$SERVER_CERT" ]; then echo "ssl_cert_file = '$SERVER_CERT'" >>"$PGDATA/
 if [ -n "$SERVER_KEY" ]; then echo "ssl_key_file = '$SERVER_KEY'" >>"$PGDATA/postgresql.conf"; fi
 if [ -n "$SSL_CA_FILE" ]; then echo "ssl_ca_file = '$SSL_CA_FILE'" >>"$PGDATA/postgresql.conf"; fi
 if [ -n "$SSL_CRL_FILE" ]; then echo "ssl_crl_file = '$SSL_CRL_FILE'" >>"$PGDATA/postgresql.conf"; fi
-if [ -n "$PG_AUTO_FAILOVER" ] && [ -z "$PG_AUTO_FAILOVER_MONITOR" ]; then
-    cat >>"$PGDATA/postgresql.conf" <<EOF
+if [ -n "$PG_AUTO_FAILOVER" ] && [ -z "$PG_AUTO_FAILOVER_MONITOR" ]; then echo "shared_preload_libraries = 'pg_backtrace,pg_task,pg_partman_bgw,pg_stat_statements,pgautofailover'" >>"$PGDATA/postgresql.conf"
+else echo "shared_preload_libraries = 'pg_backtrace,pg_task,pg_partman_bgw,pg_stat_statements'" >>"$PGDATA/postgresql.conf"; fi
+if [ "$(pgrep runsvdir | wc -l)" -gt "0" ]; then cat >>"$PGDATA/postgresql.conf" <<EOF
 
-shared_preload_libraries = 'pg_backtrace,pg_task,pg_partman_bgw,pg_stat_statements,pgautofailover'
-EOF
-else
-    cat >>"$PGDATA/postgresql.conf" <<EOF
-
-shared_preload_libraries = 'pg_backtrace,pg_task,pg_partman_bgw,pg_stat_statements'
+archive_cleanup_command = 'pg_archivecleanup -d "$HOME/pg_arclog" "%r" 2>>"$HOME/pg_log/pg_archivecleanup.log"'
+archive_command = 'test ! -f "$HOME/pg_arclog/%f" && cp "%p" "$HOME/pg_arclog/%f"'
+archive_mode = on
+log_directory = '$HOME/pg_log'
+log_filename = 'postgresql-%Y-%m-%d.log'
+logging_collector = on
+log_truncate_on_rotation = on
+max_wal_senders = 10
+wal_level = replica
 EOF
 fi
