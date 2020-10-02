@@ -72,6 +72,7 @@ RUN exec 2>&1 \
     && git clone --recursive https://github.com/RekGRpth/pgjwt.git \
     && git clone --recursive https://github.com/RekGRpth/pg_mustach.git \
     && git clone --recursive https://github.com/RekGRpth/pg_partman.git \
+    && git clone --recursive https://github.com/RekGRpth/pg_repack.git \
     && git clone --recursive https://github.com/RekGRpth/pg_rman.git \
     && git clone --recursive https://github.com/RekGRpth/pgsidekick.git \
     && git clone --recursive https://github.com/RekGRpth/pg_ssl.git \
