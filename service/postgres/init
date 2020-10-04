@@ -3,40 +3,42 @@
 exec 2>&1
 realpath "$0"
 set -ex
-if [ -d "$HOME/pg_rman" ] && [ "$(pg_rman show detail -a | grep OK | wc -l)" -gt "0" ]; then
+if [ -f "$BACKUP_PATH/system_identifier" ] && [ "$(pg_rman show detail -a | grep OK | wc -l)" -gt "0" ]; then
     pg_rman restore
 else
-    if [ -n "$PG_AUTOCTL_SERVER_CERT" ]; then SERVER_CERT="--server-cert $PG_AUTOCTL_SERVER_CERT"; fi
-    if [ -n "$PG_AUTOCTL_SERVER_KEY" ]; then SERVER_KEY="--server-key $PG_AUTOCTL_SERVER_KEY"; fi
-    if [ -n "$PG_AUTOCTL_SSL_CA_FILE" ]; then SSL_CA_FILE="--ssl-ca-file $PG_AUTOCTL_SSL_CA_FILE"; fi
-    if [ -n "$PG_AUTOCTL_SSL_CRL_FILE" ]; then SSL_CRL_FILE="--ssl-crl-file $PG_AUTOCTL_SSL_CRL_FILE"; fi
-    if [ -z "$SERVER_CERT" ] && [ -z "$SERVER_KEY" ]; then NO_SSL="--no-ssl"; fi
-    if [ -z "$PG_AUTOCTL" ]; then
-        cd "$PGDATA" && initdb
-    elif [ -n "$PG_AUTOCTL_MONITOR" ]; then
-        pg_autoctl create postgres \
-            $NO_SSL \
-            $SERVER_CERT \
-            $SERVER_KEY \
-            $SSL_CA_FILE \
-            $SSL_CRL_FILE \
-            --formation "${PG_AUTOCTL_FORMATION:-default}" \
-            --hostname "$(hostname)" \
-            --monitor "$PG_AUTOCTL_MONITOR" \
-            --name "${PG_AUTOCTL_NAME:-$(hostname)}" \
-            --replication-quorum "${PG_AUTOCTL_REPLICATION_QUORUM:-true}" \
-            --skip-pg-hba \
-            --ssl-mode "${PG_AUTOCTL_SSL_MODE:-allow}"
+    if [ -n "$PG_AUTOCTL" ]; then
+        if [ -n "$PG_AUTOCTL_SERVER_CERT" ]; then SERVER_CERT="--server-cert $PG_AUTOCTL_SERVER_CERT"; fi
+        if [ -n "$PG_AUTOCTL_SERVER_KEY" ]; then SERVER_KEY="--server-key $PG_AUTOCTL_SERVER_KEY"; fi
+        if [ -n "$PG_AUTOCTL_SSL_CA_FILE" ]; then SSL_CA_FILE="--ssl-ca-file $PG_AUTOCTL_SSL_CA_FILE"; fi
+        if [ -n "$PG_AUTOCTL_SSL_CRL_FILE" ]; then SSL_CRL_FILE="--ssl-crl-file $PG_AUTOCTL_SSL_CRL_FILE"; fi
+        if [ -z "$SERVER_CERT" ] && [ -z "$SERVER_KEY" ]; then NO_SSL="--no-ssl"; fi
+        if [ -n "$PG_AUTOCTL_MONITOR" ]; then
+            pg_autoctl create postgres \
+                $NO_SSL \
+                $SERVER_CERT \
+                $SERVER_KEY \
+                $SSL_CA_FILE \
+                $SSL_CRL_FILE \
+                --formation "${PG_AUTOCTL_FORMATION:-default}" \
+                --hostname "$(hostname)" \
+                --monitor "$PG_AUTOCTL_MONITOR" \
+                --name "${PG_AUTOCTL_NAME:-$(hostname)}" \
+                --replication-quorum "${PG_AUTOCTL_REPLICATION_QUORUM:-true}" \
+                --skip-pg-hba \
+                --ssl-mode "${PG_AUTOCTL_SSL_MODE:-allow}"
+        else
+            pg_autoctl create monitor \
+                $NO_SSL \
+                $SERVER_CERT \
+                $SERVER_KEY \
+                $SSL_CA_FILE \
+                $SSL_CRL_FILE \
+                --hostname "$(hostname)" \
+                --skip-pg-hba \
+                --ssl-mode "${PG_AUTOCTL_SSL_MODE:-allow}"
+        fi
     else
-        pg_autoctl create monitor \
-            $NO_SSL \
-            $SERVER_CERT \
-            $SERVER_KEY \
-            $SSL_CA_FILE \
-            $SSL_CRL_FILE \
-            --hostname "$(hostname)" \
-            --skip-pg-hba \
-            --ssl-mode "${PG_AUTOCTL_SSL_MODE:-allow}"
+        cd "$PGDATA" && initdb
     fi
     if [ ! -f "$PGDATA/standby.signal" ]; then
         /etc/service/postgres/conf

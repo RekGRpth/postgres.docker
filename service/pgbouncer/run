@@ -3,14 +3,13 @@
 exec 2>&1
 install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql /var/log/pgbouncer
 test -f /run/postgresql/postgres.run || exit $?
-rm -f /run/postgresql/pgbouncer.run
+chpst -u "$USER":"$GROUP" pg_ctl status || exit $?
 chmod 755 supervise
 chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
-chpst -u "$USER":"$GROUP" pg_ctl status || exit $?
 realpath "$0"
 set -ex
 test -f "$HOME/.pgbouncer.ini" || chpst -u "$USER":"$GROUP" /etc/service/pgbouncer/init
 chpst -u "$USER":"$GROUP" /etc/service/pgbouncer/data
 test -f "$HOME/.pgbouncer.ini"
 test -f "$HOME/.databases.ini"
-exec chpst -u "$USER":"$GROUP" -L /run/postgresql/pgbouncer.run pgbouncer "$HOME/.pgbouncer.ini"
+exec chpst -u "$USER":"$GROUP" pgbouncer "$HOME/.pgbouncer.ini"

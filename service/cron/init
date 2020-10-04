@@ -4,15 +4,15 @@ exec 2>&1
 realpath "$0"
 set -ex
 pg_rman init
-/etc/service/cron/conf
-if [ -z "$PG_AUTOCTL" ] || [ "$(pg_autoctl config get pg_autoctl.role)" != "monitor" ]; then
-    cat >"$HOME/.crontab" <<EOF
-0   0   *   *   0  /etc/service/cron/full
-0   0   *   *   1-6  /etc/service/cron/incremental
+cat >"$BACKUP_PATH/pg_rman.ini" <<EOF
+
+ARCLOG_PATH='$HOME/pg_arclog'
+COMPRESS_DATA=true
+KEEP_ARCLOG_DAYS=2
+KEEP_DATA_GENERATIONS=10
+KEEP_SRVLOG_DAYS=2
+SRVLOG_PATH='$HOME/pg_log'
+STANDBY_HOST=localhost
+STANDBY_PORT=5432
+WITH_SERVERLOG=true
 EOF
-else
-    cat >"$HOME/.crontab" <<EOF
-0   0   *   *   *  /etc/service/cron/full
-0   1-23   *   *   *  /etc/service/cron/incremental
-EOF
-fi

@@ -1,11 +1,8 @@
 #!/bin/sh
 
 exec 2>&1
-if [ -z "$PG_AUTOCTL" ]; then
-    install -d -m 0750 -o "$USER" -g "$GROUP" "$PGDATA"
-else
-    install -d -m 1775 -o "$USER" -g "$GROUP" "/tmp/pg_autoctl"
-fi
+if [ -n "$PG_AUTOCTL" ]; then install -d -m 1775 -o "$USER" -g "$GROUP" "/tmp/pg_autoctl"
+else install -d -m 0750 -o "$USER" -g "$GROUP" "$PGDATA"; fi
 install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql /var/log/postgresql
 if [ "$(pgrep runsvdir | wc -l)" -gt "0" ]; then
     install -d -m 0750 -o "$USER" -g "$GROUP" "$HOME/pg_arclog" "$HOME/pg_log" "$HOME/pg_rman"
@@ -17,13 +14,10 @@ realpath "$0"
 set -ex
 test -d "$PGDATA/base" || chpst -u "$USER":"$GROUP" /etc/service/postgres/init
 test -d "$PGDATA/base"
-if [ -z "$PG_AUTOCTL" ]; then
+if [ -n "$PG_AUTOCTL" ]; then
+    if [ -z "$PG_AUTOCTL_MONITOR" ]; then rm -rf /etc/service/pgbouncer; fi
+    exec chpst -u "$USER":"$GROUP" -L /run/postgresql/postgres.run pg_autoctl run
+else
     rm -rf /etc/service/pglisten
     exec chpst -u "$USER":"$GROUP" -L /run/postgresql/postgres.run postmaster
-else
-    if [ -z "$PG_AUTOCTL_MONITOR" ]; then
-        rm -rf /etc/service/pgbouncer
-        rm -rf /etc/service/pglisten
-    fi
-    exec chpst -u "$USER":"$GROUP" -L /run/postgresql/postgres.run pg_autoctl run
 fi

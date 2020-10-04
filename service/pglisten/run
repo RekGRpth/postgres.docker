@@ -2,15 +2,22 @@
 
 exec 2>&1
 install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql
-test -f /run/postgresql/pgbouncer.run || exit $?
+test -f /run/postgresql/postgres.run || exit $?
+chpst -u "$USER":"$GROUP" pg_ctl status || exit $?
 chmod 755 supervise
 chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
 realpath "$0"
 set -ex
 CONNINFO="$(pg_autoctl show uri --monitor)"
-FORMATION="$(pg_autoctl config get pg_autoctl.formation)"
-GROUPID="$(pg_autoctl config get pg_autoctl.group)"
-chpst -u "$USER":"$GROUP" pglisten --listen=state --conninfo="$CONNINFO" | jq --unbuffered --raw-output "select(.formation == \"$FORMATION\" and .groupId == $GROUPID and .health == \"good\" and ((.reportedState == \"primary\" and .goalState == \"primary\") or (.reportedState == \"wait_primary\" and .goalState == \"wait_primary\") or (.reportedState == \"single\" and .goalState == \"single\"))) | {host:.host, port:.port} | join(\" \")" | while read -r HOST PORT; do
-    echo "* = host=$HOST port=$PORT" >"$HOME/.databases.ini"
-    sv reload pgbouncer
-done
+if [ -n "$PG_AUTOCTL_MONITOR" ]; then
+    FORMATION="$(pg_autoctl config get pg_autoctl.formation)"
+    GROUPID="$(pg_autoctl config get pg_autoctl.group)"
+    chpst -u "$USER":"$GROUP" pglisten --listen=state --conninfo="$CONNINFO" | jq --unbuffered --raw-output "select(.formation == \"$FORMATION\" and .groupId == $GROUPID and .health == \"good\" and ((.reportedState == \"primary\" and .goalState == \"primary\") or (.reportedState == \"wait_primary\" and .goalState == \"wait_primary\") or (.reportedState == \"single\" and .goalState == \"single\"))) | {host:.host, port:.port} | join(\" \")" | while read -r HOST PORT; do
+        chpst -u "$USER":"$GROUP" echo "* = host=$HOST port=$PORT" >"$HOME/.databases.ini"
+        chpst -u "$USER":"$GROUP" sv reload pgbouncer
+    done
+else
+    chpst -u "$USER":"$GROUP" pglisten --listen=state --conninfo="$CONNINFO" | jq --unbuffered --raw-output "select((.reportedState == \"primary\" and .goalState == \"primary\") or (.reportedState == \"wait_primary\" and .goalState == \"wait_primary\") or (.reportedState == \"single\" and .goalState == \"single\")) | {host:.host, port:.port} | join(\" \")" | while read -r HOST PORT; do
+        chpst -u "$USER":"$GROUP" /etc/service/cron/incremental
+    done
+fi
