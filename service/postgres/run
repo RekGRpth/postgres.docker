@@ -16,9 +16,14 @@ test -d "$PGDATA/base" || chpst -u "$USER":"$GROUP" /etc/service/postgres/init
 test -d "$PGDATA/base"
 if [ -n "$PG_AUTOCTL" ]; then
     if [ -n "$PG_AUTOCTL_MONITOR" ]; then
-        FORMATION="$(chpst -u "$USER":"$GROUP" pg_autoctl config get pg_autoctl.formation)"
-        GROUPID="$(chpst -u "$USER":"$GROUP" pg_autoctl config get pg_autoctl.group)"
-        if [ "$(chpst -u "$USER":"$GROUP" pg_autoctl show state --group "$GROUPID" --formation "$FORMATION" | grep "$(hostname)" | wc -l)" -eq "0" ]; then
+        if [ -f "$HOME/.config/pg_autoctl$PGDATA/pg_autoctl.cfg" ]; then
+            FORMATION="$(chpst -u "$USER":"$GROUP" pg_autoctl config get pg_autoctl.formation)"
+            GROUPID="$(chpst -u "$USER":"$GROUP" pg_autoctl config get pg_autoctl.group)"
+            if [ "$(chpst -u "$USER":"$GROUP" pg_autoctl show state --group "$GROUPID" --formation "$FORMATION" | grep "$(hostname)" | wc -l)" -eq "0" ]; then
+                chpst -u "$USER":"$GROUP" pg_autoctl drop node
+                chpst -u "$USER":"$GROUP" /etc/service/postgres/autoctl
+            fi
+        else
             chpst -u "$USER":"$GROUP" /etc/service/postgres/autoctl
         fi
     else
