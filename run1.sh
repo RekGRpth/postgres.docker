@@ -13,6 +13,7 @@ docker run \
     --env GROUP_ID="$(id -g)" \
     --env LANG=ru_RU.UTF-8 \
     --env PG_AUTOCTL_MONITOR=postgres://autoctl_node@postgres0/pg_auto_failover?sslmode=prefer \
+    --env PG_AUTOCTL_NAME=postgres1 \
     --env PG_AUTOCTL_REPLICATION_QUORUM=false \
     --env PG_AUTOCTL_SERVER_CERT=/etc/certs/cert.pem \
     --env PG_AUTOCTL_SERVER_KEY=/etc/certs/key.pem \
