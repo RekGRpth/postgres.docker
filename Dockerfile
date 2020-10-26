@@ -54,12 +54,14 @@ RUN exec 2>&1 \
         nghttp2-dev \
         openldap-dev \
         openssl-dev \
+        patch \
         readline-dev \
         rtmpdump-dev \
         udns-dev \
         util-linux-dev \
         zfs-dev \
         zlib-dev \
+        zstd-dev \
     && mkdir -p /usr/src \
     && cd /usr/src \
     && git clone --recursive https://github.com/RekGRpth/curl.git \
@@ -98,6 +100,7 @@ RUN exec 2>&1 \
         --with-nghttp2 \
 #        --with-ngtcp2 \
 #        --with-quiche \
+        --with-zstd \
     && make -j"$(nproc)" curl-config install \
     && cd /usr/src/curl/include \
     && make -j"$(nproc)" install \
