@@ -83,8 +83,9 @@ RUN exec 2>&1 \
     && cd /usr/src/curl \
     && autoreconf -vif \
     && ./configure \
+        --enable-alt-svc \
         --enable-ares \
-#        --enable-esni \
+        --enable-esni \
         --enable-ipv6 \
         --enable-ldap \
         --enable-libgcc \
