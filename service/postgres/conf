@@ -26,6 +26,7 @@ session_preload_libraries = 'auto_explain'
 track_activity_query_size = 102400
 wal_level = minimal
 EOF
+if [ -n "$SERVER_CERT" ] && [ -n "$SERVER_KEY" ]; then echo "ssl = on" >>"$PGDATA/postgresql.conf"; fi
 if [ -n "$SERVER_CERT" ]; then echo "ssl_cert_file = '$SERVER_CERT'" >>"$PGDATA/postgresql.conf"; fi
 if [ -n "$SERVER_KEY" ]; then echo "ssl_key_file = '$SERVER_KEY'" >>"$PGDATA/postgresql.conf"; fi
 if [ -n "$SSL_CA_FILE" ]; then echo "ssl_ca_file = '$SSL_CA_FILE'" >>"$PGDATA/postgresql.conf"; fi
