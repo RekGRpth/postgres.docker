@@ -21,13 +21,13 @@ if [ -n "$PG_AUTOCTL" ]; then
             GROUPID="$(chpst -u "$USER":"$GROUP" pg_autoctl config get pg_autoctl.group)"
             if [ "$(chpst -u "$USER":"$GROUP" pg_autoctl show state --group "$GROUPID" --formation "$FORMATION" | grep "$(hostname)" | wc -l)" -eq "0" ]; then
                 chpst -u "$USER":"$GROUP" pg_autoctl drop node
-                chpst -u "$USER":"$GROUP" /etc/service/postgres/autoctl
             fi
-        else
-            chpst -u "$USER":"$GROUP" /etc/service/postgres/autoctl
         fi
     else
         rm -rf /etc/service/pgbouncer
+    fi
+    if [ ! -f "$HOME/.config/pg_autoctl$PGDATA/pg_autoctl.cfg" ]; then
+        chpst -u "$USER":"$GROUP" /etc/service/postgres/autoctl
     fi
     exec chpst -u "$USER":"$GROUP" -L /run/postgresql/postgres.run pg_autoctl run
 else
