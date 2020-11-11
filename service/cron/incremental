@@ -7,7 +7,7 @@ if [ -n "$PG_AUTOCTL" ] && [ "$(pg_autoctl config get pg_autoctl.role)" != "moni
     FORMATION="$(pg_autoctl config get pg_autoctl.formation)"
     GROUPID="$(pg_autoctl config get pg_autoctl.group)"
     case "$(pg_autoctl show state --group "$GROUPID" --formation "$FORMATION" --json --local | jq --unbuffered --raw-output .current_group_state)" in
-        "single" | "primary")
+        "single" | "primary" | "wait_primary")
             pg_rman backup --backup-mode=incremental --full-backup-on-error
         ;;
 #        "secondary")
