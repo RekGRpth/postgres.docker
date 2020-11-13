@@ -9,6 +9,7 @@ if [ -n "$PG_AUTOCTL_SSL_CA_FILE" ]; then SSL_CA_FILE="--ssl-ca-file $PG_AUTOCTL
 if [ -n "$PG_AUTOCTL_SSL_CRL_FILE" ]; then SSL_CRL_FILE="--ssl-crl-file $PG_AUTOCTL_SSL_CRL_FILE"; fi
 if [ -z "$SERVER_CERT" ] && [ -z "$SERVER_KEY" ]; then NO_SSL="--no-ssl"; fi
 if [ -n "$PG_AUTOCTL_MONITOR" ]; then
+    pg_isready -d "$PG_AUTOCTL_MONITOR"
     pg_autoctl create postgres \
         $NO_SSL \
         $SERVER_CERT \
