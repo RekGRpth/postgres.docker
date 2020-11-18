@@ -2,6 +2,7 @@
 
 exec 2>&1
 test -f /run/postgresql/postgres.run || exit $?
+pg_isready || exit $?
 pg_ctl status || exit $?
 realpath "$0"
 set -ex
