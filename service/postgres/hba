@@ -4,7 +4,5 @@ exec 2>&1
 realpath "$0"
 set -ex
 echo >>"$PGDATA/pg_hba.conf"
-ip -o -f inet addr show | awk '/scope global/ {print $4}' | sed -E 's|.\d+/|.0/|' | while read -r NET; do
-    echo "host all all $NET trust"
-    if [ -n "$PG_AUTOCTL" ]; then echo "host replication all $NET trust"; fi
-done >>"$PGDATA/pg_hba.conf"
+echo "host all all samenet trust" >>"$PGDATA/pg_hba.conf"
+if [ -n "$PG_AUTOCTL" ]; then echo "host replication all samenet trust" >>"$PGDATA/pg_hba.conf"; fi

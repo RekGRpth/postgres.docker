@@ -20,7 +20,7 @@ if [ -n "$PG_AUTOCTL_MONITOR" ]; then
         --monitor "$PG_AUTOCTL_MONITOR" \
         --name "${PG_AUTOCTL_NAME:-$(hostname)}" \
         --replication-quorum "${PG_AUTOCTL_REPLICATION_QUORUM:-true}" \
-        --skip-pg-hba \
+        $PG_AUTOCTL_SKIP_PG_HBA \
         --ssl-mode "${PG_AUTOCTL_SSL_MODE:-allow}"
 else
     pg_autoctl create monitor \
@@ -29,6 +29,6 @@ else
         $SERVER_KEY \
         $SSL_CA_FILE \
         $SSL_CRL_FILE \
-        --skip-pg-hba \
+        $PG_AUTOCTL_SKIP_PG_HBA \
         --ssl-mode "${PG_AUTOCTL_SSL_MODE:-allow}"
 fi
