@@ -10,6 +10,7 @@ docker service create \
     --env CLUSTER_NAME=monitor \
     --env GROUP_ID="$(id -g)" \
     --env LANG=ru_RU.UTF-8 \
+    --env PG_AUTOCTL_AUTH=trust \
     --env PG_AUTOCTL_SERVER_CERT=/etc/certs/cert.pem \
     --env PG_AUTOCTL_SERVER_KEY=/etc/certs/key.pem \
     --env PG_AUTOCTL_SSL_CA_FILE=/etc/certs/ca.pem \

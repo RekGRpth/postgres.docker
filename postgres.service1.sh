@@ -10,6 +10,7 @@ docker service create \
     --env CLUSTER_NAME=test \
     --env GROUP_ID="$(id -g)" \
     --env LANG=ru_RU.UTF-8 \
+    --env PG_AUTOCTL_AUTH=trust \
     --env PG_AUTOCTL_MONITOR=postgres://autoctl_node@tasks.monitor/pg_auto_failover?sslmode=prefer \
     --env PG_AUTOCTL_NAME=postgres1 \
     --env PG_AUTOCTL_REPLICATION_QUORUM=false \
