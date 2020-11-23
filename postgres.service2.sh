@@ -21,7 +21,7 @@ docker service create \
     --env PG_AUTOCTL=true \
     --env TZ=Asia/Yekaterinburg \
     --env USER_ID="$(id -u)" \
-    --hostname "{{.Service.Name}}.{{.Task.Slot}}.{{.Task.ID}}.dockers" \
+    --hostname tasks.postgres2 \
     --mount type=bind,source=/etc/certs,destination=/etc/certs,readonly \
     --mount type=volume,source=postgres2,destination=/home \
     --name postgres2 \

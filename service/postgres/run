@@ -26,8 +26,12 @@ if [ -n "$PG_AUTOCTL" ]; then
                 rm -f "$HOME/.config/pg_autoctl$PGDATA/pg_autoctl.cfg"
             fi
         fi
+        if [ ! -f "$HOME/.primary" ]; then
+            rm -rf /etc/service/primary
+        fi
     else
         rm -rf /etc/service/pgbouncer
+        rm -rf /etc/service/primary
     fi
     if [ ! -f "$HOME/.config/pg_autoctl$PGDATA/pg_autoctl.cfg" ]; then
         chpst -u "$USER":"$GROUP" /etc/service/postgres/autoctl
@@ -35,5 +39,6 @@ if [ -n "$PG_AUTOCTL" ]; then
     exec chpst -u "$USER":"$GROUP" -L /run/postgresql/postgres.run pg_autoctl run
 else
     rm -rf /etc/service/pglisten
+    rm -rf /etc/service/primary
     exec chpst -u "$USER":"$GROUP" -L /run/postgresql/postgres.run postmaster
 fi
