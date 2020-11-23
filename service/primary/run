@@ -11,8 +11,11 @@ realpath "$0"
 set -ex
 FORMATION="$(chpst -u "$USER":"$GROUP" pg_autoctl config get pg_autoctl.formation)"
 GROUPID="$(chpst -u "$USER":"$GROUP" pg_autoctl config get pg_autoctl.group)"
+NODEHOST="$(hostname)"
+NODENAME="$(chpst -u "$USER":"$GROUP" pg_autoctl config get pg_autoctl.name)"
 while true; do
-    case "$(chpst -u "$USER":"$GROUP" pg_autoctl show state --group "$GROUPID" --formation "$FORMATION" --json --local | jq --unbuffered --raw-output .current_group_state)" in
+    STATE="$(chpst -u "$USER":"$GROUP" pg_autoctl show state --group "$GROUPID" --formation "$FORMATION" --json | jq --unbuffered --raw-output ".[] | select(.nodename == \"$NODENAME\" and .nodehost == \"$NODEHOST\") | .current_group_state")"
+    case "$STATE" in
         "single" | "primary" | "wait_primary")
             break
         ;;
