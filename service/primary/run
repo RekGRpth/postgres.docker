@@ -14,7 +14,7 @@ GROUPID="$(chpst -u "$USER":"$GROUP" pg_autoctl config get pg_autoctl.group)"
 NODEHOST="$(hostname)"
 NODENAME="$(chpst -u "$USER":"$GROUP" pg_autoctl config get pg_autoctl.name)"
 while true; do
-    STATE="$(chpst -u "$USER":"$GROUP" pg_autoctl show state --group "$GROUPID" --formation "$FORMATION" --json | jq --unbuffered --raw-output ".[] | select(.nodename == \"$NODENAME\" and .nodehost == \"$NODEHOST\") | .current_group_state")"
+    STATE="$(chpst -u "$USER":"$GROUP" pg_autoctl show state --group "$GROUPID" --formation "$FORMATION" --json | jq --unbuffered --raw-output ".[] | select(.nodename == \"$NODENAME\" and .nodehost == \"$NODEHOST\" and .current_group_state == .assigned_group_state) | .current_group_state")"
     case "$STATE" in
         "single" | "primary" | "wait_primary")
             break
