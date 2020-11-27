@@ -17,6 +17,9 @@ if [ -n "$PG_AUTOCTL" ] && [ "$(pg_autoctl config get pg_autoctl.role)" != "moni
 #            HOST="$(pg_autoctl show state --group "$GROUPID" --formation "$FORMATION" --json | jq --unbuffered --raw-output ".[] | select(.current_group_state == \"primary\") | .nodehost")"
 #            pg_rman backup --backup-mode=incremental --full-backup-on-error --host="$HOST"
 #        ;;
+        *)
+            exit
+        ;;
     esac
 else
     pg_rman backup --backup-mode=incremental --full-backup-on-error
