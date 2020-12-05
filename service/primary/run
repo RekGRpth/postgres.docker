@@ -19,12 +19,13 @@ while true; do
     STATE="$(chpst -u "$USER":"$GROUP" pg_autoctl show state --group "$GROUPID" --formation "$FORMATION" --json | jq --unbuffered --raw-output ".[] | select(.nodename == \"$NODENAME\" and .nodehost == \"$NODEHOST\" and .current_group_state == .assigned_group_state) | .current_group_state")"
     case "$STATE" in
         "single" | "primary" | "wait_primary")
-            TIME="$(ps -oetime= -p "$PID")"
+            TIME="$(ps -oetimes= -p "$PID")"
             if [ "$TIME" -gt "$PRIMARY" ]; then break; fi
             sleep 10
         ;;
         "secondary")
             chpst -u "$USER":"$GROUP" pg_autoctl perform switchover
+            break
         ;;
         *)
             sleep 10
