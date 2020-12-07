@@ -24,7 +24,7 @@ while true; do
             sleep 10
         ;;
         "secondary")
-            chpst -u "$USER":"$GROUP" pg_autoctl perform switchover --group "$GROUPID" --formation "$FORMATION"
+            chpst -u "$USER":"$GROUP" pg_autoctl perform switchover --group "$GROUPID" --formation "$FORMATION" || echo $?
             break
         ;;
         *)
