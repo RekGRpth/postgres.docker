@@ -17,6 +17,7 @@ RUN exec 2>&1 \
     && apk add --no-cache --virtual .build-deps \
         autoconf \
         automake \
+        bash-dev \
         binutils \
         bison \
         brotli-dev \
@@ -83,6 +84,7 @@ RUN exec 2>&1 \
     && git clone --recursive https://github.com/RekGRpth/pldebugger.git \
     && git clone --recursive https://github.com/RekGRpth/plsh.git \
     && git clone --recursive https://github.com/RekGRpth/postgres.git \
+    && git clone --recursive https://github.com/RekGRpth/slony1-engine.git \
     && cd /usr/src/curl \
     && autoreconf -vif \
     && ./configure \
@@ -136,6 +138,9 @@ RUN exec 2>&1 \
     && ./configure \
         --disable-debug \
         --with-pam \
+    && cd /usr/src/slony1-engine \
+    && autoreconf -vif \
+    && ./configure \
     && cd / \
     && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "curl" ! -name "postgres" ! -name "pgsidekick" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
     && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/postgresql/*.so || true) \
