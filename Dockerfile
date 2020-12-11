@@ -17,7 +17,6 @@ RUN exec 2>&1 \
     && apk add --no-cache --virtual .build-deps \
         autoconf \
         automake \
-        bash-dev \
         binutils \
         bison \
         brotli-dev \
@@ -141,6 +140,7 @@ RUN exec 2>&1 \
     && cd /usr/src/slony1-engine \
     && autoconf \
     && ./configure \
+    && make \
     && cd / \
     && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "curl" ! -name "postgres" ! -name "pgsidekick" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
     && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/postgresql/*.so || true) \
