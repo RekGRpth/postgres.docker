@@ -139,7 +139,7 @@ RUN exec 2>&1 \
         --disable-debug \
         --with-pam \
     && cd /usr/src/slony1-engine \
-    && autoreconf -vif \
+    && autoconf \
     && ./configure \
     && cd / \
     && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "curl" ! -name "postgres" ! -name "pgsidekick" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
