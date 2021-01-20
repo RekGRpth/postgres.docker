@@ -11,9 +11,6 @@ RUN exec 2>&1 \
     && mkdir -p "${HOME}" \
     && addgroup -S "${GROUP}" \
     && adduser -D -S -h "${HOME}" -s /bin/ash -G "${GROUP}" "${USER}" \
-    && apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/edge/testing --virtual .edge-testing-build-deps \
-        mustach-dev \
-        pandoc \
     && apk add --no-cache --virtual .build-deps \
         autoconf \
         automake \
@@ -48,9 +45,11 @@ RUN exec 2>&1 \
         make \
         mt-st \
         musl-dev \
+        mustach-dev \
         nghttp2-dev \
         openldap-dev \
         openssl-dev \
+        pandoc \
         patch \
         readline-dev \
         rtmpdump-dev \
@@ -114,16 +113,13 @@ RUN exec 2>&1 \
     && cd / \
     && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "pgsidekick" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
     && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/postgresql/*.so || true) \
-    && apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/edge/testing --virtual .mustach-rundeps \
-        mustach-dev \
     && apk add --no-cache --virtual .postgresql-rundeps \
         jq \
         procps \
         runit \
         sed \
-        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | grep -v 'libmustach.so' | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }') \
+        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }') \
     && apk del --no-cache .build-deps \
-    && apk del --no-cache .edge-testing-build-deps \
     && rm -rf /usr/src /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man \
     && find /usr/local -name '*.a' -delete \
     && chmod -R 0755 /etc/service \
