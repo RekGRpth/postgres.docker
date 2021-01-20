@@ -21,9 +21,8 @@ RUN exec 2>&1 \
         bison \
         brotli-dev \
         c-ares-dev \
-#        clang \
+        curl-dev \
         file \
-#        fish-dev \
         flex \
         g++ \
         gcc \
@@ -46,8 +45,6 @@ RUN exec 2>&1 \
         libxslt-dev \
         linux-headers \
         linux-pam-dev \
-#        llvm \
-#        llvm-dev \
         make \
         mt-st \
         musl-dev \
@@ -64,7 +61,6 @@ RUN exec 2>&1 \
         zstd-dev \
     && mkdir -p /usr/src \
     && cd /usr/src \
-    && git clone --recursive https://github.com/RekGRpth/curl.git \
     && git clone --recursive https://github.com/RekGRpth/pg_auto_failover.git \
     && git clone --recursive https://github.com/RekGRpth/pg_backtrace.git \
     && git clone --recursive https://github.com/RekGRpth/pgbouncer.git \
@@ -85,35 +81,9 @@ RUN exec 2>&1 \
     && git clone --recursive https://github.com/RekGRpth/plsh.git \
     && git clone --recursive https://github.com/RekGRpth/postgres.git \
     && git clone --recursive https://github.com/RekGRpth/slony1-engine.git \
-    && cd /usr/src/curl \
-    && autoreconf -vif \
-    && ./configure \
-        --enable-alt-svc \
-        --enable-ares \
-        --enable-esni \
-        --enable-ipv6 \
-        --enable-ldap \
-        --enable-libgcc \
-#        --enable-sspi \
-        --enable-unix-sockets \
-        --with-gssapi \
-        --with-libmetalink \
-        --with-librtmp \
-        --with-libssh \
-        --with-nghttp2 \
-#        --with-ngtcp2 \
-#        --with-quiche \
-        --with-zstd \
-    && make -j"$(nproc)" curl-config install \
-    && cd /usr/src/curl/include \
-    && make -j"$(nproc)" install \
-    && cd /usr/src/curl/lib \
-    && make -j"$(nproc)" install \
     && cd /usr/src/postgres \
     && git checkout REL_13_STABLE \
     && ./configure \
-#        --enable-cassert \
-#        --enable-debug \
         --enable-thread-safety \
         --prefix=/usr/local \
         --with-gssapi \
@@ -122,7 +92,6 @@ RUN exec 2>&1 \
         --with-libedit-preferred \
         --with-libxml \
         --with-libxslt \
-#        --with-llvm \
         --with-openssl \
         --with-pam \
         --with-system-tzdata=/usr/share/zoneinfo \
@@ -143,7 +112,7 @@ RUN exec 2>&1 \
     && ./configure \
     && make \
     && cd / \
-    && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "curl" ! -name "postgres" ! -name "pgsidekick" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
+    && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "pgsidekick" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
     && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/postgresql/*.so || true) \
     && apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/edge/testing --virtual .mustach-rundeps \
         mustach-dev \
