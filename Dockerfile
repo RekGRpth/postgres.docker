@@ -45,11 +45,9 @@ RUN exec 2>&1 \
         make \
         mt-st \
         musl-dev \
-        mustach-dev \
         nghttp2-dev \
         openldap-dev \
         openssl-dev \
-        pandoc \
         patch \
         readline-dev \
         rtmpdump-dev \
