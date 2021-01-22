@@ -113,6 +113,7 @@ RUN exec 2>&1 \
     && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/postgresql/*.so || true) \
     && apk add --no-cache --virtual .postgresql-rundeps \
         jq \
+        openssh-client \
         procps \
         runit \
         sed \
