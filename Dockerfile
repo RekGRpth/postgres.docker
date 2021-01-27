@@ -113,6 +113,7 @@ RUN exec 2>&1 \
     && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/postgresql/*.so || true) \
     && apk add --no-cache --virtual .postgresql-rundeps \
         jq \
+        opensmtpd \
         openssh-client \
         procps \
         runit \
@@ -123,4 +124,9 @@ RUN exec 2>&1 \
     && find /usr/local -name '*.a' -delete \
     && chmod -R 0755 /etc/service \
     && rm -f /var/spool/cron/crontabs/root \
+    && sed -i 's|table aliases|#table aliases|g' /etc/smtpd/smtpd.conf \
+    && sed -i 's|listen on lo|listen on 0.0.0.0|g' /etc/smtpd/smtpd.conf \
+    && sed -i 's|action "local" maildir alias|#action "local" maildir alias|g' /etc/smtpd/smtpd.conf \
+    && sed -i 's|match from local for any action "relay"|match from any for any action "relay"|g' /etc/smtpd/smtpd.conf \
+    && sed -i 's|match for local action "local"|#match for local action "local"|g' /etc/smtpd/smtpd.conf \
     && echo done
