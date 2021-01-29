@@ -33,6 +33,7 @@ if [ -n "$PG_AUTOCTL" ]; then
     else
         rm -rf /etc/service/pgbouncer
         rm -rf /etc/service/primary
+        rm -rf /etc/service/smtp
     fi
     if [ ! -f "$HOME/.config/pg_autoctl$PGDATA/pg_autoctl.cfg" ]; then
         chpst -u "$USER":"$GROUP" /etc/service/postgres/autoctl
