@@ -20,6 +20,7 @@ docker run \
     --hostname postgres \
     --mount type=bind,source=/etc/certs,destination=/etc/certs,readonly \
     --mount type=bind,source=/run/postgresql,destination=/run/postgresql \
+    --mount type=bind,source=/var/lib/docker/volumes/postgres/_data/pg_data/smtpd.conf,destination=/etc/smtpd/smtpd.conf,readonly \
     --mount type=volume,source=postgres,destination=/home \
     --name postgres \
     --network name=docker,alias=postgres."$(hostname -d)" \
