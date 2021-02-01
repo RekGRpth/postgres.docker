@@ -22,6 +22,7 @@ RUN exec 2>&1 \
         file \
         flex \
         g++ \
+        gawk \
         gcc \
         gettext-dev \
         git \
@@ -51,6 +52,7 @@ RUN exec 2>&1 \
         patch \
         readline-dev \
         rtmpdump-dev \
+        texinfo \
         udns-dev \
         util-linux-dev \
         zfs-dev \
@@ -58,6 +60,7 @@ RUN exec 2>&1 \
         zstd-dev \
     && mkdir -p /usr/src \
     && cd /usr/src \
+    && git clone --recursive https://github.com/RekGRpth/gawkextlib.git \
     && git clone --recursive https://github.com/RekGRpth/pg_auto_failover.git \
     && git clone --recursive https://github.com/RekGRpth/pg_backtrace.git \
     && git clone --recursive https://github.com/RekGRpth/pgbouncer.git \
@@ -96,6 +99,14 @@ RUN exec 2>&1 \
     && make -j"$(nproc)" -C src install \
     && make -j"$(nproc)" -C contrib install \
     && make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install \
+    && cd /usr/src/gawkextlib/lib \
+    && autoreconf -vif \
+    && ./configure \
+    && make -j"$(nproc)" install \
+    && cd /usr/src/gawkextlib/pgsql \
+    && autoreconf -vif \
+    && ./configure \
+    && make -j"$(nproc)" install \
     && cd /usr/src/pgsidekick \
     && make -j"$(nproc)" pglisten \
     && cp -f pglisten /usr/local/bin/ \
@@ -109,9 +120,10 @@ RUN exec 2>&1 \
     && ./configure \
     && make \
     && cd / \
-    && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "pgsidekick" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
-    && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/postgresql/*.so || true) \
+    && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "pgsidekick" ! -name "gawkextlib" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
+    && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/*/*.so || true) \
     && apk add --no-cache --virtual .postgresql-rundeps \
+        gawk \
         jq \
         opensmtpd \
         openssh-client \
