@@ -19,8 +19,10 @@ if [ -n "$PG_AUTOCTL_MONITOR" ]; then
         chpst -u "$USER":"$GROUP" sv reload pgbouncer
         if [ "$HOST" = "$NODEHOST" ]; then
             chpst -u "$USER":"$GROUP" sv start smtp
+            chpst -u "$USER":"$GROUP" sv start primary || echo $?
         else
             chpst -u "$USER":"$GROUP" sv stop smtp
+            chpst -u "$USER":"$GROUP" sv stop primary || echo $?
         fi
     done
 else

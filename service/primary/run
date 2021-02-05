@@ -32,4 +32,4 @@ while true; do
         ;;
     esac
 done
-exec rm -rf /etc/service/primary
+exec chpst -u "$USER":"$GROUP" sv stop primary
