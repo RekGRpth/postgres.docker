@@ -18,6 +18,7 @@ RUN exec 2>&1 \
         bison \
         brotli-dev \
         c-ares-dev \
+        clang \
         curl-dev \
         file \
         flex \
@@ -45,6 +46,8 @@ RUN exec 2>&1 \
         libxslt-dev \
         linux-headers \
         linux-pam-dev \
+        llvm \
+        llvm-dev \
         make \
         mt-st \
         musl-dev \
@@ -97,6 +100,7 @@ RUN exec 2>&1 \
         --with-libedit-preferred \
         --with-libxml \
         --with-libxslt \
+        --with-llvm \
         --with-openssl \
         --with-pam \
         --with-system-tzdata=/usr/share/zoneinfo \
