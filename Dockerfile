@@ -24,6 +24,8 @@ RUN exec 2>&1 \
         g++ \
         gawk \
         gcc \
+        gdal-dev \
+        geos-dev \
         gettext-dev \
         git \
         groff \
@@ -50,6 +52,8 @@ RUN exec 2>&1 \
         openldap-dev \
         openssl-dev \
         patch \
+        proj-dev \
+        protobuf-c-dev \
         readline-dev \
         rtmpdump-dev \
         texinfo \
@@ -79,6 +83,7 @@ RUN exec 2>&1 \
     && git clone --recursive https://github.com/RekGRpth/pg_task.git \
     && git clone --recursive https://github.com/RekGRpth/pldebugger.git \
     && git clone --recursive https://github.com/RekGRpth/plsh.git \
+    && git clone --recursive https://github.com/RekGRpth/postgis.git \
     && git clone --recursive https://github.com/RekGRpth/postgres.git \
     && git clone --recursive https://github.com/RekGRpth/slony1-engine.git \
     && cd /usr/src/postgres \
@@ -110,6 +115,8 @@ RUN exec 2>&1 \
     && cd /usr/src/pgsidekick \
     && make -j"$(nproc)" pglisten \
     && cp -f pglisten /usr/local/bin/ \
+    && cd /usr/src/postgis \
+    && ./autogen.sh \
     && cd /usr/src/pgbouncer \
     && ./autogen.sh \
     && ./configure \
