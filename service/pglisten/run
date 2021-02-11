@@ -19,11 +19,10 @@ if [ -n "$PG_AUTOCTL_MONITOR" ]; then
         chpst -u "$USER":"$GROUP" sv reload pgbouncer
         if [ "$HOST" = "$NODEHOST" ]; then
             chpst -u "$USER":"$GROUP" sv start smtp
-            chpst -u "$USER":"$GROUP" sv start primary || echo $?
         else
             chpst -u "$USER":"$GROUP" sv stop smtp
-            chpst -u "$USER":"$GROUP" sv stop primary || echo $?
         fi
+        chpst -u "$USER":"$GROUP" sv start primary || echo $?
     done
 else
     chpst -u "$USER":"$GROUP" pglisten --listen=state --conninfo="$CONNINFO" | jq --unbuffered --raw-output "select((.reportedState == \"primary\" and .goalState == \"primary\") or (.reportedState == \"wait_primary\" and .goalState == \"wait_primary\") or (.reportedState == \"single\" and .goalState == \"single\")) | {host:.host, port:.port} | join(\" \")" | while read -r HOST PORT; do
