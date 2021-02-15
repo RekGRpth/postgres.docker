@@ -144,7 +144,6 @@ RUN exec 2>&1 \
         cron \
         gawk \
         jq \
-        locales \
         opensmtpd \
         openssh-client \
         procps \
