@@ -149,7 +149,8 @@ RUN exec 2>&1 \
         procps \
         runit \
         sed \
-    && rm -rf /usr/src /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man \
+    && rm -rf /usr/src /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man /var/lib/apt/lists/* \
+    && rm -r /var/cache/ldconfig/aux-cache /var/cache/ldconfig \
     && find /usr/local -name '*.a' -delete \
     && chmod -R 0755 /etc/service \
     && rm -f /var/spool/cron/crontabs/root \
