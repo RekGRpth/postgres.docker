@@ -2,7 +2,7 @@
 
 #docker build --tag rekgrpth/postgres .
 #docker push rekgrpth/postgres
-docker pull rekgrpth/postgres
+docker pull rekgrpth/postgres:ubuntu
 docker network create --attachable --opt com.docker.network.bridge.name=docker docker || echo $?
 docker volume create postgres
 docker stop postgres || echo $?
@@ -20,10 +20,10 @@ docker run \
     --hostname postgres \
     --mount type=bind,source=/etc/certs,destination=/etc/certs,readonly \
     --mount type=bind,source=/run/postgresql,destination=/run/postgresql \
-    --mount type=bind,source=/var/lib/docker/volumes/postgres/_data/pg_data/smtpd.conf,destination=/etc/smtpd/smtpd.conf,readonly \
+    --mount type=bind,source=/var/lib/docker/volumes/postgres/_data/pg_data/smtpd.conf,destination=/etc/smtpd.conf,readonly \
     --mount type=volume,source=postgres,destination=/home \
     --name postgres \
     --network name=docker,alias=postgres."$(hostname -d)" \
     --publish target=5432,published=5432,mode=host \
     --restart always \
-    rekgrpth/postgres runsvdir /etc/service
+    rekgrpth/postgres:ubuntu runsvdir /etc/service

@@ -1,4 +1,4 @@
-FROM rekgrpth/pdf
+FROM rekgrpth/pdf:ubuntu
 ADD service /etc/service
 CMD /etc/service/postgres/run
 ENV BACKUP_PATH=${HOME}/pg_rman \
@@ -9,62 +9,65 @@ VOLUME "${HOME}"
 RUN exec 2>&1 \
     && set -ex \
     && mkdir -p "${HOME}" \
-    && addgroup -S "${GROUP}" \
-    && adduser -D -S -h "${HOME}" -s /bin/ash -G "${GROUP}" "${USER}" \
-    && apk add --no-cache --virtual .build-deps \
+    && addgroup --system "${GROUP}" \
+    && adduser --disabled-password --system --home "${HOME}" --shell /sbin/nologin --ingroup "${GROUP}" "${USER}" \
+    && savedAptMark="$(apt-mark showmanual)" \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
         autoconf \
         automake \
+        autopoint \
         binutils \
         bison \
-        brotli-dev \
-        c-ares-dev \
         clang \
-        curl-dev \
         file \
         flex \
         g++ \
         gawk \
         gcc \
-        gdal-dev \
-        geos-dev \
-        gettext-dev \
+        gettext \
         git \
         groff \
-        icu-dev \
-        json-c-dev \
-        krb5-dev \
+        libbrotli-dev \
+        libc-ares-dev \
+        libcurl4-openssl-dev \
         libedit-dev \
         libevent-dev \
+        libgdal-dev \
+        libgeos-dev \
         libgss-dev \
+        libicu-dev \
+        libidn11-dev \
         libidn2-dev \
-        libidn-dev \
+        libjson-c-dev \
+        libkrb5-dev \
+        libldap2-dev \
+        libnghttp2-dev \
+        libpam0g-dev \
+        libproj-dev \
+        libprotobuf-c-dev \
         libpsl-dev \
+        libreadline-dev \
         libssh-dev \
+        libssl-dev \
         libtool \
+        libudns-dev \
         libunwind-dev \
         libxml2-dev \
         libxslt-dev \
-        linux-headers \
-        linux-pam-dev \
+        libzfslinux-dev \
+        libzstd-dev \
+        linux-headers-generic \
+        linux-libc-dev \
         llvm \
         llvm-dev \
         make \
         mt-st \
-        musl-dev \
-        nghttp2-dev \
-        openldap-dev \
-        openssl-dev \
         patch \
-        proj-dev \
-        protobuf-c-dev \
-        readline-dev \
-        rtmpdump-dev \
+        protobuf-c-compiler \
+        rtmpdump \
         texinfo \
-        udns-dev \
-        util-linux-dev \
-        zfs-dev \
-        zlib-dev \
-        zstd-dev \
+        zlib1g-dev \
     && mkdir -p /usr/src \
     && cd /usr/src \
     && git clone --recursive https://github.com/RekGRpth/gawkextlib.git \
@@ -131,9 +134,13 @@ RUN exec 2>&1 \
     && ./configure \
     && make \
     && cd / \
-    && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "pgsidekick" ! -name "gawkextlib" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
-    && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/*/*.so || true) \
-    && apk add --no-cache --virtual .postgresql-rundeps \
+    && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "pgsidekick" ! -name "gawkextlib" ! -name "linux-headers-*" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
+    && apt-mark auto '.*' > /dev/null \
+    && apt-mark manual $savedAptMark \
+    && find /usr/local -type f -executable -exec ldd '{}' ';' | grep -v 'not found' | awk '/=>/ { print $(NF-1) }' | sort -u | xargs -r dpkg-query --search | cut -d: -f1 | sort -u | xargs -r apt-mark manual \
+    && find /usr/local -type f -executable -exec ldd '{}' ';' | grep -v 'not found' | awk '/=>/ { print $(NF-1) }' | sort -u | xargs -r -i echo "/usr{}" | xargs -r dpkg-query --search | cut -d: -f1 | sort -u  | xargs -r apt-mark manual \
+    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
+    && apt-get install -y --no-install-recommends \
         gawk \
         jq \
         opensmtpd \
@@ -141,15 +148,13 @@ RUN exec 2>&1 \
         procps \
         runit \
         sed \
-        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }') \
-    && apk del --no-cache .build-deps \
     && rm -rf /usr/src /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man \
     && find /usr/local -name '*.a' -delete \
     && chmod -R 0755 /etc/service \
     && rm -f /var/spool/cron/crontabs/root \
-    && sed -i 's|table aliases|#table aliases|g' /etc/smtpd/smtpd.conf \
-    && sed -i 's|listen on lo|listen on 0.0.0.0|g' /etc/smtpd/smtpd.conf \
-    && sed -i 's|action "local" maildir alias|#action "local" maildir alias|g' /etc/smtpd/smtpd.conf \
-    && sed -i 's|match from local for any action "relay"|match from any for any action "relay"|g' /etc/smtpd/smtpd.conf \
-    && sed -i 's|match for local action "local"|#match for local action "local"|g' /etc/smtpd/smtpd.conf \
+    && sed -i 's|table aliases|#table aliases|g' /etc/smtpd.conf \
+    && sed -i 's|listen on lo|listen on 0.0.0.0|g' /etc/smtpd.conf \
+    && sed -i 's|action "local" maildir alias|#action "local" maildir alias|g' /etc/smtpd.conf \
+    && sed -i 's|match from local for any action "relay"|match from any for any action "relay"|g' /etc/smtpd.conf \
+    && sed -i 's|match for local action "local"|#match for local action "local"|g' /etc/smtpd.conf \
     && echo done
