@@ -150,7 +150,6 @@ RUN exec 2>&1 \
         procps \
         runit \
         sed \
-    && locale-gen --lang ${LANG} \
     && rm -rf /usr/src /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man \
     && find /usr/local -name '*.a' -delete \
     && chmod -R 0755 /etc/service \

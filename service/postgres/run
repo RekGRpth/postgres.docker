@@ -10,6 +10,7 @@ if [ "$(pgrep runsvdir | wc -l)" -gt "0" ]; then
     chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
 fi
 rm -f /run/postgresql/postgres.run "$PGDATA/postmaster.pid"
+locale-gen --lang "${LANG}"
 realpath "$0"
 set -ex
 test -d "$PGDATA/base" || chpst -u "$USER":"$GROUP" /etc/service/postgres/init
