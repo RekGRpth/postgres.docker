@@ -10,4 +10,4 @@ set -ex
 test -f "$BACKUP_PATH/system_identifier" || chpst -u "$USER":"$GROUP" /etc/service/cron/init
 test -f "$HOME/.crontab" || chpst -u "$USER":"$GROUP" /etc/service/cron/crontab
 chpst -u "$USER":"$GROUP" crontab "$HOME/.crontab"
-exec crond -d 8 -f
+exec cron -f
