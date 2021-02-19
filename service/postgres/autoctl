@@ -11,6 +11,9 @@ if [ -n "$PG_AUTOCTL_SSL_CRL_FILE" ]; then SSL_CRL_FILE="--ssl-crl-file $PG_AUTO
 if [ -z "$SERVER_CERT" ] && [ -z "$SERVER_KEY" ]; then NO_SSL="--no-ssl"; fi
 if [ -n "$PG_AUTOCTL_MONITOR" ]; then
     pg_isready -d "$PG_AUTOCTL_MONITOR"
+    if [ "$(pg_autoctl get formation number-sync-standbys --formation "${PG_AUTOCTL_FORMATION:-default}" | wc -l)" -eq "0" ]; then
+        pg_autoctl create formation --formation "${PG_AUTOCTL_FORMATION:-default}" --kind pgsql
+    fi
     pg_autoctl create postgres \
         $AUTH \
         $NO_SSL \
