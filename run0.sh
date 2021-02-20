@@ -17,6 +17,7 @@ docker run \
     --env PG_AUTOCTL_SSL_CA_FILE=/etc/certs/ca.pem \
     --env PG_AUTOCTL_SSL_MODE=prefer \
     --env PG_AUTOCTL=true \
+    --env PGDATA=/tmp/pg_data \
     --env TZ=Asia/Yekaterinburg \
     --env USER_ID="$(id -u)" \
     --hostname postgres0 \
