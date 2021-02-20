@@ -9,10 +9,11 @@ docker stop postgres2 || echo $?
 docker rm postgres2 || echo $?
 docker run \
     --detach \
-    --env CLUSTER_NAME=test \
+    --env CLUSTER_NAME=postgres \
     --env GROUP_ID="$(id -g)" \
     --env LANG=ru_RU.UTF-8 \
-    --env PG_AUTOCTL_MONITOR=postgres://autoctl_node@postgres0/pg_auto_failover?sslmode=prefer \
+    --env PG_AUTOCTL_FORMATION=postgres \
+    --env PG_AUTOCTL_MONITOR=postgres://autoctl_node@postgres0:5432/pg_auto_failover?sslmode=prefer \
     --env PG_AUTOCTL_NAME=postgres2 \
     --env PG_AUTOCTL_REPLICATION_QUORUM=false \
     --env PG_AUTOCTL_SERVER_CERT=/etc/certs/cert.pem \
