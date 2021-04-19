@@ -17,7 +17,6 @@ RUN exec 2>&1 \
         binutils \
         bison \
         brotli-dev \
-        bsd-compat-headers \
         c-ares-dev \
         clang \
         curl-dev \
