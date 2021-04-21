@@ -26,4 +26,5 @@ docker run \
     --network name=docker,alias=postgres."$(hostname -d)" \
     --publish target=5432,published=5432,mode=host \
     --restart always \
+    --tmpfs=/home/pg_data/pg_stat_tmp \
     rekgrpth/postgres runsvdir /etc/service
