@@ -21,10 +21,10 @@ docker run \
     --mount type=bind,source=/etc/certs,destination=/etc/certs,readonly \
     --mount type=bind,source=/run/postgresql,destination=/run/postgresql \
     --mount type=bind,source=/var/lib/docker/volumes/postgres/_data/pg_data/smtpd.conf,destination=/etc/smtpd/smtpd.conf,readonly \
+    --mount type=tmpfs,destination=/home/pg_data/pg_stat_tmp \
     --mount type=volume,source=postgres,destination=/home \
     --name postgres \
     --network name=docker,alias=postgres."$(hostname -d)" \
     --publish target=5432,published=5432,mode=host \
     --restart always \
-    --tmpfs=/home/pg_stat_tmp \
     rekgrpth/postgres runsvdir /etc/service
