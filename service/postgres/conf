@@ -3,8 +3,7 @@
 exec 2>&1
 realpath "$0"
 set -ex
-cat >>"$PGDATA/postgresql.conf" <<EOF
-
+cat >>"$PGDATA/postgresql.auto.conf" <<EOF
 auto_explain.log_analyze = on
 auto_explain.log_buffers = on
 auto_explain.log_min_duration = 100
@@ -27,15 +26,14 @@ session_preload_libraries = 'auto_explain'
 track_activity_query_size = 102400
 wal_level = minimal
 EOF
-if [ -n "$SERVER_CERT" ] && [ -n "$SERVER_KEY" ]; then echo "ssl = on" >>"$PGDATA/postgresql.conf"; fi
-if [ -n "$SERVER_CERT" ]; then echo "ssl_cert_file = '$SERVER_CERT'" >>"$PGDATA/postgresql.conf"; fi
-if [ -n "$SERVER_KEY" ]; then echo "ssl_key_file = '$SERVER_KEY'" >>"$PGDATA/postgresql.conf"; fi
-if [ -n "$SSL_CA_FILE" ]; then echo "ssl_ca_file = '$SSL_CA_FILE'" >>"$PGDATA/postgresql.conf"; fi
-if [ -n "$SSL_CRL_FILE" ]; then echo "ssl_crl_file = '$SSL_CRL_FILE'" >>"$PGDATA/postgresql.conf"; fi
-if [ -n "$PG_AUTOCTL" ] && [ -z "$PG_AUTOCTL_MONITOR" ]; then echo "shared_preload_libraries = 'pg_backtrace,pg_task,pg_partman_bgw,pg_stat_statements,pgautofailover'" >>"$PGDATA/postgresql.conf"
-else echo "shared_preload_libraries = 'pg_backtrace,pg_task,pg_partman_bgw,pg_stat_statements'" >>"$PGDATA/postgresql.conf"; fi
-if [ "$(pgrep runsvdir | wc -l)" -gt "0" ]; then cat >>"$PGDATA/postgresql.conf" <<EOF
-
+if [ -n "$SERVER_CERT" ] && [ -n "$SERVER_KEY" ]; then echo "ssl = on" >>"$PGDATA/postgresql.auto.conf"; fi
+if [ -n "$SERVER_CERT" ]; then echo "ssl_cert_file = '$SERVER_CERT'" >>"$PGDATA/postgresql.auto.conf"; fi
+if [ -n "$SERVER_KEY" ]; then echo "ssl_key_file = '$SERVER_KEY'" >>"$PGDATA/postgresql.auto.conf"; fi
+if [ -n "$SSL_CA_FILE" ]; then echo "ssl_ca_file = '$SSL_CA_FILE'" >>"$PGDATA/postgresql.auto.conf"; fi
+if [ -n "$SSL_CRL_FILE" ]; then echo "ssl_crl_file = '$SSL_CRL_FILE'" >>"$PGDATA/postgresql.auto.conf"; fi
+if [ -n "$PG_AUTOCTL" ] && [ -z "$PG_AUTOCTL_MONITOR" ]; then echo "shared_preload_libraries = 'pg_backtrace,pg_task,pg_partman_bgw,pg_stat_statements,pgautofailover'" >>"$PGDATA/postgresql.auto.conf"
+else echo "shared_preload_libraries = 'pg_backtrace,pg_task,pg_partman_bgw,pg_stat_statements'" >>"$PGDATA/postgresql.auto.conf"; fi
+if [ "$(pgrep runsvdir | wc -l)" -gt "0" ]; then cat >>"$PGDATA/postgresql.auto.conf" <<EOF
 archive_cleanup_command = 'pg_archivecleanup -d "$HOME/pg_arclog" "%r" 2>>"$HOME/pg_log/pg_archivecleanup.log"'
 archive_command = 'test ! -f "$HOME/pg_arclog/%f" && cp "%p" "$HOME/pg_arclog/%f" || echo "$HOME/pg_arclog/%f already exists!"'
 archive_mode = on
