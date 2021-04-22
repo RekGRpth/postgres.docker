@@ -44,6 +44,7 @@ log_filename = 'postgresql-%Y-%m-%d.log'
 logging_collector = on
 log_truncate_on_rotation = on
 max_wal_senders = 10
+restore_command = 'test -f "$HOME/pg_arclog/%f" && gunzip <"$HOME/pg_arclog/%f" >"%p" || echo "$HOME/pg_arclog/%f does not exist!"'
 wal_level = replica
 EOF
 fi
