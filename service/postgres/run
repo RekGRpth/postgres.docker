@@ -14,7 +14,7 @@ realpath "$0"
 set -ex
 test -d "$PGDATA/base" || chpst -u "$USER":"$GROUP" /etc/service/postgres/init
 test -d "$PGDATA/base"
-install -d -m 0700 -o "$USER" -g "$GROUP" "$PGDATA/pg_stat_tmp"
+install -d -m 0700 -o "$USER" -g "$GROUP" "$HOME/pg_stat_tmp"
 if [ -n "$PG_AUTOCTL" ]; then
     if [ -n "$PG_AUTOCTL_MONITOR" ]; then
         if [ -f "$HOME/.config/pg_autoctl$PGDATA/pg_autoctl.cfg" ]; then
