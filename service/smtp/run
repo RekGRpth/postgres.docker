@@ -7,6 +7,7 @@ chpst -u "$USER":"$GROUP" pg_isready || exit $?
 chpst -u "$USER":"$GROUP" pg_ctl status || exit $?
 chmod 755 supervise
 chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
+ln -fs "$PGDATA/smtpd.conf" /etc/smtpd/smtpd.conf
 realpath "$0"
 set -ex
 if [ -n "$PG_AUTOCTL" ]; then
