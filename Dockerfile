@@ -77,12 +77,14 @@ RUN exec 2>&1 \
     && git clone --recursive https://github.com/RekGRpth/pgjwt.git \
     && git clone --recursive https://github.com/RekGRpth/pg_mustach.git \
     && git clone --recursive https://github.com/RekGRpth/pg_partman.git \
+    && git clone --recursive https://github.com/RekGRpth/pg_profile.git \
     && git clone --recursive https://github.com/RekGRpth/pgq.git \
     && git clone --recursive https://github.com/RekGRpth/pgq-node.git \
     && git clone --recursive https://github.com/RekGRpth/pg_repack.git \
     && git clone --recursive https://github.com/RekGRpth/pg_rman.git \
     && git clone --recursive https://github.com/RekGRpth/pgsidekick.git \
     && git clone --recursive https://github.com/RekGRpth/pg_ssl.git \
+    && git clone --recursive https://github.com/RekGRpth/pg_stat_kcache.git \
     && git clone --recursive https://github.com/RekGRpth/pg_task.git \
     && git clone --recursive https://github.com/RekGRpth/pldebugger.git \
     && git clone --recursive https://github.com/RekGRpth/plsh.git \
