@@ -18,6 +18,7 @@ RUN exec 2>&1 \
         bison \
         brotli-dev \
         c-ares-dev \
+        cjson-dev \
         clang \
         curl-dev \
         file \
@@ -31,6 +32,7 @@ RUN exec 2>&1 \
         git \
         groff \
         icu-dev \
+        jansson-dev \
         json-c-dev \
         krb5-dev \
         libedit-dev \
