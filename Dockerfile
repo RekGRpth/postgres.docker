@@ -124,8 +124,8 @@ RUN exec 2>&1 \
     && cd /usr/src/pgsidekick \
     && make -j"$(nproc)" pglisten \
     && cp -f pglisten /usr/local/bin/ \
-    && cd /usr/src/postgis \
-    && ./autogen.sh \
+#    && cd /usr/src/postgis \
+#    && ./autogen.sh \
     && cd /usr/src/pgbouncer \
     && ./autogen.sh \
     && ./configure \
