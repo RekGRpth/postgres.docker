@@ -70,6 +70,7 @@ RUN exec 2>&1 \
     && mkdir -p /usr/src \
     && cd /usr/src \
     && git clone --recursive https://github.com/RekGRpth/gawkextlib.git \
+    && git clone --recursive https://github.com/RekGRpth/pg_async.git \
     && git clone --recursive https://github.com/RekGRpth/pg_auto_failover.git \
     && git clone --recursive https://github.com/RekGRpth/pg_backtrace.git \
     && git clone --recursive https://github.com/RekGRpth/pgbouncer.git \
@@ -80,8 +81,8 @@ RUN exec 2>&1 \
     && git clone --recursive https://github.com/RekGRpth/pg_mustach.git \
     && git clone --recursive https://github.com/RekGRpth/pg_partman.git \
     && git clone --recursive https://github.com/RekGRpth/pg_profile.git \
-    && git clone --recursive https://github.com/RekGRpth/pgq.git \
-    && git clone --recursive https://github.com/RekGRpth/pgq-node.git \
+#    && git clone --recursive https://github.com/RekGRpth/pgq.git \
+#    && git clone --recursive https://github.com/RekGRpth/pgq-node.git \
     && git clone --recursive https://github.com/RekGRpth/pg_repack.git \
     && git clone --recursive https://github.com/RekGRpth/pg_rman.git \
     && git clone --recursive https://github.com/RekGRpth/pgsidekick.git \
@@ -90,7 +91,7 @@ RUN exec 2>&1 \
     && git clone --recursive https://github.com/RekGRpth/pg_task.git \
     && git clone --recursive https://github.com/RekGRpth/pldebugger.git \
     && git clone --recursive https://github.com/RekGRpth/plsh.git \
-    && git clone --recursive https://github.com/RekGRpth/postgis.git \
+#    && git clone --recursive https://github.com/RekGRpth/postgis.git \
     && git clone --recursive https://github.com/RekGRpth/postgres.git \
     && git clone --recursive https://github.com/RekGRpth/slony1-engine.git \
     && cd /usr/src/postgres \
