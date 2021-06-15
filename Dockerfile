@@ -135,6 +135,8 @@ RUN exec 2>&1 \
     && autoconf \
     && ./configure \
     && make \
+    && cd /usr/src/pg_rman \
+    && git checkout REL_13_STABLE \
     && cd / \
     && find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "pgsidekick" ! -name "gawkextlib" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done \
     && (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/*/*.so || true) \
