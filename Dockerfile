@@ -85,6 +85,7 @@ RUN set -eux; \
     git clone --recursive https://github.com/RekGRpth/pgq-node.git; \
     git clone --recursive https://github.com/RekGRpth/pg_repack.git; \
     git clone --recursive https://github.com/RekGRpth/pg_rman.git; \
+    git clone --recursive https://github.com/RekGRpth/pg_save.git; \
     git clone --recursive https://github.com/RekGRpth/pgsidekick.git; \
     git clone --recursive https://github.com/RekGRpth/pg_ssl.git; \
     git clone --recursive https://github.com/RekGRpth/pg_stat_kcache.git; \
