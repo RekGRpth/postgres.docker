@@ -69,32 +69,32 @@ RUN set -eux; \
     ; \
     mkdir -p /usr/src; \
     cd /usr/src; \
-    git clone --recursive https://github.com/RekGRpth/gawkextlib.git; \
-    git clone --recursive https://github.com/RekGRpth/pg_async.git; \
-    git clone --recursive https://github.com/RekGRpth/pg_auto_failover.git; \
-    git clone --recursive https://github.com/RekGRpth/pg_backtrace.git; \
+    git clone https://github.com/RekGRpth/gawkextlib.git; \
+    git clone https://github.com/RekGRpth/pg_async.git; \
+    git clone https://github.com/RekGRpth/pg_auto_failover.git; \
+    git clone https://github.com/RekGRpth/pg_backtrace.git; \
+    git clone https://github.com/RekGRpth/pg_curl.git; \
+    git clone https://github.com/RekGRpth/pg_htmldoc.git; \
+    git clone https://github.com/RekGRpth/pg_jobmon.git; \
+    git clone https://github.com/RekGRpth/pgjwt.git; \
+    git clone https://github.com/RekGRpth/pg_mustach.git; \
+    git clone https://github.com/RekGRpth/pg_partman.git; \
+    git clone https://github.com/RekGRpth/pg_profile.git; \
+    git clone https://github.com/RekGRpth/pgq.git; \
+    git clone https://github.com/RekGRpth/pgq-node.git; \
+    git clone https://github.com/RekGRpth/pg_repack.git; \
+    git clone https://github.com/RekGRpth/pg_rman.git; \
+    git clone https://github.com/RekGRpth/pg_save.git; \
+    git clone https://github.com/RekGRpth/pgsidekick.git; \
+    git clone https://github.com/RekGRpth/pg_ssl.git; \
+    git clone https://github.com/RekGRpth/pg_stat_kcache.git; \
+    git clone https://github.com/RekGRpth/pg_task.git; \
+    git clone https://github.com/RekGRpth/pldebugger.git; \
+    git clone https://github.com/RekGRpth/plsh.git; \
+    git clone https://github.com/RekGRpth/postgis.git; \
+    git clone https://github.com/RekGRpth/postgres.git; \
+    git clone https://github.com/RekGRpth/slony1-engine.git; \
     git clone --recursive https://github.com/RekGRpth/pgbouncer.git; \
-    git clone --recursive https://github.com/RekGRpth/pg_curl.git; \
-    git clone --recursive https://github.com/RekGRpth/pg_htmldoc.git; \
-    git clone --recursive https://github.com/RekGRpth/pg_jobmon.git; \
-    git clone --recursive https://github.com/RekGRpth/pgjwt.git; \
-    git clone --recursive https://github.com/RekGRpth/pg_mustach.git; \
-    git clone --recursive https://github.com/RekGRpth/pg_partman.git; \
-    git clone --recursive https://github.com/RekGRpth/pg_profile.git; \
-    git clone --recursive https://github.com/RekGRpth/pgq.git; \
-    git clone --recursive https://github.com/RekGRpth/pgq-node.git; \
-    git clone --recursive https://github.com/RekGRpth/pg_repack.git; \
-    git clone --recursive https://github.com/RekGRpth/pg_rman.git; \
-    git clone --recursive https://github.com/RekGRpth/pg_save.git; \
-    git clone --recursive https://github.com/RekGRpth/pgsidekick.git; \
-    git clone --recursive https://github.com/RekGRpth/pg_ssl.git; \
-    git clone --recursive https://github.com/RekGRpth/pg_stat_kcache.git; \
-    git clone --recursive https://github.com/RekGRpth/pg_task.git; \
-    git clone --recursive https://github.com/RekGRpth/pldebugger.git; \
-    git clone --recursive https://github.com/RekGRpth/plsh.git; \
-    git clone --recursive https://github.com/RekGRpth/postgis.git; \
-    git clone --recursive https://github.com/RekGRpth/postgres.git; \
-    git clone --recursive https://github.com/RekGRpth/slony1-engine.git; \
     cd /usr/src/postgres; \
     git checkout REL_13_STABLE; \
     ./configure \
