@@ -1,17 +1,19 @@
 #!/bin/sh
 
 exec 2>&1
+realpath "$0"
+set -ex
+cd "$(dirname "$0")"
+chmod 755 supervise
+chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
+cd "$HOME"
 if [ -n "$PG_AUTOCTL" ]; then install -d -m 1775 -o "$USER" -g "$GROUP" "/tmp/pg_autoctl"
 else install -d -m 0750 -o "$USER" -g "$GROUP" "$PGDATA"; fi
 install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql /var/log/postgresql
 if [ "$(pgrep runsvdir | wc -l)" -gt "0" ]; then
     install -d -m 0750 -o "$USER" -g "$GROUP" "$HOME/pg_arclog" "$HOME/pg_log" "$HOME/pg_rman"
-    chmod 755 supervise
-    chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
 fi
 rm -f /run/postgresql/postgres.run "$PGDATA/postmaster.pid"
-realpath "$0"
-set -ex
 test -d "$PGDATA/base" || chpst -u "$USER":"$GROUP" /etc/service/postgres/init
 test -d "$PGDATA/base"
 install -d -m 0700 -o "$USER" -g "$GROUP" "$HOME/pg_stat_tmp"
