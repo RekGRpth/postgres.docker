@@ -60,6 +60,7 @@ RUN set -eux; \
         protobuf-c-dev \
         readline-dev \
         rtmpdump-dev \
+        talloc-dev \
         texinfo \
         udns-dev \
         util-linux-dev \
@@ -74,6 +75,7 @@ RUN set -eux; \
     git clone https://github.com/RekGRpth/pg_auto_failover.git; \
     git clone https://github.com/RekGRpth/pg_backtrace.git; \
     git clone https://github.com/RekGRpth/pg_curl.git; \
+    git clone https://github.com/RekGRpth/pg_handlebars.git; \
     git clone https://github.com/RekGRpth/pg_htmldoc.git; \
     git clone https://github.com/RekGRpth/pg_jobmon.git; \
     git clone https://github.com/RekGRpth/pgjwt.git; \
