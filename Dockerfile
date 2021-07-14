@@ -1,6 +1,6 @@
 FROM rekgrpth/pdf
-ADD service /etc/service
 CMD /etc/service/postgres/run
+COPY service /etc/service
 ENV BACKUP_PATH=${HOME}/pg_rman \
     GROUP=postgres \
     PGDATA=${HOME}/pg_data \
@@ -144,7 +144,6 @@ RUN set -eux; \
     git checkout REL_13_STABLE; \
     cd /; \
     find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "pgsidekick" ! -name "gawkextlib" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
-    (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/*/*.so || true); \
     apk add --no-cache --virtual .postgresql-rundeps \
         gawk \
         jq \
@@ -155,9 +154,11 @@ RUN set -eux; \
         sed \
         $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | while read -r lib; do test ! -e "/usr/local/lib/$lib" && echo "so:$lib"; done) \
     ; \
+    (strip /usr/local/bin/* /usr/local/lib/*.so /usr/local/lib/*/*.so || true); \
     apk del --no-cache .build-deps; \
     rm -rf /usr/src /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
-    find /usr/local -name '*.a' -delete; \
+    find / -name "*.a" -delete; \
+    find / -name "*.la" -delete; \
     chmod -R 0755 /etc/service; \
     rm -f /var/spool/cron/crontabs/root; \
     sed -i 's|table aliases|#table aliases|g' /etc/smtpd/smtpd.conf; \
