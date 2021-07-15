@@ -1,8 +1,8 @@
 FROM rekgrpth/pdf
 CMD /etc/service/postgres/run
-ENV BACKUP_PATH=${HOME}/pg_rman \
+ENV BACKUP_PATH="${HOME}/pg_rman" \
     GROUP=postgres \
-    PGDATA=${HOME}/pg_data \
+    PGDATA="${HOME}/pg_data" \
     USER=postgres
 VOLUME "${HOME}"
 RUN set -eux; \
@@ -67,14 +67,14 @@ RUN set -eux; \
         zlib-dev \
         zstd-dev \
     ; \
-    mkdir -p /usr/src; \
-    cd /usr/src; \
+    mkdir -p "${HOME}"; \
+    cd "${HOME}"; \
     git clone https://bitbucket.org/RekGRpth/postgres.git; \
-    cd /usr/src/postgres; \
+    cd "${HOME}/postgres"; \
     mkdir -p /etc/service; \
     cp -rf service/* /etc/service; \
-    cd /usr/src; \
-    rm -rf /usr/src/postgres; \
+    cd "${HOME}"; \
+    rm -rf "${HOME}/postgres"; \
     git clone https://github.com/RekGRpth/gawkextlib.git; \
     git clone https://github.com/RekGRpth/pg_async.git; \
     git clone https://github.com/RekGRpth/pg_auto_failover.git; \
@@ -102,7 +102,7 @@ RUN set -eux; \
     git clone https://github.com/RekGRpth/postgres.git; \
     git clone https://github.com/RekGRpth/slony1-engine.git; \
     git clone --recursive https://github.com/RekGRpth/pgbouncer.git; \
-    cd /usr/src/postgres; \
+    cd "${HOME}/postgres"; \
     git checkout REL_13_STABLE; \
     ./configure \
         --enable-thread-safety \
@@ -122,33 +122,33 @@ RUN set -eux; \
     make -j"$(nproc)" -C src install; \
     make -j"$(nproc)" -C contrib install; \
     make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install; \
-    cd /usr/src/gawkextlib/lib; \
+    cd "${HOME}/gawkextlib/lib"; \
     autoreconf -vif; \
     ./configure; \
     make -j"$(nproc)" install; \
-    cd /usr/src/gawkextlib/pgsql; \
+    cd "${HOME}/gawkextlib/pgsql"; \
     autoreconf -vif; \
     ./configure; \
     make -j"$(nproc)" install; \
-    cd /usr/src/pgsidekick; \
+    cd "${HOME}/pgsidekick"; \
     make -j"$(nproc)" pglisten; \
     cp -f pglisten /usr/local/bin/; \
-    cd /usr/src/postgis; \
+    cd "${HOME}/postgis"; \
     ./autogen.sh; \
-    cd /usr/src/pgbouncer; \
+    cd "${HOME}/pgbouncer"; \
     ./autogen.sh; \
     ./configure \
         --disable-debug \
         --with-pam \
     ; \
-    cd /usr/src/slony1-engine; \
+    cd "${HOME}/slony1-engine"; \
     autoconf; \
     ./configure; \
     make; \
-    cd /usr/src/pg_rman; \
+    cd "${HOME}/pg_rman"; \
     git checkout REL_13_STABLE; \
-    cd /; \
-    find /usr/src -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "pgsidekick" ! -name "gawkextlib" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
+    cd "${HOME}"; \
+    find "${HOME}" -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "pgsidekick" ! -name "gawkextlib" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     apk add --no-cache --virtual .postgresql-rundeps \
         gawk \
         jq \
@@ -161,9 +161,9 @@ RUN set -eux; \
     ; \
     find /usr/local/bin /usr/local/lib -type f -exec strip '{}' \;; \
     apk del --no-cache .build-deps; \
-    rm -rf /usr/src /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
-    find / -name "*.a" -delete; \
-    find / -name "*.la" -delete; \
+    find / -type f -name "*.a" -delete; \
+    find / -type f -name "*.la" -delete; \
+    rm -rf "${HOME}" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
     chmod -R 0755 /etc/service; \
     rm -f /var/spool/cron/crontabs/root; \
     sed -i 's|table aliases|#table aliases|g' /etc/smtpd/smtpd.conf; \
