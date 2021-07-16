@@ -41,7 +41,6 @@ RUN set -eux; \
         libpsl-dev \
         libssh-dev \
         libtool \
-        libunwind-dev \
         libxml2-dev \
         libxslt-dev \
         linux-headers \
@@ -78,7 +77,6 @@ RUN set -eux; \
     git clone https://github.com/RekGRpth/gawkextlib.git; \
     git clone https://github.com/RekGRpth/pg_async.git; \
     git clone https://github.com/RekGRpth/pg_auto_failover.git; \
-    git clone https://github.com/RekGRpth/pg_backtrace.git; \
     git clone https://github.com/RekGRpth/pg_curl.git; \
     git clone https://github.com/RekGRpth/pg_handlebars.git; \
     git clone https://github.com/RekGRpth/pg_htmldoc.git; \
