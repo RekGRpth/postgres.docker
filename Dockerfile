@@ -1,12 +1,12 @@
 FROM rekgrpth/pdf
-CMD /etc/service/postgres/run
+ADD service /etc/service
+CMD [ "/etc/service/postgres/run" ]
 ENV BACKUP_PATH="${HOME}/pg_rman" \
     GROUP=postgres \
     PGDATA="${HOME}/pg_data" \
     USER=postgres
 VOLUME "${HOME}"
 RUN set -eux; \
-    mkdir -p "${HOME}"; \
     addgroup -S "${GROUP}"; \
     adduser -D -S -h "${HOME}" -s /bin/ash -G "${GROUP}" "${USER}"; \
     apk add --no-cache --virtual .build-deps \
@@ -24,8 +24,8 @@ RUN set -eux; \
         g++ \
         gawk \
         gcc \
-        gdal-dev \
-        geos-dev \
+#        gdal-dev \
+#        geos-dev \
         gettext-dev \
         git \
         groff \
@@ -66,18 +66,13 @@ RUN set -eux; \
         zlib-dev \
         zstd-dev \
     ; \
-    mkdir -p "${HOME}"; \
-    cd "${HOME}"; \
-    git clone https://bitbucket.org/RekGRpth/postgres.git; \
-    cd "${HOME}/postgres"; \
-    mkdir -p /etc/service; \
-    cp -rf service/* /etc/service; \
-    cd "${HOME}"; \
-    rm -rf "${HOME}/postgres"; \
+    mkdir -p "${HOME}/src"; \
+    cd "${HOME}/src"; \
     git clone https://github.com/RekGRpth/gawkextlib.git; \
     git clone https://github.com/RekGRpth/pg_async.git; \
     git clone https://github.com/RekGRpth/pg_auto_failover.git; \
     git clone https://github.com/RekGRpth/pg_curl.git; \
+    git clone https://github.com/RekGRpth/pgdbf.git; \
     git clone https://github.com/RekGRpth/pg_handlebars.git; \
     git clone https://github.com/RekGRpth/pg_htmldoc.git; \
     git clone https://github.com/RekGRpth/pg_jobmon.git; \
@@ -96,11 +91,11 @@ RUN set -eux; \
     git clone https://github.com/RekGRpth/pg_task.git; \
     git clone https://github.com/RekGRpth/pldebugger.git; \
     git clone https://github.com/RekGRpth/plsh.git; \
-    git clone https://github.com/RekGRpth/postgis.git; \
+#    git clone https://github.com/RekGRpth/postgis.git; \
     git clone https://github.com/RekGRpth/postgres.git; \
     git clone https://github.com/RekGRpth/slony1-engine.git; \
     git clone --recursive https://github.com/RekGRpth/pgbouncer.git; \
-    cd "${HOME}/postgres"; \
+    cd "${HOME}/src/postgres"; \
     git checkout REL_13_STABLE; \
     ./configure \
         --enable-thread-safety \
@@ -120,33 +115,37 @@ RUN set -eux; \
     make -j"$(nproc)" -C src install; \
     make -j"$(nproc)" -C contrib install; \
     make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install; \
-    cd "${HOME}/gawkextlib/lib"; \
+    cd "${HOME}/src/gawkextlib/lib"; \
     autoreconf -vif; \
     ./configure; \
     make -j"$(nproc)" install; \
-    cd "${HOME}/gawkextlib/pgsql"; \
+    cd "${HOME}/src/gawkextlib/pgsql"; \
     autoreconf -vif; \
     ./configure; \
     make -j"$(nproc)" install; \
-    cd "${HOME}/pgsidekick"; \
+    cd "${HOME}/src/pgdbf"; \
+    autoreconf -fi; \
+    ./configure; \
+    make -j"$(nproc)" install; \
+    cd "${HOME}/src/pgsidekick"; \
     make -j"$(nproc)" pglisten; \
     cp -f pglisten /usr/local/bin/; \
-    cd "${HOME}/postgis"; \
-    ./autogen.sh; \
-    cd "${HOME}/pgbouncer"; \
+#    cd "${HOME}/src/postgis"; \
+#    ./autogen.sh; \
+    cd "${HOME}/src/pgbouncer"; \
     ./autogen.sh; \
     ./configure \
         --disable-debug \
         --with-pam \
     ; \
-    cd "${HOME}/slony1-engine"; \
+    cd "${HOME}/src/slony1-engine"; \
     autoconf; \
     ./configure; \
     make; \
-    cd "${HOME}/pg_rman"; \
+    cd "${HOME}/src/pg_rman"; \
     git checkout REL_13_STABLE; \
     cd "${HOME}"; \
-    find "${HOME}" -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "pgsidekick" ! -name "gawkextlib" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
+    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "pgsidekick" ! -name "gawkextlib" ! -name "pgdbf" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     apk add --no-cache --virtual .postgresql-rundeps \
         gawk \
         jq \
@@ -157,7 +156,8 @@ RUN set -eux; \
         sed \
         $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | while read -r lib; do test ! -e "/usr/local/lib/$lib" && echo "so:$lib"; done) \
     ; \
-    find /usr/local/bin /usr/local/lib -type f -exec strip '{}' \;; \
+    find /usr/local/bin -type f -exec strip '{}' \;; \
+    find /usr/local/lib -type f -name "*.so" -exec strip '{}' \;; \
     apk del --no-cache .build-deps; \
     find / -type f -name "*.a" -delete; \
     find / -type f -name "*.la" -delete; \
