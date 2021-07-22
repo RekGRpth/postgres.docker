@@ -68,35 +68,34 @@ RUN set -eux; \
     ; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
-    git clone https://github.com/RekGRpth/gawkextlib.git; \
-    git clone https://github.com/RekGRpth/pg_async.git; \
-    git clone https://github.com/RekGRpth/pg_auto_failover.git; \
-    git clone https://github.com/RekGRpth/pg_curl.git; \
-    git clone https://github.com/RekGRpth/pgdbf.git; \
-    git clone https://github.com/RekGRpth/pg_handlebars.git; \
-    git clone https://github.com/RekGRpth/pg_htmldoc.git; \
-    git clone https://github.com/RekGRpth/pg_jobmon.git; \
-    git clone https://github.com/RekGRpth/pgjwt.git; \
-    git clone https://github.com/RekGRpth/pg_mustach.git; \
-    git clone https://github.com/RekGRpth/pg_partman.git; \
-    git clone https://github.com/RekGRpth/pg_profile.git; \
-    git clone https://github.com/RekGRpth/pgq.git; \
-    git clone https://github.com/RekGRpth/pgq-node.git; \
-    git clone https://github.com/RekGRpth/pg_repack.git; \
-    git clone https://github.com/RekGRpth/pg_rman.git; \
-    git clone https://github.com/RekGRpth/pg_save.git; \
-    git clone https://github.com/RekGRpth/pgsidekick.git; \
-    git clone https://github.com/RekGRpth/pg_ssl.git; \
-    git clone https://github.com/RekGRpth/pg_stat_kcache.git; \
-    git clone https://github.com/RekGRpth/pg_task.git; \
-    git clone https://github.com/RekGRpth/pldebugger.git; \
-    git clone https://github.com/RekGRpth/plsh.git; \
-#    git clone https://github.com/RekGRpth/postgis.git; \
-    git clone https://github.com/RekGRpth/postgres.git; \
-    git clone https://github.com/RekGRpth/slony1-engine.git; \
-    git clone --recursive https://github.com/RekGRpth/pgbouncer.git; \
+    git clone -b master https://github.com/RekGRpth/gawkextlib.git; \
+    git clone -b master https://github.com/RekGRpth/pg_async.git; \
+    git clone -b master https://github.com/RekGRpth/pg_auto_failover.git; \
+    git clone -b master https://github.com/RekGRpth/pg_curl.git; \
+    git clone -b master https://github.com/RekGRpth/pgdbf.git; \
+    git clone -b master https://github.com/RekGRpth/pg_handlebars.git; \
+    git clone -b master https://github.com/RekGRpth/pg_htmldoc.git; \
+    git clone -b master https://github.com/RekGRpth/pg_jobmon.git; \
+    git clone -b master https://github.com/RekGRpth/pgjwt.git; \
+    git clone -b master https://github.com/RekGRpth/pg_mustach.git; \
+    git clone -b master https://github.com/RekGRpth/pg_partman.git; \
+    git clone -b master https://github.com/RekGRpth/pg_profile.git; \
+    git clone -b master https://github.com/RekGRpth/pgq.git; \
+    git clone -b master https://github.com/RekGRpth/pgq-node.git; \
+    git clone -b master https://github.com/RekGRpth/pg_repack.git; \
+    git clone -b master https://github.com/RekGRpth/pg_save.git; \
+    git clone -b master https://github.com/RekGRpth/pgsidekick.git; \
+    git clone -b master https://github.com/RekGRpth/pg_ssl.git; \
+    git clone -b master https://github.com/RekGRpth/pg_stat_kcache.git; \
+    git clone -b master https://github.com/RekGRpth/pg_task.git; \
+    git clone -b master https://github.com/RekGRpth/pldebugger.git; \
+    git clone -b master https://github.com/RekGRpth/plsh.git; \
+#    git clone -b master https://github.com/RekGRpth/postgis.git; \
+    git clone -b master https://github.com/RekGRpth/slony1-engine.git; \
+    git clone -b master --recursive https://github.com/RekGRpth/pgbouncer.git; \
+    git clone -b REL_13_STABLE https://github.com/RekGRpth/pg_rman.git; \
+    git clone -b REL_13_STABLE https://github.com/RekGRpth/postgres.git; \
     cd "${HOME}/src/postgres"; \
-    git checkout REL_13_STABLE; \
     ./configure \
         --enable-thread-safety \
         --prefix=/usr/local \
@@ -142,8 +141,6 @@ RUN set -eux; \
     autoconf; \
     ./configure; \
     make; \
-    cd "${HOME}/src/pg_rman"; \
-    git checkout REL_13_STABLE; \
     cd "${HOME}"; \
     find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "pgsidekick" ! -name "gawkextlib" ! -name "pgdbf" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     apk add --no-cache --virtual .postgresql-rundeps \
