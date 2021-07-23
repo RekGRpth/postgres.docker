@@ -1,5 +1,6 @@
 FROM rekgrpth/pdf
 ADD service /etc/service
+ARG POSTGRES_VERSION=13
 CMD [ "/etc/service/postgres/run" ]
 ENV BACKUP_PATH="${HOME}/pg_rman" \
     GROUP=postgres \
@@ -90,11 +91,11 @@ RUN set -eux; \
 #    git clone -b master https://github.com/RekGRpth/postgis.git; \
     git clone -b master https://github.com/RekGRpth/slony1-engine.git; \
     git clone -b master --recursive https://github.com/RekGRpth/pgbouncer.git; \
-    git clone -b REL_13_STABLE https://github.com/RekGRpth/pg_async.git; \
-    git clone -b REL_13_STABLE https://github.com/RekGRpth/pg_rman.git; \
-    git clone -b REL_13_STABLE https://github.com/RekGRpth/pg_save.git; \
-    git clone -b REL_13_STABLE https://github.com/RekGRpth/pg_task.git; \
-    git clone -b REL_13_STABLE https://github.com/RekGRpth/postgres.git; \
+    git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_async.git; \
+    git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_rman.git; \
+    git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_save.git; \
+    git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_task.git; \
+    git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/postgres.git; \
     cd "${HOME}/src/postgres"; \
     ./configure \
         --enable-thread-safety \
