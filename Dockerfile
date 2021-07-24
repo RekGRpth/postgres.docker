@@ -10,6 +10,8 @@ VOLUME "${HOME}"
 RUN set -eux; \
     addgroup -S "${GROUP}"; \
     adduser -D -S -h "${HOME}" -s /bin/ash -G "${GROUP}" "${USER}"; \
+    apk update --no-cache; \
+    apk upgrade --no-cache; \
     apk add --no-cache --virtual .build-deps \
         autoconf \
         automake \
