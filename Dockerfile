@@ -6,7 +6,6 @@ ENV BACKUP_PATH="${HOME}/pg_rman" \
     GROUP=postgres \
     PGDATA="${HOME}/pg_data" \
     USER=postgres
-VOLUME "${HOME}"
 RUN set -eux; \
     addgroup -S "${GROUP}"; \
     adduser -D -S -h "${HOME}" -s /bin/ash -G "${GROUP}" "${USER}"; \
@@ -146,6 +145,7 @@ RUN set -eux; \
     make; \
     cd "${HOME}"; \
     find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "pgsidekick" ! -name "gawkextlib" ! -name "pgdbf" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
+    cd /; \
     apk add --no-cache --virtual .postgresql-rundeps \
         gawk \
         jq \
@@ -159,8 +159,8 @@ RUN set -eux; \
     find /usr/local/bin -type f -exec strip '{}' \;; \
     find /usr/local/lib -type f -name "*.so" -exec strip '{}' \;; \
     apk del --no-cache .build-deps; \
-    find / -type f -name "*.a" -delete; \
-    find / -type f -name "*.la" -delete; \
+    find /usr -type f -name "*.a" -delete; \
+    find /usr -type f -name "*.la" -delete; \
     rm -rf "${HOME}" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
     chmod -R 0755 /etc/service; \
     rm -f /var/spool/cron/crontabs/root; \
