@@ -3,7 +3,7 @@ name: Docker
 on:
   push:
     branches:
-      - 'latest'
+      - 'REL_13_STABLE'
   workflow_dispatch:
   repository_dispatch:
     types:
