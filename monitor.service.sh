@@ -16,7 +16,7 @@ docker service create \
     --env PGDATA=/tmp/pg_data \
     --env TZ=Asia/Yekaterinburg \
     --env USER_ID="$(id -u)" \
-    --hostname tasks.monitor \
+    --hostname monitor \
     --mount type=bind,source=/etc/certs,destination=/etc/certs,readonly \
     --mount type=volume,source=monitor,destination=/home \
     --name monitor \
