@@ -5,7 +5,8 @@ on:
       - REL_13_STABLE
   repository_dispatch:
     types:
-      - push
+      - latest
+      - REL_13_STABLE
 jobs:
   build:
     env:
