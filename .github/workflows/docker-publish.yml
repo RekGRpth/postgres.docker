@@ -21,7 +21,9 @@ jobs:
       - uses: rekgrpth/git-clone-shell-action@v1
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
   REL_14_STABLE:
-    needs: build
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}
     env:
       GITHUB_TOKEN: ${{ github.token }}
     runs-on: ubuntu-latest
