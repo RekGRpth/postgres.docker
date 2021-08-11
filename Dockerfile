@@ -25,8 +25,6 @@ RUN set -eux; \
         g++ \
         gawk \
         gcc \
-#        gdal-dev \
-#        geos-dev \
         gettext-dev \
         git \
         groff \
@@ -72,7 +70,6 @@ RUN set -eux; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
     git clone -b master https://github.com/RekGRpth/gawkextlib.git; \
-#    git clone -b master https://github.com/RekGRpth/pg_auto_failover.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
     git clone -b master https://github.com/RekGRpth/pgdbf.git; \
     git clone -b master https://github.com/RekGRpth/pg_handlebars.git; \
@@ -85,38 +82,14 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pgq.git; \
     git clone -b master https://github.com/RekGRpth/pgq-node.git; \
     git clone -b master https://github.com/RekGRpth/pg_repack.git; \
-#    git clone -b master https://github.com/RekGRpth/pgsidekick.git; \
     git clone -b master https://github.com/RekGRpth/pg_ssl.git; \
     git clone -b master https://github.com/RekGRpth/pg_stat_kcache.git; \
     git clone -b master https://github.com/RekGRpth/pldebugger.git; \
     git clone -b master https://github.com/RekGRpth/plsh.git; \
-#    git clone -b master https://github.com/RekGRpth/postgis.git; \
     git clone -b master https://github.com/RekGRpth/slony1-engine.git; \
-#    git clone -b master --recursive https://github.com/RekGRpth/pgbouncer.git; \
     git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_async.git; \
-#    git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_rman.git; \
     git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_save.git; \
     git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_task.git; \
-#    git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/postgres.git; \
-#    cd "${HOME}/src/postgres"; \
-#    ./configure \
-#        --enable-thread-safety \
-#        --prefix=/usr/local \
-#        --with-gssapi \
-#        --with-icu \
-#        --with-ldap \
-#        --with-libedit-preferred \
-#        --with-libxml \
-#        --with-libxslt \
-#        --with-llvm \
-#        --with-openssl \
-#        --with-pam \
-#        --with-system-tzdata=/usr/share/zoneinfo \
-#        --with-uuid=e2fs \
-#    ; \
-#    make -j"$(nproc)" -C src install; \
-#    make -j"$(nproc)" -C contrib install; \
-#    make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install; \
     cd "${HOME}/src/gawkextlib/lib"; \
     autoreconf -vif; \
     ./configure; \
@@ -129,23 +102,12 @@ RUN set -eux; \
     autoreconf -fi; \
     ./configure; \
     make -j"$(nproc)" install; \
-#    cd "${HOME}/src/pgsidekick"; \
-#    make -j"$(nproc)" pglisten; \
-#    cp -f pglisten /usr/local/bin/; \
-#    cd "${HOME}/src/postgis"; \
-#    ./autogen.sh; \
-#    cd "${HOME}/src/pgbouncer"; \
-#    ./autogen.sh; \
-#    ./configure \
-#        --disable-debug \
-#        --with-pam \
-#    ; \
     cd "${HOME}/src/slony1-engine"; \
     autoconf; \
     ./configure; \
     make; \
     cd "${HOME}"; \
-    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "pgsidekick" ! -name "gawkextlib" ! -name "pgdbf" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
+    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d ! -name "gawkextlib" ! -name "pgdbf" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
     apk add --no-cache --virtual .postgresql-rundeps \
         gawk \
@@ -153,7 +115,6 @@ RUN set -eux; \
         opensmtpd \
         openssh-client \
         pgbouncer \
-#        postgis \
         postgresql \
         postgresql-contrib \
         procps \
