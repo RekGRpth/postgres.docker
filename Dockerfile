@@ -2,13 +2,13 @@ FROM ghcr.io/rekgrpth/pdf.docker
 ADD service /etc/service
 ARG POSTGRES_VERSION=13
 CMD [ "/etc/service/postgres/run" ]
+ENV HOME=/var/lib/postgresql
+WORKDIR "${HOME}"
 ENV BACKUP_PATH="${HOME}/pg_rman" \
     GROUP=postgres \
     PGDATA="${HOME}/pg_data" \
     USER=postgres
 RUN set -eux; \
-    addgroup -S "${GROUP}"; \
-    adduser -D -S -h "${HOME}" -s /bin/ash -G "${GROUP}" "${USER}"; \
     apk update --no-cache; \
     apk upgrade --no-cache; \
     apk add --no-cache --virtual .build-deps \
@@ -56,6 +56,8 @@ RUN set -eux; \
         openldap-dev \
         openssl-dev \
         patch \
+        postgresql \
+        postgresql-dev \
         proj-dev \
         protobuf-c-dev \
         readline-dev \
@@ -91,31 +93,31 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/plsh.git; \
 #    git clone -b master https://github.com/RekGRpth/postgis.git; \
     git clone -b master https://github.com/RekGRpth/slony1-engine.git; \
-    git clone -b master --recursive https://github.com/RekGRpth/pgbouncer.git; \
+#    git clone -b master --recursive https://github.com/RekGRpth/pgbouncer.git; \
     git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_async.git; \
     git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_rman.git; \
     git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_save.git; \
     git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_task.git; \
-    git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/postgres.git; \
-    cd "${HOME}/src/postgres"; \
-    ./configure \
-        --enable-thread-safety \
-        --prefix=/usr/local \
-        --with-gssapi \
-        --with-icu \
-        --with-ldap \
-        --with-libedit-preferred \
-        --with-libxml \
-        --with-libxslt \
-        --with-llvm \
-        --with-openssl \
-        --with-pam \
-        --with-system-tzdata=/usr/share/zoneinfo \
-        --with-uuid=e2fs \
-    ; \
-    make -j"$(nproc)" -C src install; \
-    make -j"$(nproc)" -C contrib install; \
-    make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install; \
+#    git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/postgres.git; \
+#    cd "${HOME}/src/postgres"; \
+#    ./configure \
+#        --enable-thread-safety \
+#        --prefix=/usr/local \
+#        --with-gssapi \
+#        --with-icu \
+#        --with-ldap \
+#        --with-libedit-preferred \
+#        --with-libxml \
+#        --with-libxslt \
+#        --with-llvm \
+#        --with-openssl \
+#        --with-pam \
+#        --with-system-tzdata=/usr/share/zoneinfo \
+#        --with-uuid=e2fs \
+#    ; \
+#    make -j"$(nproc)" -C src install; \
+#    make -j"$(nproc)" -C contrib install; \
+#    make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install; \
     cd "${HOME}/src/gawkextlib/lib"; \
     autoreconf -vif; \
     ./configure; \
@@ -133,12 +135,12 @@ RUN set -eux; \
     cp -f pglisten /usr/local/bin/; \
 #    cd "${HOME}/src/postgis"; \
 #    ./autogen.sh; \
-    cd "${HOME}/src/pgbouncer"; \
-    ./autogen.sh; \
-    ./configure \
-        --disable-debug \
-        --with-pam \
-    ; \
+#    cd "${HOME}/src/pgbouncer"; \
+#    ./autogen.sh; \
+#    ./configure \
+#        --disable-debug \
+#        --with-pam \
+#    ; \
     cd "${HOME}/src/slony1-engine"; \
     autoconf; \
     ./configure; \
@@ -151,10 +153,15 @@ RUN set -eux; \
         jq \
         opensmtpd \
         openssh-client \
+        pgbouncer \
+#        postgis \
+        postgresql \
+        postgresql-contrib \
         procps \
         runit \
         sed \
         $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | while read -r lib; do test ! -e "/usr/local/lib/$lib" && echo "so:$lib"; done) \
+        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/lib/postgresql | tr ',' '\n' | sort -u | while read -r lib; do test ! -e "/usr/local/lib/$lib" && echo "so:$lib"; done) \
     ; \
     find /usr/local/bin -type f -exec strip '{}' \;; \
     find /usr/local/lib -type f -name "*.so" -exec strip '{}' \;; \
