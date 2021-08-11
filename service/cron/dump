@@ -1,5 +1,6 @@
 #!/bin/sh -eux
 
+realpath "$0"
 DT="$(date "+%F %T")"
 echo "all dump begin at $DT"
 FILE="$(psql -Aqt -c 'SELECT pg_walfile_name(pg_current_wal_lsn())')"

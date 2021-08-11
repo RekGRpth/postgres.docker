@@ -1,8 +1,4 @@
-#!/bin/sh
+#!/bin/sh -eux
 
-exec 2>&1
-realpath "$0"
-set -ex
 echo >>"$PGDATA/pg_hba.conf"
 echo "host all all samenet trust" >>"$PGDATA/pg_hba.conf"
-if [ -n "$PG_AUTOCTL" ]; then echo "host replication all samenet trust" >>"$PGDATA/pg_hba.conf"; fi

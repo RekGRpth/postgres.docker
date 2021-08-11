@@ -1,18 +1,7 @@
-#!/bin/sh
+#!/bin/sh -eux
 
-exec 2>&1
-realpath "$0"
-set -ex
-if [ -f "$BACKUP_PATH/system_identifier" ] && [ "$(pg_rman show detail -a | grep OK | wc -l)" -gt "0" ]; then
-    pg_rman restore
-else
-    if [ -n "$PG_AUTOCTL" ]; then
-        /etc/service/postgres/autoctl
-    else
-        cd "$PGDATA" && initdb
-    fi
-    if [ ! -f "$PGDATA/standby.signal" ]; then
-        /etc/service/postgres/conf
-        /etc/service/postgres/hba
-    fi
+(cd pg_data && initdb)
+if [ ! -f pg_data/standby.signal ]; then
+    /etc/service/postgres/conf
+    /etc/service/postgres/hba
 fi

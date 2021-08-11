@@ -1,18 +1,7 @@
-#!/bin/sh
+#!/bin/sh -eux
 
-exec 2>&1
-test -f /run/postgresql/postgres.run || exit $?
-pg_isready || exit $?
-pg_ctl status || exit $?
 realpath "$0"
-set -ex
-if [ -n "$PG_AUTOCTL" ]; then
-    FORMATION="$(pg_autoctl config get pg_autoctl.formation)"
-    GROUPID="$(pg_autoctl config get pg_autoctl.group)"
-    HOST="$(pg_autoctl show state --group "$GROUPID" --formation "$FORMATION" --json | jq --unbuffered --raw-output ".[] | select(.current_group_state == \"primary\" or .current_group_state == \"single\") | .nodehost")"
-    PORT="$(pg_autoctl show state --group "$GROUPID" --formation "$FORMATION" --json | jq --unbuffered --raw-output ".[] | select(.current_group_state == \"primary\" or .current_group_state == \"single\") | .nodeport")"
-    if [ -z "$HOST" ] || [ -z "$PORT" ]; then exit 1; fi
-    echo "* = host=$HOST port=$PORT" >".databases.ini"
-else
-    echo "* = " >".databases.ini"
-fi
+test -f /run/postgresql/postgres.run
+pg_isready
+pg_ctl status
+echo "* = " >.databases.ini

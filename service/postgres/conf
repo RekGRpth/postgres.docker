@@ -1,8 +1,5 @@
-#!/bin/sh
+#!/bin/sh -eux
 
-exec 2>&1
-realpath "$0"
-set -ex
 cat >>"$PGDATA/postgresql.auto.conf" <<EOF
 auto_explain.log_analyze = on
 auto_explain.log_buffers = on

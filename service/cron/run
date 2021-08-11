@@ -1,8 +1,6 @@
-#!/bin/sh
+#!/bin/sh -eux
 
-exec 2>&1
 realpath "$0"
-set -ex
 cd "$(dirname "$0")"
 chmod 755 supervise
 chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
@@ -11,7 +9,6 @@ install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql
 test -f /run/postgresql/postgres.run
 chpst -u "$USER":"$GROUP" pg_isready
 chpst -u "$USER":"$GROUP" pg_ctl status
-test -f "$BACKUP_PATH/system_identifier" || chpst -u "$USER":"$GROUP" /etc/service/cron/init
-test -f ".crontab" || chpst -u "$USER":"$GROUP" /etc/service/cron/crontab
-chpst -u "$USER":"$GROUP" crontab ".crontab"
+test -f .crontab || chpst -u "$USER":"$GROUP" /etc/service/cron/crontab
+chpst -u "$USER":"$GROUP" crontab .crontab
 exec crond -d 8 -f

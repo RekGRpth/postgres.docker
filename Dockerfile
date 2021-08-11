@@ -85,7 +85,7 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pgq.git; \
     git clone -b master https://github.com/RekGRpth/pgq-node.git; \
     git clone -b master https://github.com/RekGRpth/pg_repack.git; \
-    git clone -b master https://github.com/RekGRpth/pgsidekick.git; \
+#    git clone -b master https://github.com/RekGRpth/pgsidekick.git; \
     git clone -b master https://github.com/RekGRpth/pg_ssl.git; \
     git clone -b master https://github.com/RekGRpth/pg_stat_kcache.git; \
     git clone -b master https://github.com/RekGRpth/pldebugger.git; \
@@ -129,9 +129,9 @@ RUN set -eux; \
     autoreconf -fi; \
     ./configure; \
     make -j"$(nproc)" install; \
-    cd "${HOME}/src/pgsidekick"; \
-    make -j"$(nproc)" pglisten; \
-    cp -f pglisten /usr/local/bin/; \
+#    cd "${HOME}/src/pgsidekick"; \
+#    make -j"$(nproc)" pglisten; \
+#    cp -f pglisten /usr/local/bin/; \
 #    cd "${HOME}/src/postgis"; \
 #    ./autogen.sh; \
 #    cd "${HOME}/src/pgbouncer"; \

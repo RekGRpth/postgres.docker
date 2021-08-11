@@ -1,8 +1,5 @@
-#!/bin/sh
+#!/bin/sh -eux
 
-exec 2>&1
-realpath "$0"
-set -ex
 test -f /run/postgresql/postgres.run
 pg_isready
 pg_ctl status
