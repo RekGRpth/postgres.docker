@@ -23,7 +23,7 @@ jobs:
   REL_14_STABLE:
     concurrency:
       cancel-in-progress: true
-      group: ${{ github.ref }}
+      group: ${{ github.ref }}/REL_14_STABLE
     env:
       GITHUB_TOKEN: ${{ github.token }}
     runs-on: ubuntu-latest
