@@ -4,9 +4,8 @@ ARG POSTGRES_VERSION=13
 CMD [ "/etc/service/postgres/run" ]
 ENV HOME=/var/lib/postgresql
 WORKDIR "${HOME}"
-ENV BACKUP_PATH="${HOME}/pg_rman" \
-    GROUP=postgres \
-    PGDATA="${HOME}/pg_data" \
+ENV GROUP=postgres \
+    PGDATA="${HOME}/pg_data"
     USER=postgres
 RUN set -eux; \
     apk update --no-cache; \

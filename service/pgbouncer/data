@@ -12,7 +12,7 @@ if [ -n "$PG_AUTOCTL" ]; then
     HOST="$(pg_autoctl show state --group "$GROUPID" --formation "$FORMATION" --json | jq --unbuffered --raw-output ".[] | select(.current_group_state == \"primary\" or .current_group_state == \"single\") | .nodehost")"
     PORT="$(pg_autoctl show state --group "$GROUPID" --formation "$FORMATION" --json | jq --unbuffered --raw-output ".[] | select(.current_group_state == \"primary\" or .current_group_state == \"single\") | .nodeport")"
     if [ -z "$HOST" ] || [ -z "$PORT" ]; then exit 1; fi
-    echo "* = host=$HOST port=$PORT" >"$HOME/.databases.ini"
+    echo "* = host=$HOST port=$PORT" >".databases.ini"
 else
-    echo "* = " >"$HOME/.databases.ini"
+    echo "* = " >".databases.ini"
 fi

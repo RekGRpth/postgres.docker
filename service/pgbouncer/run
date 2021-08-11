@@ -11,8 +11,8 @@ install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql /var/log/pgbouncer
 test -f /run/postgresql/postgres.run
 chpst -u "$USER":"$GROUP" pg_isready
 chpst -u "$USER":"$GROUP" pg_ctl status
-test -f "$HOME/.pgbouncer.ini" || chpst -u "$USER":"$GROUP" /etc/service/pgbouncer/init
+test -f ".pgbouncer.ini" || chpst -u "$USER":"$GROUP" /etc/service/pgbouncer/init
 chpst -u "$USER":"$GROUP" /etc/service/pgbouncer/data
-test -f "$HOME/.pgbouncer.ini"
-test -f "$HOME/.databases.ini"
-exec chpst -u "$USER":"$GROUP" pgbouncer "$HOME/.pgbouncer.ini"
+test -f ".pgbouncer.ini"
+test -f ".databases.ini"
+exec chpst -u "$USER":"$GROUP" pgbouncer ".pgbouncer.ini"
