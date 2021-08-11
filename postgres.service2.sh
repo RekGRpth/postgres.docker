@@ -1,17 +1,15 @@
-#!/bin/sh -ex
+#!/bin/sh -eux
 
-#docker build --tag rekgrpth/postgres .
-#docker push rekgrpth/postgres
-docker pull rekgrpth/postgres
-docker network create --attachable --driver overlay dockers || echo $?
+docker pull ghcr.io/rekgrpth/postgres.docker:REL_13_STABLE
+docker network create --attachable --driver overlay docker || echo $?
 docker volume create postgres2
 docker service rm postgres2 || echo $?
 docker service create \
     --env CLUSTER_NAME=test \
     --env GROUP_ID="$(id -g)" \
     --env LANG=ru_RU.UTF-8 \
-    --env PG_AUTOCTL_AUTH=trust \
-    --env PG_AUTOCTL_MONITOR=postgres://autoctl_node@tasks.monitor/pg_auto_failover?sslmode=prefer \
+    --env PG_AUTOCTL_FORMATION=test \
+    --env PG_AUTOCTL_MONITOR=postgres://autoctl_node@tasks.monitor:5432/pg_auto_failover?sslmode=prefer \
     --env PG_AUTOCTL_NAME=postgres2 \
     --env PG_AUTOCTL_REPLICATION_QUORUM=false \
     --env PG_AUTOCTL_SERVER_CERT=/etc/certs/cert.pem \
@@ -27,4 +25,4 @@ docker service create \
     --name postgres2 \
     --network name=dockers \
     --replicas-max-per-node 1 \
-    rekgrpth/postgres runsvdir /etc/service
+    ghcr.io/rekgrpth/postgres.docker:REL_13_STABLE runsvdir /etc/service
