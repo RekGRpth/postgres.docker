@@ -5,7 +5,7 @@ CMD [ "/etc/service/postgres/run" ]
 ENV HOME=/var/lib/postgresql
 WORKDIR "${HOME}"
 ENV GROUP=postgres \
-    PGDATA="${HOME}/pg_data"
+    PGDATA="${HOME}/pg_data" \
     USER=postgres
 RUN set -eux; \
     apk update --no-cache; \
@@ -72,7 +72,7 @@ RUN set -eux; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
     git clone -b master https://github.com/RekGRpth/gawkextlib.git; \
-    git clone -b master https://github.com/RekGRpth/pg_auto_failover.git; \
+#    git clone -b master https://github.com/RekGRpth/pg_auto_failover.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
     git clone -b master https://github.com/RekGRpth/pgdbf.git; \
     git clone -b master https://github.com/RekGRpth/pg_handlebars.git; \
@@ -94,7 +94,7 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/slony1-engine.git; \
 #    git clone -b master --recursive https://github.com/RekGRpth/pgbouncer.git; \
     git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_async.git; \
-    git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_rman.git; \
+#    git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_rman.git; \
     git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_save.git; \
     git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_task.git; \
 #    git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/postgres.git; \
