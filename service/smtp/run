@@ -5,8 +5,6 @@ cd "$(dirname "$0")"
 chmod 755 supervise
 chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
 cd "$HOME"
-install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql
-test -f /run/postgresql/postgres.run
 chpst -u "$USER":"$GROUP" pg_isready
 chpst -u "$USER":"$GROUP" pg_ctl status
 ln -fs "$PGDATA/smtpd.conf" /etc/smtpd/smtpd.conf

@@ -1,6 +1,5 @@
 #!/bin/sh -eux
 
-test -f /run/postgresql/postgres.run
 pg_isready
 pg_ctl status
 psql --quiet --tuples-only --no-align --command="select quote_ident(datname) from pg_database where not datistemplate and datallowconn" | while read -r datname; do

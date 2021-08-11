@@ -1,4 +1,0 @@
-#!/bin/sh -eux
-
-echo >>"$PGDATA/pg_hba.conf"
-echo "host all all samenet trust" >>"$PGDATA/pg_hba.conf"

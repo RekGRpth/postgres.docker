@@ -1,3 +1,0 @@
-#!/bin/sh -eux
-
-rm -f /run/postgresql/postgres.run

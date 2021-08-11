@@ -1,6 +1,5 @@
 #!/bin/sh -eux
 
-realpath "$0"
 touch .databases.ini
 cat >.pgbouncer.ini <<EOF
 [pgbouncer]

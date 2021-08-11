@@ -1,7 +1,0 @@
-#!/bin/sh -eux
-
-(cd pg_data && initdb)
-if [ ! -f pg_data/standby.signal ]; then
-    /etc/service/postgres/conf
-    /etc/service/postgres/hba
-fi
