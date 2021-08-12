@@ -3,8 +3,8 @@
 DT="$(date "+%F %T")"
 echo "all dump begin at $DT"
 FILE="$(psql -Aqt -c 'SELECT pg_walfile_name(pg_current_wal_lsn())')"
-pg_archivecleanup -x .gz pg_arclog "$FILE"
-DUMP="dump/$DT"
+pg_archivecleanup -x .gz "$PGDATA/$ARCLOG" "$FILE"
+DUMP="$HOME/dump/$DT"
 mkdir -p "$DUMP"
 cd "$DUMP"
 pg_dumpall --clean --if-exists --globals-only --file=globals.sql --quote-all-identifiers
