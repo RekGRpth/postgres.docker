@@ -18,7 +18,6 @@ docker run \
     --hostname postgres \
     --mount type=bind,source=/etc/certs,destination=/etc/certs,readonly \
     --mount type=bind,source=/run/postgresql,destination=/run/postgresql \
-    --mount type=tmpfs,destination=/var/lib/postgresql/pg_stat_tmp \
     --mount type=volume,source=postgres,destination=/var/lib/postgresql \
     --name postgres \
     --network name=docker,alias=postgres."$(hostname -d)" \
