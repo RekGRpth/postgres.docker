@@ -4,7 +4,7 @@ DT="$(date "+%F %T")"
 echo "all dump begin at $DT"
 FILE="$(psql -Aqt -c 'SELECT pg_walfile_name(pg_current_wal_lsn())')"
 pg_archivecleanup -x .gz pg_arclog "$FILE"
-DUMP="pg_dump/$DT"
+DUMP="dump/$DT"
 mkdir -p "$DUMP"
 cd "$DUMP"
 pg_dumpall --clean --if-exists --globals-only --file=globals.sql --quote-all-identifiers
@@ -15,4 +15,4 @@ psql postgres -qtAc "select datname from pg_database" | grep -v template | grep 
 done
 echo "all dump end at $(date "+%F %T")"
 cd "$HOME"
-find pg_dump -mtime +35 -delete
+find dump -mtime +35 -delete
