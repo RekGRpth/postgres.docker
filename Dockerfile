@@ -4,8 +4,9 @@ ARG POSTGRES_VERSION=13
 CMD [ "/etc/service/postgres/run" ]
 ENV HOME=/var/lib/postgresql
 WORKDIR "${HOME}"
-ENV GROUP=postgres \
-    PGDATA="${HOME}/pg_data" \
+ENV ARCLOG=../arc \
+    GROUP=postgres \
+    PGDATA="${HOME}/data" \
     USER=postgres
 RUN set -eux; \
     apk update --no-cache; \
@@ -100,6 +101,8 @@ RUN set -eux; \
     ./configure; \
     make -j"$(nproc)" install; \
     cd "${HOME}"; \
+    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d ! -name "gawkextlib" ! -name "pgdbf" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 || exit 1; done; \
+    find "${HOME}/src" -type f -name "*.so" -exec strip '{}' \;; \
     find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d ! -name "gawkextlib" ! -name "pgdbf" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
     apk add --no-cache --virtual .postgresql-rundeps \
