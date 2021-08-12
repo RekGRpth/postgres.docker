@@ -14,4 +14,5 @@ psql postgres -qtAc "select datname from pg_database" | grep -v template | grep 
     echo "$NAME dump end at $(date "+%F %T")"
 done
 echo "all dump end at $(date "+%F %T")"
+cd "$HOME"
 find pg_dump -mtime +35 -delete
