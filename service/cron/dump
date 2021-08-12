@@ -1,5 +1,6 @@
 #!/bin/sh -eux
 
+psql --dbname=target_session_attrs=read-write -Aqtc "select now()"
 DT="$(date "+%F %T")"
 echo "all dump begin at $DT"
 FILE="$(psql -Aqt -c 'SELECT pg_walfile_name(pg_current_wal_lsn())')"
