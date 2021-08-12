@@ -5,7 +5,7 @@ cat >.pgbouncer.ini <<EOF
 [pgbouncer]
 admin_users = postgres
 application_name_add_host = 1
-auth_hba_file = pg_data/pg_hba.conf
+auth_hba_file = data/pg_hba.conf
 auth_type = hba
 auth_user = postgres
 listen_addr = *
