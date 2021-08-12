@@ -1,5 +1,0 @@
-#!/bin/sh -eux
-
-pg_isready
-pg_ctl status
-echo "* = " >.databases.ini

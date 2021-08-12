@@ -108,7 +108,6 @@ RUN set -eux; \
         jq \
         opensmtpd \
         openssh-client \
-        pgbouncer \
         postgresql \
         postgresql-contrib \
         procps \
