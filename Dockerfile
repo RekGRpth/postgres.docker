@@ -101,8 +101,6 @@ RUN set -eux; \
     ./configure; \
     make -j"$(nproc)" install; \
     cd "${HOME}"; \
-    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d ! -name "gawkextlib" ! -name "pgdbf" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 || exit 1; done; \
-    find "${HOME}/src" -type f -name "*.so" -exec strip '{}' \;; \
     find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d ! -name "gawkextlib" ! -name "pgdbf" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
     apk add --no-cache --virtual .postgresql-rundeps \
