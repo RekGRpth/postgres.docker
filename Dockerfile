@@ -2,9 +2,9 @@ FROM ghcr.io/rekgrpth/pdf.docker
 ADD service /etc/service
 ARG POSTGRES_VERSION=13
 CMD [ "/etc/service/postgres/run" ]
-ENV BACKUP_PATH="${HOME}/pg_rman" \
+ENV ARCLOG=../arc \
     GROUP=postgres \
-    PGDATA="${HOME}/pg_data" \
+    PGDATA="${HOME}/data" \
     USER=postgres
 RUN set -eux; \
     addgroup -S "${GROUP}"; \
@@ -26,8 +26,6 @@ RUN set -eux; \
         g++ \
         gawk \
         gcc \
-#        gdal-dev \
-#        geos-dev \
         gettext-dev \
         git \
         groff \
@@ -71,7 +69,6 @@ RUN set -eux; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
     git clone -b master https://github.com/RekGRpth/gawkextlib.git; \
-    git clone -b master https://github.com/RekGRpth/pg_auto_failover.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
     git clone -b master https://github.com/RekGRpth/pgdbf.git; \
     git clone -b master https://github.com/RekGRpth/pg_handlebars.git; \
@@ -81,19 +78,12 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_mustach.git; \
     git clone -b master https://github.com/RekGRpth/pg_partman.git; \
     git clone -b master https://github.com/RekGRpth/pg_profile.git; \
-    git clone -b master https://github.com/RekGRpth/pgq.git; \
-    git clone -b master https://github.com/RekGRpth/pgq-node.git; \
     git clone -b master https://github.com/RekGRpth/pg_repack.git; \
-    git clone -b master https://github.com/RekGRpth/pgsidekick.git; \
     git clone -b master https://github.com/RekGRpth/pg_ssl.git; \
     git clone -b master https://github.com/RekGRpth/pg_stat_kcache.git; \
     git clone -b master https://github.com/RekGRpth/pldebugger.git; \
     git clone -b master https://github.com/RekGRpth/plsh.git; \
-#    git clone -b master https://github.com/RekGRpth/postgis.git; \
-    git clone -b master https://github.com/RekGRpth/slony1-engine.git; \
-    git clone -b master --recursive https://github.com/RekGRpth/pgbouncer.git; \
     git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_async.git; \
-    git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_rman.git; \
     git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_save.git; \
     git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_task.git; \
     git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/postgres.git; \
@@ -128,23 +118,8 @@ RUN set -eux; \
     autoreconf -fi; \
     ./configure; \
     make -j"$(nproc)" install; \
-    cd "${HOME}/src/pgsidekick"; \
-    make -j"$(nproc)" pglisten; \
-    cp -f pglisten /usr/local/bin/; \
-#    cd "${HOME}/src/postgis"; \
-#    ./autogen.sh; \
-    cd "${HOME}/src/pgbouncer"; \
-    ./autogen.sh; \
-    ./configure \
-        --disable-debug \
-        --with-pam \
-    ; \
-    cd "${HOME}/src/slony1-engine"; \
-    autoconf; \
-    ./configure; \
-    make; \
     cd "${HOME}"; \
-    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "pgsidekick" ! -name "gawkextlib" ! -name "pgdbf" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
+    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "gawkextlib" ! -name "pgdbf" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
     apk add --no-cache --virtual .postgresql-rundeps \
         gawk \
