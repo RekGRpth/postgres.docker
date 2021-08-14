@@ -8,7 +8,7 @@ on:
       - latest
   workflow_dispatch:
 jobs:
-  build:
+  latest:
     concurrency:
       cancel-in-progress: true
       group: ${{ github.ref }}
@@ -20,3 +20,31 @@ jobs:
       - uses: rekgrpth/git-clone-shell-action@v1
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
+  REL_13_STABLE:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/REL_13_STABLE
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          INPUTS_BRANCH: REL_13_STABLE
+        uses: rekgrpth/git-clone-shell-action@v1
+      - env:
+          INPUTS_TAG: REL_13_STABLE
+        uses: rekgrpth/docker-login-build-push-shell-action@v1
+  REL_14_STABLE:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/REL_14_STABLE
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          INPUTS_BRANCH: REL_14_STABLE
+        uses: rekgrpth/git-clone-shell-action@v1
+      - env:
+          INPUTS_TAG: REL_14_STABLE
+        uses: rekgrpth/docker-login-build-push-shell-action@v1
