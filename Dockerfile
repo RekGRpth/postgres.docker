@@ -74,7 +74,6 @@ RUN set -eux; \
         libxml2-dev \
         libxslt-dev \
         libyaml-dev \
-        libzfslinux-dev \
         libzstd-dev \
         linux-headers-generic \
         linux-libc-dev \
