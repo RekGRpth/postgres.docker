@@ -64,7 +64,6 @@ RUN set -eux; \
         texinfo \
         udns-dev \
         util-linux-dev \
-        zfs-dev \
         zlib-dev \
         zstd-dev \
     ; \
