@@ -1,1 +1,1 @@
-# postgres
+docker ubuntu postgres
