@@ -9,6 +9,7 @@ ENV ARCLOG=../arc \
     PGDATA="${HOME}/data" \
     USER=postgres
 RUN set -eux; \
+    export DEBIAN_FRONTEND=noninteractive; \
     savedAptMark="$(apt-mark showmanual)"; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
