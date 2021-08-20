@@ -61,6 +61,7 @@ RUN set -eux; \
         libprotobuf-c-dev \
         libpsl-dev \
         libreadline-dev \
+        libselinux1-dev \
         libssh-dev \
         libssl-dev \
         libsubunit-dev \
@@ -86,6 +87,7 @@ RUN set -eux; \
         protobuf-c-compiler \
         python3 \
         rtmpdump \
+        systemtap-sdt-dev \
         texinfo \
         wget \
         zlib1g-dev \
@@ -168,7 +170,9 @@ RUN set -eux; \
         runit \
         sed \
     ; \
+    cd "${HOME}/src"; \
     dpkg -i libcjson1_1.7.14-1_amd64.deb opensmtpd_6.8.0p2-3_amd64.deb; \
+    cd /; \
     find /usr -type f -name "*.a" -delete; \
     find /usr -type f -name "*.la" -delete; \
     rm -rf "${HOME}" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man /var/lib/apt/lists/* /var/cache/ldconfig/aux-cache /var/cache/ldconfig; \
