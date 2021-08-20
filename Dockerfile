@@ -153,7 +153,6 @@ RUN set -eux; \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
     apt-get install -y --no-install-recommends \
         cron \
-        ed \
         gawk \
         jq \
         opensmtpd \
