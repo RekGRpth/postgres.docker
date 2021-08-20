@@ -12,6 +12,7 @@ RUN set -eux; \
     savedAptMark="$(apt-mark showmanual)"; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
+        apt-utils \
         autoconf \
         automake \
         autopoint \
@@ -26,6 +27,7 @@ RUN set -eux; \
         gcc \
         gettext \
         git \
+        gnupg \
         gnutls-dev \
         groff \
         libbrotli-dev \
@@ -76,6 +78,7 @@ RUN set -eux; \
         linux-libc-dev \
         llvm \
         llvm-dev \
+        lsb-release \
         make \
         mt-st \
         patch \
@@ -101,10 +104,12 @@ RUN set -eux; \
         postgresql-common \
         postgresql-contrib \
         postgresql-server-dev-${POSTGRES_VERSION} \
+    ; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
     wget http://ftp.debian.org/debian/pool/main/c/cjson/libcjson1_1.7.14-1_amd64.deb; \
     wget http://ftp.debian.org/debian/pool/main/c/cjson/libcjson-dev_1.7.14-1_amd64.deb; \
+    wget http://ftp.debian.org/debian/pool/main/o/opensmtpd/opensmtpd_6.8.0p2-3_amd64.deb; \
     dpkg -i libcjson1_1.7.14-1_amd64.deb libcjson-dev_1.7.14-1_amd64.deb; \
     git clone -b master https://github.com/RekGRpth/gawkextlib.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
@@ -130,7 +135,7 @@ RUN set -eux; \
     make -j"$(nproc)" install; \
     cd "${HOME}/src/gawkextlib/pgsql"; \
     autoreconf -vif; \
-    ./configure; \
+    ./configure --with-libpq="$(pg_config --includedir)"; \
     make -j"$(nproc)" install; \
     cd "${HOME}/src/pgdbf"; \
     autoreconf -fi; \
@@ -146,6 +151,7 @@ RUN set -eux; \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
     apt-get install -y --no-install-recommends \
         cron \
+        ed \
         gawk \
         jq \
         opensmtpd \
@@ -161,6 +167,8 @@ RUN set -eux; \
         procps \
         runit \
         sed \
+    ; \
+    dpkg -i libcjson1_1.7.14-1_amd64.deb opensmtpd_6.8.0p2-3_amd64.deb; \
     find /usr -type f -name "*.a" -delete; \
     find /usr -type f -name "*.la" -delete; \
     rm -rf "${HOME}" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man /var/lib/apt/lists/* /var/cache/ldconfig/aux-cache /var/cache/ldconfig; \
