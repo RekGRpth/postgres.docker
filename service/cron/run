@@ -10,4 +10,4 @@ chpst -u "$USER":"$GROUP" pg_ctl status
 chpst -u "$USER":"$GROUP" pg_isready
 test -f .crontab || chpst -u "$USER":"$GROUP" /etc/service/cron/crontab
 chpst -u "$USER":"$GROUP" crontab .crontab
-exec crond -d 8 -f
+exec cron -d 8 -f
