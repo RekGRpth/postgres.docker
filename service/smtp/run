@@ -7,5 +7,5 @@ chown "$USER":"$GROUP" supervise/ok supervise/control supervise/status
 cd "$HOME"
 chpst -u "$USER":"$GROUP" pg_ctl status
 chpst -u "$USER":"$GROUP" pg_isready
-test -f "$PGDATA/smtpd.conf" && ln -fs "$PGDATA/smtpd.conf" /etc/smtpd/smtpd.conf
+test -f "$PGDATA/smtpd.conf" && ln -fs "$PGDATA/smtpd.conf" /etc/smtpd.conf
 exec smtpd -d
