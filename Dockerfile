@@ -48,8 +48,7 @@ RUN set -eux; \
         libidn2-dev \
         libjansson-dev \
         libjpeg-dev \
-        libjson-c-dev \
-        libjson-c-dev \
+#        libjson-c-dev \
         libkrb5-dev \
         libldap2-dev \
         liblmdb-dev \
@@ -111,8 +110,10 @@ RUN set -eux; \
     cd "${HOME}/src"; \
     wget http://ftp.debian.org/debian/pool/main/c/cjson/libcjson1_1.7.14-1_amd64.deb; \
     wget http://ftp.debian.org/debian/pool/main/c/cjson/libcjson-dev_1.7.14-1_amd64.deb; \
+    wget http://ftp.debian.org/debian/pool/main/j/json-c/libjson-c5_0.15-2_amd64.deb; \
+    wget http://ftp.debian.org/debian/pool/main/j/json-c/libjson-c-dev_0.15-2_amd64.deb; \
     wget http://ftp.debian.org/debian/pool/main/o/opensmtpd/opensmtpd_6.8.0p2-3_amd64.deb; \
-    dpkg -i libcjson1_1.7.14-1_amd64.deb libcjson-dev_1.7.14-1_amd64.deb; \
+    dpkg -i libcjson1_1.7.14-1_amd64.deb libcjson-dev_1.7.14-1_amd64.deb libjson-c5_0.15-2_amd64.deb libjson-c-dev_0.15-2_amd64.deb; \
     git clone -b master https://github.com/RekGRpth/gawkextlib.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
     git clone -b master https://github.com/RekGRpth/pgdbf.git; \
