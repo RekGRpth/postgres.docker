@@ -6,6 +6,7 @@ ENV HOME=/var/lib/postgresql
 WORKDIR "${HOME}"
 ENV ARCLOG=../arc \
     GROUP=postgres \
+    PATH="${PATH}:/usr/lib/postgresql/${POSTGRES_VERSION}/bin" \
     PGDATA="${HOME}/data" \
     USER=postgres
 RUN set -eux; \
