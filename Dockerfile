@@ -117,6 +117,7 @@ RUN set -eux; \
     wget http://ftp.debian.org/debian/pool/main/o/opensmtpd/opensmtpd_6.8.0p2-3_amd64.deb; \
     dpkg -i libcjson1_1.7.14-1_amd64.deb libcjson-dev_1.7.14-1_amd64.deb libjson-c5_0.15-2_amd64.deb libjson-c-dev_0.15-2_amd64.deb; \
     git clone -b master https://github.com/RekGRpth/gawkextlib.git; \
+    git clone -b master https://github.com/RekGRpth/pg_async.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
     git clone -b master https://github.com/RekGRpth/pgdbf.git; \
     git clone -b master https://github.com/RekGRpth/pg_handlebars.git; \
@@ -132,7 +133,6 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_task.git; \
     git clone -b master https://github.com/RekGRpth/pldebugger.git; \
     git clone -b master https://github.com/RekGRpth/plsh.git; \
-    git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_async.git; \
     git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_save.git; \
     cd "${HOME}/src/gawkextlib/lib"; \
     autoreconf -vif; \
