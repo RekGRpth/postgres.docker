@@ -36,7 +36,7 @@ RUN set -eux; \
         libbrotli-dev \
         libc-ares-dev \
         libc-dev \
-#        libcjson-dev \
+        libcjson-dev \
         libcurl4-openssl-dev \
         libedit-dev \
         libevent-dev \
@@ -50,7 +50,7 @@ RUN set -eux; \
         libidn2-dev \
         libjansson-dev \
         libjpeg-dev \
-#        libjson-c-dev \
+        libjson-c-dev \
         libkrb5-dev \
         libldap2-dev \
         liblmdb-dev \
@@ -59,6 +59,7 @@ RUN set -eux; \
         libpcre2-dev \
         libpcre3-dev \
         libpng-dev \
+        libpq-dev \
         libproj-dev \
         libprotobuf-c-dev \
         libpsl-dev \
@@ -85,34 +86,21 @@ RUN set -eux; \
         mt-st \
         patch \
         pkg-config \
+        postgresql \
+        postgresql-client \
+        postgresql-client-common \
+        postgresql-common \
+        postgresql-contrib \
+        postgresql-server-dev-all \
         protobuf-c-compiler \
         python3 \
         rtmpdump \
         systemtap-sdt-dev \
         texinfo \
-        wget \
         zlib1g-dev \
-    ; \
-    echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list; \
-    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -; \
-    apt-get update; \
-    apt-get install -y --no-install-recommends \
-        libpq-dev \
-        postgresql-${POSTGRES_VERSION} \
-        postgresql-client-${POSTGRES_VERSION} \
-        postgresql-client-common \
-        postgresql-common \
-        postgresql-contrib \
-        postgresql-server-dev-${POSTGRES_VERSION} \
     ; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
-    wget http://ftp.debian.org/debian/pool/main/c/cjson/libcjson1_1.7.14-1_amd64.deb; \
-    wget http://ftp.debian.org/debian/pool/main/c/cjson/libcjson-dev_1.7.14-1_amd64.deb; \
-    wget http://ftp.debian.org/debian/pool/main/j/json-c/libjson-c5_0.15-2_amd64.deb; \
-    wget http://ftp.debian.org/debian/pool/main/j/json-c/libjson-c-dev_0.15-2_amd64.deb; \
-    wget http://ftp.debian.org/debian/pool/main/o/opensmtpd/opensmtpd_6.8.0p2-3_amd64.deb; \
-    dpkg -i libcjson1_1.7.14-1_amd64.deb libcjson-dev_1.7.14-1_amd64.deb libjson-c5_0.15-2_amd64.deb libjson-c-dev_0.15-2_amd64.deb; \
     git clone -b master https://github.com/RekGRpth/gawkextlib.git; \
     git clone -b master https://github.com/RekGRpth/pg_async.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
@@ -154,11 +142,11 @@ RUN set -eux; \
         jq \
         opensmtpd \
         openssh-client \
-        postgresql-${POSTGRES_VERSION} \
+        postgresql \
         postgresql-${POSTGRES_VERSION}-partman \
         postgresql-${POSTGRES_VERSION}-pldebugger \
         postgresql-${POSTGRES_VERSION}-plsh \
-        postgresql-client-${POSTGRES_VERSION} \
+        postgresql-client \
         postgresql-client-common \
         postgresql-common \
         postgresql-contrib \
@@ -166,9 +154,6 @@ RUN set -eux; \
         runit \
         sed \
     ; \
-    cd "${HOME}/src"; \
-    dpkg -i libcjson1_1.7.14-1_amd64.deb opensmtpd_6.8.0p2-3_amd64.deb; \
-    cd /; \
     find /usr -type f -name "*.a" -delete; \
     find /usr -type f -name "*.la" -delete; \
     rm -rf "${HOME}" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man /var/lib/apt/lists/* /var/cache/ldconfig/aux-cache /var/cache/ldconfig; \
