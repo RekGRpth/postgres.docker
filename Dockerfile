@@ -99,9 +99,6 @@ RUN set -eux; \
     apt-get install -y --no-install-recommends \
         libpq-dev \
         postgresql-${POSTGRES_VERSION} \
-#        postgresql-${POSTGRES_VERSION}-partman \
-#        postgresql-${POSTGRES_VERSION}-pldebugger \
-#        postgresql-${POSTGRES_VERSION}-plsh \
         postgresql-client-${POSTGRES_VERSION} \
         postgresql-client-common \
         postgresql-common \
@@ -125,15 +122,12 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_jobmon.git; \
     git clone -b master https://github.com/RekGRpth/pgjwt.git; \
     git clone -b master https://github.com/RekGRpth/pg_mustach.git; \
-    git clone -b master https://github.com/RekGRpth/pg_partman.git; \
     git clone -b master https://github.com/RekGRpth/pg_profile.git; \
     git clone -b master https://github.com/RekGRpth/pg_repack.git; \
     git clone -b master https://github.com/RekGRpth/pg_save.git; \
     git clone -b master https://github.com/RekGRpth/pg_ssl.git; \
     git clone -b master https://github.com/RekGRpth/pg_stat_kcache.git; \
     git clone -b master https://github.com/RekGRpth/pg_task.git; \
-    git clone -b master https://github.com/RekGRpth/pldebugger.git; \
-    git clone -b master https://github.com/RekGRpth/plsh.git; \
     cd "${HOME}/src/gawkextlib/lib"; \
     autoreconf -vif; \
     ./configure; \
@@ -161,9 +155,9 @@ RUN set -eux; \
         opensmtpd \
         openssh-client \
         postgresql-${POSTGRES_VERSION} \
-#        postgresql-${POSTGRES_VERSION}-partman \
-#        postgresql-${POSTGRES_VERSION}-pldebugger \
-#        postgresql-${POSTGRES_VERSION}-plsh \
+        postgresql-${POSTGRES_VERSION}-partman \
+        postgresql-${POSTGRES_VERSION}-pldebugger \
+        postgresql-${POSTGRES_VERSION}-plsh \
         postgresql-client-${POSTGRES_VERSION} \
         postgresql-client-common \
         postgresql-common \
