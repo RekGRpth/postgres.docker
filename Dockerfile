@@ -71,7 +71,6 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/gawkextlib.git; \
     git clone -b master https://github.com/RekGRpth/pg_async.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
-    git clone -b master https://github.com/RekGRpth/pgdbf.git; \
     git clone -b master https://github.com/RekGRpth/pg_handlebars.git; \
     git clone -b master https://github.com/RekGRpth/pg_htmldoc.git; \
     git clone -b master https://github.com/RekGRpth/pg_jobmon.git; \
@@ -114,12 +113,8 @@ RUN set -eux; \
     autoreconf -vif; \
     ./configure; \
     make -j"$(nproc)" install; \
-    cd "${HOME}/src/pgdbf"; \
-    autoreconf -fi; \
-    ./configure; \
-    make -j"$(nproc)" install; \
     cd "${HOME}"; \
-    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "gawkextlib" ! -name "pgdbf" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
+    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "gawkextlib" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
     apk add --no-cache --virtual .postgresql-rundeps \
         gawk \
