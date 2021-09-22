@@ -26,7 +26,6 @@ RUN set -eux; \
         file \
         flex \
         g++ \
-        gawk \
         gcc \
         gettext \
         git \
@@ -101,7 +100,6 @@ RUN set -eux; \
     ; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
-    git clone -b master https://github.com/RekGRpth/gawkextlib.git; \
     git clone -b master https://github.com/RekGRpth/pg_async.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
     git clone -b master https://github.com/RekGRpth/pg_handlebars.git; \
@@ -115,16 +113,8 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_ssl.git; \
     git clone -b master https://github.com/RekGRpth/pg_stat_kcache.git; \
     git clone -b master https://github.com/RekGRpth/pg_task.git; \
-    cd "${HOME}/src/gawkextlib/lib"; \
-    autoreconf -vif; \
-    ./configure; \
-    make -j"$(nproc)" install; \
-    cd "${HOME}/src/gawkextlib/pgsql"; \
-    autoreconf -vif; \
-    ./configure --with-libpq="$(pg_config --includedir)"; \
-    make -j"$(nproc)" install; \
     cd "${HOME}"; \
-    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d ! -name "gawkextlib" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
+    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
     apt-mark auto '.*' > /dev/null; \
     apt-mark manual $savedAptMark; \
@@ -133,9 +123,7 @@ RUN set -eux; \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
     apt-get install -y --no-install-recommends \
         cron \
-        gawk \
         jq \
-        opensmtpd \
         openssh-client \
         postgresql \
         postgresql-${POSTGRES_VERSION}-partman \
@@ -154,9 +142,4 @@ RUN set -eux; \
     rm -rf "${HOME}" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man /var/lib/apt/lists/* /var/cache/ldconfig/aux-cache /var/cache/ldconfig; \
     chmod -R 0755 /etc/service; \
     rm -f /var/spool/cron/crontabs/root; \
-    sed -i 's|table aliases|#table aliases|g' /etc/smtpd.conf; \
-    sed -i 's|listen on lo|listen on 0.0.0.0|g' /etc/smtpd.conf; \
-    sed -i 's|action "local" maildir alias|#action "local" maildir alias|g' /etc/smtpd.conf; \
-    sed -i 's|match from local for any action "relay"|match from any for any action "relay"|g' /etc/smtpd.conf; \
-    sed -i 's|match for local action "local"|#match for local action "local"|g' /etc/smtpd.conf; \
     echo done
