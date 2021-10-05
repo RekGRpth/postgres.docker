@@ -107,12 +107,15 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_jobmon.git; \
     git clone -b master https://github.com/RekGRpth/pgjwt.git; \
     git clone -b master https://github.com/RekGRpth/pg_mustach.git; \
+    git clone -b master https://github.com/RekGRpth/pg_partman.git; \
     git clone -b master https://github.com/RekGRpth/pg_profile.git; \
     git clone -b master https://github.com/RekGRpth/pg_repack.git; \
     git clone -b master https://github.com/RekGRpth/pg_save.git; \
     git clone -b master https://github.com/RekGRpth/pg_ssl.git; \
     git clone -b master https://github.com/RekGRpth/pg_stat_kcache.git; \
     git clone -b master https://github.com/RekGRpth/pg_task.git; \
+    git clone -b master https://github.com/RekGRpth/pldebugger.git; \
+    git clone -b master https://github.com/RekGRpth/plsh.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
     cd "${HOME}"; \
     find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
@@ -127,9 +130,6 @@ RUN set -eux; \
         jq \
         openssh-client \
         postgresql \
-        postgresql-${POSTGRES_VERSION}-partman \
-        postgresql-${POSTGRES_VERSION}-pldebugger \
-        postgresql-${POSTGRES_VERSION}-plsh \
         postgresql-client \
         postgresql-client-common \
         postgresql-common \
