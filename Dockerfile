@@ -54,6 +54,7 @@ RUN set -eux; \
         openssl-dev \
         patch \
         postgresql \
+        postgresql-bdr-dev \
         postgresql-dev \
         proj-dev \
         protobuf-c-dev \
