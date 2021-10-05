@@ -68,7 +68,6 @@ RUN set -eux; \
     ; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
-#    git clone -b master https://github.com/RekGRpth/hypopg.git; \
     git clone -b master https://github.com/RekGRpth/pg_async.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
     git clone -b master https://github.com/RekGRpth/pg_handlebars.git; \
@@ -90,6 +89,7 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/plsh.git; \
     git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
+    git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
     cd "${HOME}"; \
     find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
