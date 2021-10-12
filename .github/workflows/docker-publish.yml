@@ -10,7 +10,7 @@ on:
       - ubuntu
   workflow_dispatch:
 jobs:
-  latest:
+  build:
     concurrency:
       cancel-in-progress: true
       group: ${{ github.ref }}
@@ -23,9 +23,7 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
   oracle:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/oracle
+    needs: build
     env:
       GITHUB_TOKEN: ${{ github.token }}
     runs-on: ubuntu-latest
@@ -36,6 +34,9 @@ jobs:
       - env:
           INPUTS_TAG: oracle
         uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - env:
+          INPUTS_TAG: oracle
+        uses: rekgrpth/github-publish-action-shell-action@v1
   REL_13_STABLE:
     concurrency:
       cancel-in-progress: true
