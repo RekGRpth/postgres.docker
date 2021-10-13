@@ -34,9 +34,6 @@ jobs:
       - env:
           INPUTS_TAG: oracle
         uses: rekgrpth/docker-login-build-push-shell-action@v1
-      - env:
-          INPUTS_TAG: oracle
-        uses: rekgrpth/github-publish-action-shell-action@v1
   REL_13_STABLE:
     concurrency:
       cancel-in-progress: true
