@@ -50,7 +50,6 @@ RUN set -eux; \
         musl-dev \
         nghttp2-dev \
         openldap-dev \
-        openssl-dev \
         patch \
         postgresql \
         postgresql-dev \
