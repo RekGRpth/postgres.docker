@@ -2,12 +2,10 @@ name: Docker
 on:
   push:
     branches:
-      - latest
+      - edge
   repository_dispatch:
     types:
-      - debian
-      - latest
-      - ubuntu
+      - edge
   workflow_dispatch:
 jobs:
   build:
@@ -22,71 +20,3 @@ jobs:
       - uses: rekgrpth/git-clone-shell-action@v1
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
-  oracle:
-    needs: build
-    env:
-      GITHUB_TOKEN: ${{ github.token }}
-    runs-on: ubuntu-latest
-    steps:
-      - env:
-          INPUTS_BRANCH: oracle
-        uses: rekgrpth/git-clone-shell-action@v1
-      - env:
-          INPUTS_TAG: oracle
-        uses: rekgrpth/docker-login-build-push-shell-action@v1
-  REL_13_STABLE:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/REL_13_STABLE
-    env:
-      GITHUB_TOKEN: ${{ github.token }}
-    runs-on: ubuntu-latest
-    steps:
-      - env:
-          INPUTS_BRANCH: REL_13_STABLE
-        uses: rekgrpth/git-clone-shell-action@v1
-      - env:
-          INPUTS_TAG: REL_13_STABLE
-        uses: rekgrpth/docker-login-build-push-shell-action@v1
-  REL_14_STABLE:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/REL_14_STABLE
-    env:
-      GITHUB_TOKEN: ${{ github.token }}
-    runs-on: ubuntu-latest
-    steps:
-      - env:
-          INPUTS_BRANCH: REL_14_STABLE
-        uses: rekgrpth/git-clone-shell-action@v1
-      - env:
-          INPUTS_TAG: REL_14_STABLE
-        uses: rekgrpth/docker-login-build-push-shell-action@v1
-  ubuntu:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/ubuntu
-    env:
-      GITHUB_TOKEN: ${{ github.token }}
-    runs-on: ubuntu-latest
-    steps:
-      - env:
-          INPUTS_BRANCH: ubuntu
-        uses: rekgrpth/git-clone-shell-action@v1
-      - env:
-          INPUTS_TAG: ubuntu
-        uses: rekgrpth/docker-login-build-push-shell-action@v1
-  debian:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/debian
-    env:
-      GITHUB_TOKEN: ${{ github.token }}
-    runs-on: ubuntu-latest
-    steps:
-      - env:
-          INPUTS_BRANCH: debian
-        uses: rekgrpth/git-clone-shell-action@v1
-      - env:
-          INPUTS_TAG: debian
-        uses: rekgrpth/docker-login-build-push-shell-action@v1

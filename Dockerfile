@@ -1,6 +1,5 @@
-FROM ghcr.io/rekgrpth/pdf.docker
+FROM ghcr.io/rekgrpth/pdf.docker:edge
 ADD service /etc/service
-ARG POSTGRES_VERSION=13
 CMD [ "/etc/service/postgres/run" ]
 ENV HOME=/var/lib/postgresql
 WORKDIR "${HOME}"
