@@ -76,6 +76,7 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pgjwt.git; \
     git clone -b master https://github.com/RekGRpth/pg_mustach.git; \
     git clone -b master https://github.com/RekGRpth/pg_partman.git; \
+    git clone -b master https://github.com/RekGRpth/pg_pathman.git; \
     git clone -b master https://github.com/RekGRpth/pg_profile.git; \
     git clone -b master https://github.com/RekGRpth/pg_qualstats.git; \
     git clone -b master https://github.com/RekGRpth/pg_repack.git; \
