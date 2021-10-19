@@ -55,6 +55,7 @@ RUN set -eux; \
         patch \
         proj-dev \
         protobuf-c-dev \
+        py3-docutils \
         readline-dev \
         rtmpdump-dev \
         talloc-dev \
@@ -77,7 +78,6 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_partman.git; \
     git clone -b master https://github.com/RekGRpth/pg_pathman.git; \
     git clone -b master https://github.com/RekGRpth/pg_profile.git; \
-    git clone -b master https://github.com/RekGRpth/pgqd.git; \
     git clone -b master https://github.com/RekGRpth/pgq.git; \
     git clone -b master https://github.com/RekGRpth/pgq-node.git; \
     git clone -b master https://github.com/RekGRpth/pg_qualstats.git; \
@@ -96,6 +96,7 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
     git clone -b master https://github.com/RekGRpth/repack_bgw.git; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
+    git clone -b master --recursive https://github.com/RekGRpth/pgqd.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
     git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/postgres.git; \
     cd "${HOME}/src/postgres"; \
@@ -117,6 +118,9 @@ RUN set -eux; \
     make -j"$(nproc)" -C src install; \
     make -j"$(nproc)" -C contrib install; \
     make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install; \
+    cd "${HOME}/src/pgqd"; \
+    ./autogen.sh; \
+    ./configure; \
     cd "${HOME}"; \
     find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d ! -name "postgres" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
