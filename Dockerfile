@@ -57,6 +57,7 @@ RUN set -eux; \
         postgresql-dev \
         proj-dev \
         protobuf-c-dev \
+        py3-docutils \
         readline-dev \
         rtmpdump-dev \
         talloc-dev \
