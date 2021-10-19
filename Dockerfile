@@ -93,6 +93,7 @@ RUN set -eux; \
         postgresql-server-dev-all \
         protobuf-c-compiler \
         python3 \
+        python3-docutils \
         rtmpdump \
         systemtap-sdt-dev \
         texinfo \

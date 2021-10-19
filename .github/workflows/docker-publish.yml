@@ -8,7 +8,7 @@ on:
       - ubuntu
   workflow_dispatch:
 jobs:
-  build:
+  ubuntu:
     concurrency:
       cancel-in-progress: true
       group: ${{ github.ref }}
