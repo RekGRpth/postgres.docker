@@ -77,6 +77,9 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_partman.git; \
     git clone -b master https://github.com/RekGRpth/pg_pathman.git; \
     git clone -b master https://github.com/RekGRpth/pg_profile.git; \
+    git clone -b master https://github.com/RekGRpth/pgqd.git; \
+    git clone -b master https://github.com/RekGRpth/pgq.git; \
+    git clone -b master https://github.com/RekGRpth/pgq-node.git; \
     git clone -b master https://github.com/RekGRpth/pg_qualstats.git; \
     git clone -b master https://github.com/RekGRpth/pg_repack.git; \
     git clone -b master https://github.com/RekGRpth/pg_restrict.git; \
