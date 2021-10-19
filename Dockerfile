@@ -99,6 +99,9 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
     git clone -b master --recursive https://github.com/RekGRpth/pgqd.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
+    cd "${HOME}/src/pgqd"; \
+    ./autogen.sh; \
+    ./configure; \
     cd "${HOME}"; \
     find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
