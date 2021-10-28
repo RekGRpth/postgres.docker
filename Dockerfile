@@ -107,6 +107,7 @@ RUN set -eux; \
         openssh-client \
         postgresql \
         postgresql-contrib \
+        postgresql-jit \
         procps \
         runit \
         sed \
