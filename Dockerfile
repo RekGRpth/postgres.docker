@@ -1,6 +1,5 @@
 FROM ghcr.io/rekgrpth/pdf.docker:3.14
 ADD service /etc/service
-ARG POSTGRES_VERSION=13
 CMD [ "/etc/service/postgres/run" ]
 ENV HOME=/var/lib/postgresql
 WORKDIR "${HOME}"
@@ -20,11 +19,14 @@ RUN set -eux; \
         c-ares-dev \
         cjson-dev \
         clang \
+        clang-dev \
         curl-dev \
         file \
         flex \
         g++ \
         gcc \
+        gdal-dev \
+        geos-dev \
         gettext-dev \
         git \
         groff \
@@ -51,8 +53,9 @@ RUN set -eux; \
         musl-dev \
         nghttp2-dev \
         openldap-dev \
-        openssl-dev \
         patch \
+        pcre-dev \
+        perl-dev \
         postgresql \
         postgresql-dev \
         proj-dev \
@@ -93,6 +96,7 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pldebugger.git; \
     git clone -b master https://github.com/RekGRpth/plpgsql_check.git; \
     git clone -b master https://github.com/RekGRpth/plsh.git; \
+    git clone -b master https://github.com/RekGRpth/postgis.git; \
     git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
     git clone -b master https://github.com/RekGRpth/repack_bgw.git; \
@@ -100,6 +104,9 @@ RUN set -eux; \
     git clone -b master --recursive https://github.com/RekGRpth/pgqd.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
     cd "${HOME}/src/pgqd"; \
+    ./autogen.sh; \
+    ./configure; \
+    cd "${HOME}/src/postgis"; \
     ./autogen.sh; \
     ./configure; \
     cd "${HOME}"; \
