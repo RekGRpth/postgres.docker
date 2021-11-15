@@ -1,5 +1,6 @@
 FROM ghcr.io/rekgrpth/pdf.docker:edge
 ADD service /etc/service
+ARG POSTGRES_VERSION=14
 CMD [ "/etc/service/postgres/run" ]
 ENV HOME=/var/lib/postgresql
 WORKDIR "${HOME}"
@@ -56,8 +57,8 @@ RUN set -eux; \
         patch \
         pcre-dev \
         perl-dev \
-        postgresql \
-        postgresql-dev \
+        "postgresql${POSTGRES_VERSION}" \
+        "postgresql${POSTGRES_VERSION}-dev" \
         proj-dev \
         protobuf-c-dev \
         py3-docutils \
@@ -115,14 +116,16 @@ RUN set -eux; \
     apk add --no-cache --virtual .postgresql-rundeps \
         jq \
         openssh-client \
-        postgresql \
-        postgresql-contrib \
-        postgresql-jit \
+        "postgresql${POSTGRES_VERSION}" \
+        "postgresql${POSTGRES_VERSION}-client" \
+        "postgresql${POSTGRES_VERSION}-contrib" \
+        "postgresql${POSTGRES_VERSION}-contrib-jit" \
+        "postgresql${POSTGRES_VERSION}-jit" \
         procps \
         runit \
         sed \
         $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | while read -r lib; do test ! -e "/usr/local/lib/$lib" && echo "so:$lib"; done) \
-        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/lib/postgresql | tr ',' '\n' | sort -u | while read -r lib; do test ! -e "/usr/local/lib/$lib" && echo "so:$lib"; done) \
+        $(scanelf --needed --nobanner --format '%n#p' --recursive "/usr/lib/postgresql${POSTGRES_VERSION}" | tr ',' '\n' | sort -u | while read -r lib; do test ! -e "/usr/local/lib/$lib" && echo "so:$lib"; done) \
     ; \
     find /usr/local/bin -type f -exec strip '{}' \;; \
     find /usr/local/lib -type f -name "*.so" -exec strip '{}' \;; \
