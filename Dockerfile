@@ -141,7 +141,7 @@ RUN set -eux; \
     export PGUSER=postgres; \
     export PGDATABASE=postgres; \
     cd "${HOME}/src/pg_task"; \
-    make -j"$(nproc)" USE_PGXS=1 installcheck CONTRIB_TESTDB="${PGDATABASE}" || (cat "${HOME}/src/pg_task/regression.diffs"; exit 1) \
+    make -j"$(nproc)" USE_PGXS=1 installcheck CONTRIB_TESTDB="${PGDATABASE}" || (cat "${HOME}/src/pg_task/regression.diffs"; exit 1); \
     apk del --no-cache .build-deps; \
     find /usr -type f -name "*.a" -delete; \
     find /usr -type f -name "*.la" -delete; \
