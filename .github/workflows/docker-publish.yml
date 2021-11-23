@@ -2,10 +2,10 @@ name: Docker
 on:
   push:
     branches:
-      - alpine-13
+      - alpine-12
   repository_dispatch:
     types:
-      - alpine-13
+      - alpine-12
   workflow_dispatch:
 jobs:
   build:
