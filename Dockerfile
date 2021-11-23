@@ -133,7 +133,7 @@ RUN set -eux; \
     find /usr/local/lib -type f -name "*.so" -exec strip '{}' \;; \
     install -d -m 1775 -o postgres -g postgres /run/postgresql /var/log/postgresql /var/lib/postgresql; \
     su-exec postgres pg_ctl initdb; \
-    echo "pg_task.default_partman = ''" >>"${PGDATA}/postgresql.auto.conf"; \
+    echo "pg_task.json = '[{\"partman\":\"\"}]'" >>"${PGDATA}/postgresql.auto.conf"; \
     echo "shared_preload_libraries = 'pg_task'" >>"${PGDATA}/postgresql.auto.conf"; \
     su-exec postgres pg_ctl start; \
     export PGUSER=postgres; \
