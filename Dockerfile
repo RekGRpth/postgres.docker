@@ -72,7 +72,7 @@ RUN set -eux; \
         zlib-dev \
         zstd-dev \
     ; \
-    install -d -m 1775 -o postgres -g postgres /run/postgresql /var/log/postgresql; \
+    install -d -m 1775 -o postgres -g postgres /run/postgresql /var/log/postgresql /var/lib/postgresql; \
     su-exec postgres pg_ctl initdb; \
     echo "shared_preload_libraries = 'pg_task'" >>"${PGDATA}/postgresql.auto.conf"; \
     su-exec postgres pg_ctl start; \
