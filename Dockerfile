@@ -71,6 +71,7 @@ RUN set -eux; \
         zlib-dev \
         zstd-dev \
     ; \
+    export PATH="/usr/libexec/postgresql${POSTGRES_VERSION}:${PATH}"; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
     git clone -b master https://github.com/RekGRpth/pg_async.git; \
