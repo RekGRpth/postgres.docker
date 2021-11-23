@@ -2,10 +2,10 @@ name: Docker
 on:
   push:
     branches:
-      - ubuntu-14
+      - ubuntu-11
   repository_dispatch:
     types:
-      - ubuntu-14
+      - ubuntu-11
   workflow_dispatch:
 jobs:
   ubuntu:
