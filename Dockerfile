@@ -143,7 +143,7 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/postgis.git; \
     git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
-    git clone -b master https://github.com/RekGRpth/repack_bgw.git; \
+#    git clone -b master https://github.com/RekGRpth/repack_bgw.git; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
     git clone -b master --recursive https://github.com/RekGRpth/pgqd.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
