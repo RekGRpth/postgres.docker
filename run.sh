@@ -1,6 +1,6 @@
 #!/bin/sh -eux
 
-docker pull ghcr.io/rekgrpth/postgres.docker:ubuntu-11
+docker pull ghcr.io/rekgrpth/postgres.docker:ubuntu-10
 docker network create --attachable --opt com.docker.network.bridge.name=docker docker || echo $?
 docker volume create postgres
 docker stop postgres || echo $?
@@ -19,4 +19,4 @@ docker run \
     --network name=docker,alias=postgres."$(hostname -d)" \
     --publish target=5432,published=5432,mode=host \
     --restart always \
-    ghcr.io/rekgrpth/postgres.docker:ubuntu-11 runsvdir /etc/service
+    ghcr.io/rekgrpth/postgres.docker:ubuntu-10 runsvdir /etc/service
