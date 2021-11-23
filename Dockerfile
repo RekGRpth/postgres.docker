@@ -113,6 +113,7 @@ RUN set -eux; \
         postgresql-contrib \
         postgresql-server-dev-${POSTGRES_VERSION} \
     ; \
+    export PATH="/usr/lib/postgresql/${POSTGRES_VERSION}/bin:${PATH}"; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
     git clone -b master https://github.com/RekGRpth/pg_async.git; \
