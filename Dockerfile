@@ -56,6 +56,7 @@ RUN set -eux; \
         libkrb5-dev \
         libldap2-dev \
         liblmdb-dev \
+        liblz4-dev \
         libnghttp2-dev \
         libpam0g-dev \
         libpcre2-dev \
@@ -112,9 +113,10 @@ RUN set -eux; \
         postgresql-contrib \
         postgresql-server-dev-${POSTGRES_VERSION} \
     ; \
+    export PATH="/usr/lib/postgresql/${POSTGRES_VERSION}/bin:${PATH}"; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
-    git clone -b master https://github.com/RekGRpth/pg_async.git; \
+#    git clone -b master https://github.com/RekGRpth/pg_async.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
     git clone -b master https://github.com/RekGRpth/pg_handlebars.git; \
     git clone -b master https://github.com/RekGRpth/pg_htmldoc.git; \
@@ -128,7 +130,7 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_qualstats.git; \
     git clone -b master https://github.com/RekGRpth/pg_repack.git; \
     git clone -b master https://github.com/RekGRpth/pg_restrict.git; \
-    git clone -b master https://github.com/RekGRpth/pg_save.git; \
+#    git clone -b master https://github.com/RekGRpth/pg_save.git; \
     git clone -b master https://github.com/RekGRpth/pg_ssl.git; \
     git clone -b master https://github.com/RekGRpth/pg_stat_kcache.git; \
     git clone -b master https://github.com/RekGRpth/pgtap.git; \
