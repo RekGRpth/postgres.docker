@@ -64,6 +64,7 @@ RUN set -eux; \
         py3-docutils \
         readline-dev \
         rtmpdump-dev \
+        su-exec \
         talloc-dev \
         texinfo \
         udns-dev \
@@ -71,6 +72,10 @@ RUN set -eux; \
         zlib-dev \
         zstd-dev \
     ; \
+    install -d -m 1775 -o postgres -g postgres /run/postgresql /var/log/postgresql; \
+    su-exec postgres pg_ctl initdb; \
+    echo "shared_preload_libraries = 'pg_task'" >>"${PGDATA}/postgresql.auto.conf"; \
+    su-exec postgres pg_ctl start; \
     export PATH="/usr/libexec/postgresql${POSTGRES_VERSION}:${PATH}"; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
@@ -130,6 +135,10 @@ RUN set -eux; \
     ; \
     find /usr/local/bin -type f -exec strip '{}' \;; \
     find /usr/local/lib -type f -name "*.so" -exec strip '{}' \;; \
+    export PGUSER=postgres; \
+    export PGDATABASE=postgres; \
+    cd "${HOME}/src/pg_task"; \
+    make -j"$(nproc)" USE_PGXS=1 installcheck CONTRIB_TESTDB="${PGDATABASE}"; \
     apk del --no-cache .build-deps; \
     find /usr -type f -name "*.a" -delete; \
     find /usr -type f -name "*.la" -delete; \
