@@ -133,12 +133,13 @@ RUN set -eux; \
     find /usr/local/lib -type f -name "*.so" -exec strip '{}' \;; \
     install -d -m 1775 -o postgres -g postgres /run/postgresql /var/log/postgresql /var/lib/postgresql; \
     su-exec postgres pg_ctl initdb; \
+    echo "pg_task.default_partman = ''" >>"${PGDATA}/postgresql.auto.conf"; \
     echo "shared_preload_libraries = 'pg_task'" >>"${PGDATA}/postgresql.auto.conf"; \
     su-exec postgres pg_ctl start; \
     export PGUSER=postgres; \
     export PGDATABASE=postgres; \
     cd "${HOME}/src/pg_task"; \
-    make -j"$(nproc)" USE_PGXS=1 installcheck CONTRIB_TESTDB="${PGDATABASE}"; \
+    make -j"$(nproc)" USE_PGXS=1 installcheck CONTRIB_TESTDB="${PGDATABASE}" || cat "${HOME}/src/pg_task/regression.diffs"; \
     apk del --no-cache .build-deps; \
     find /usr -type f -name "*.a" -delete; \
     find /usr -type f -name "*.la" -delete; \
