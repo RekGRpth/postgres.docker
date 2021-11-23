@@ -1,5 +1,6 @@
 FROM ghcr.io/rekgrpth/pdf.docker:ubuntu
 ADD service /etc/service
+ARG POSTGRES_VERSION=14
 CMD [ "/etc/service/postgres/run" ]
 ENV HOME=/var/lib/postgresql
 WORKDIR "${HOME}"
@@ -90,19 +91,26 @@ RUN set -eux; \
         mt-st \
         patch \
         pkg-config \
-        postgresql \
-        postgresql-client \
-        postgresql-client-common \
-        postgresql-common \
-        postgresql-contrib \
-        postgresql-server-dev-all \
         protobuf-c-compiler \
         python3 \
         python3-docutils \
         rtmpdump \
         systemtap-sdt-dev \
         texinfo \
+        wget \
         zlib1g-dev \
+    ; \
+    echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list; \
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        libpq-dev \
+        postgresql-${POSTGRES_VERSION} \
+        postgresql-client-${POSTGRES_VERSION} \
+        postgresql-client-common \
+        postgresql-common \
+        postgresql-contrib \
+        postgresql-server-dev-${POSTGRES_VERSION} \
     ; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
@@ -155,8 +163,8 @@ RUN set -eux; \
         cron \
         jq \
         openssh-client \
-        postgresql \
-        postgresql-client \
+        postgresql-${POSTGRES_VERSION} \
+        postgresql-client-${POSTGRES_VERSION} \
         postgresql-client-common \
         postgresql-common \
         postgresql-contrib \
