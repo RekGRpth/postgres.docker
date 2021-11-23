@@ -1,6 +1,6 @@
 FROM ghcr.io/rekgrpth/pdf.docker:ubuntu
 ADD service /etc/service
-ARG POSTGRES_VERSION=10
+ARG POSTGRES_VERSION=9.6
 CMD [ "/etc/service/postgres/run" ]
 ENV HOME=/var/lib/postgresql
 WORKDIR "${HOME}"
