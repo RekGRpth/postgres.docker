@@ -174,6 +174,17 @@ RUN set -eux; \
         runit \
         sed \
     ; \
+    install -d -m 1775 -o postgres -g postgres /run/postgresql /var/log/postgresql /var/lib/postgresql; \
+    su postgres -c "pg_ctl initdb"; \
+    echo "log_min_messages = 'debug1'" >>"${PGDATA}/postgresql.auto.conf"; \
+    echo "max_worker_processes = '128'" >>"${PGDATA}/postgresql.auto.conf"; \
+    echo "pg_task.json = '[{\"partman\":\"\"}]'" >>"${PGDATA}/postgresql.auto.conf"; \
+    echo "shared_preload_libraries = 'pg_task'" >>"${PGDATA}/postgresql.auto.conf"; \
+    su postgres -c "pg_ctl start"; \
+    export PGUSER=postgres; \
+    export PGDATABASE=postgres; \
+    cd "${HOME}/src/pg_task"; \
+    make -j"$(nproc)" USE_PGXS=1 installcheck CONTRIB_TESTDB="${PGDATABASE}" || (cat "${HOME}/src/pg_task/regression.diffs"; exit 1); \
     find /usr -type f -name "*.a" -delete; \
     find /usr -type f -name "*.la" -delete; \
     rm -rf "${HOME}" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man /var/lib/apt/lists/* /var/cache/ldconfig/aux-cache /var/cache/ldconfig; \
