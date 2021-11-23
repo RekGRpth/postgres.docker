@@ -56,6 +56,7 @@ RUN set -eux; \
         libkrb5-dev \
         libldap2-dev \
         liblmdb-dev \
+        liblz4-dev \
         libnghttp2-dev \
         libpam0g-dev \
         libpcre2-dev \
