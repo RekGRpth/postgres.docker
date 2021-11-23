@@ -73,9 +73,6 @@ RUN set -eux; \
         zstd-dev \
     ; \
     install -d -m 1775 -o postgres -g postgres /run/postgresql /var/log/postgresql /var/lib/postgresql; \
-    su-exec postgres pg_ctl initdb; \
-    echo "shared_preload_libraries = 'pg_task'" >>"${PGDATA}/postgresql.auto.conf"; \
-    su-exec postgres pg_ctl start; \
     export PATH="/usr/libexec/postgresql${POSTGRES_VERSION}:${PATH}"; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
@@ -135,6 +132,9 @@ RUN set -eux; \
     ; \
     find /usr/local/bin -type f -exec strip '{}' \;; \
     find /usr/local/lib -type f -name "*.so" -exec strip '{}' \;; \
+    su-exec postgres pg_ctl initdb; \
+    echo "shared_preload_libraries = 'pg_task'" >>"${PGDATA}/postgresql.auto.conf"; \
+    su-exec postgres pg_ctl start; \
     export PGUSER=postgres; \
     export PGDATABASE=postgres; \
     cd "${HOME}/src/pg_task"; \
