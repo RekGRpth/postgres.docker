@@ -156,6 +156,17 @@ RUN set -eux; \
     cd "${HOME}"; \
     find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
+    install -d -m 1775 -o postgres -g postgres /run/postgresql /var/log/postgresql /var/lib/postgresql; \
+    su postgres -c "/usr/lib/postgresql/${POSTGRES_VERSION}/bin/pg_ctl initdb"; \
+    echo "log_min_messages = 'debug1'" >>"${PGDATA}/postgresql.auto.conf"; \
+    echo "max_worker_processes = '128'" >>"${PGDATA}/postgresql.auto.conf"; \
+    echo "pg_task.json = '[{\"partman\":\"\"}]'" >>"${PGDATA}/postgresql.auto.conf"; \
+    echo "shared_preload_libraries = 'pg_task'" >>"${PGDATA}/postgresql.auto.conf"; \
+    su postgres -c "/usr/lib/postgresql/${POSTGRES_VERSION}/bin/pg_ctl start"; \
+    export PGUSER=postgres; \
+    export PGDATABASE=postgres; \
+    cd "${HOME}/src/pg_task"; \
+    make -j"$(nproc)" USE_PGXS=1 installcheck CONTRIB_TESTDB="${PGDATABASE}" || (cat "${HOME}/src/pg_task/regression.diffs"; exit 1); \
     apt-mark auto '.*' > /dev/null; \
     apt-mark manual $savedAptMark; \
     find /usr/local -type f -executable -exec ldd '{}' ';' | grep -v 'not found' | awk '/=>/ { print $(NF-1) }' | sort -u | xargs -r dpkg-query --search | cut -d: -f1 | sort -u | xargs -r apt-mark manual; \
