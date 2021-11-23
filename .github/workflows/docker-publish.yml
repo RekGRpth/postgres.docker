@@ -74,3 +74,129 @@ jobs:
       - env:
           INPUTS_TAG: edge
         uses: rekgrpth/docker-login-build-push-shell-action@v1
+  alpine14:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/alpine14
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          INPUTS_BRANCH: alpine-14
+        uses: rekgrpth/git-clone-shell-action@v1
+      - env:
+          INPUTS_TAG: alpine-14
+        uses: rekgrpth/docker-login-build-push-shell-action@v1
+  alpine13:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/alpine13
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          INPUTS_BRANCH: alpine-13
+        uses: rekgrpth/git-clone-shell-action@v1
+      - env:
+          INPUTS_TAG: alpine-13
+        uses: rekgrpth/docker-login-build-push-shell-action@v1
+  alpine12:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/alpine12
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          INPUTS_BRANCH: alpine-12
+        uses: rekgrpth/git-clone-shell-action@v1
+      - env:
+          INPUTS_TAG: alpine-12
+        uses: rekgrpth/docker-login-build-push-shell-action@v1
+  ubuntu14:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/ubuntu14
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          INPUTS_BRANCH: ubuntu-14
+        uses: rekgrpth/git-clone-shell-action@v1
+      - env:
+          INPUTS_TAG: ubuntu-14
+        uses: rekgrpth/docker-login-build-push-shell-action@v1
+  ubuntu13:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/ubuntu13
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          INPUTS_BRANCH: ubuntu-13
+        uses: rekgrpth/git-clone-shell-action@v1
+      - env:
+          INPUTS_TAG: ubuntu-13
+        uses: rekgrpth/docker-login-build-push-shell-action@v1
+  ubuntu12:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/ubuntu12
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          INPUTS_BRANCH: ubuntu-12
+        uses: rekgrpth/git-clone-shell-action@v1
+      - env:
+          INPUTS_TAG: ubuntu-12
+        uses: rekgrpth/docker-login-build-push-shell-action@v1
+  ubuntu11:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/ubuntu11
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          INPUTS_BRANCH: ubuntu-11
+        uses: rekgrpth/git-clone-shell-action@v1
+      - env:
+          INPUTS_TAG: ubuntu-11
+        uses: rekgrpth/docker-login-build-push-shell-action@v1
+  ubuntu10:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/ubuntu10
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          INPUTS_BRANCH: ubuntu-10
+        uses: rekgrpth/git-clone-shell-action@v1
+      - env:
+          INPUTS_TAG: ubuntu-10
+        uses: rekgrpth/docker-login-build-push-shell-action@v1
+  ubuntu9:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/ubuntu9
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          INPUTS_BRANCH: ubuntu-9
+        uses: rekgrpth/git-clone-shell-action@v1
+      - env:
+          INPUTS_TAG: ubuntu-9
+        uses: rekgrpth/docker-login-build-push-shell-action@v1
