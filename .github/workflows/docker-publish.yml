@@ -186,6 +186,7 @@ jobs:
       - env:
           INPUTS_TAG: ubuntu-10
         uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 10
   ubuntu9:
     concurrency:
       cancel-in-progress: true
@@ -200,3 +201,4 @@ jobs:
       - env:
           INPUTS_TAG: ubuntu-9
         uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 10
