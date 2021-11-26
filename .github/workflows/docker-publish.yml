@@ -88,6 +88,7 @@ jobs:
       - env:
           INPUTS_TAG: alpine-14
         uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 10
   alpine13:
     concurrency:
       cancel-in-progress: true
@@ -102,6 +103,7 @@ jobs:
       - env:
           INPUTS_TAG: alpine-13
         uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 10
   alpine12:
     concurrency:
       cancel-in-progress: true
@@ -116,6 +118,7 @@ jobs:
       - env:
           INPUTS_TAG: alpine-12
         uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 10
   ubuntu14:
     concurrency:
       cancel-in-progress: true
@@ -130,6 +133,7 @@ jobs:
       - env:
           INPUTS_TAG: ubuntu-14
         uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 10
   ubuntu13:
     concurrency:
       cancel-in-progress: true
@@ -144,6 +148,7 @@ jobs:
       - env:
           INPUTS_TAG: ubuntu-13
         uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 10
   ubuntu12:
     concurrency:
       cancel-in-progress: true
@@ -158,6 +163,7 @@ jobs:
       - env:
           INPUTS_TAG: ubuntu-12
         uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 10
   ubuntu11:
     concurrency:
       cancel-in-progress: true
@@ -172,6 +178,7 @@ jobs:
       - env:
           INPUTS_TAG: ubuntu-11
         uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 10
   ubuntu10:
     concurrency:
       cancel-in-progress: true
