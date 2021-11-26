@@ -163,6 +163,7 @@ RUN set -eux; \
     echo "pg_task.json = '[{\"partman\":\"\"}]'" >>"${PGDATA}/postgresql.auto.conf"; \
     echo "shared_preload_libraries = 'pg_task'" >>"${PGDATA}/postgresql.auto.conf"; \
     su postgres -c "/usr/lib/postgresql/${POSTGRES_VERSION}/bin/pg_ctl start"; \
+    sleep 10; \
     export PGUSER=postgres; \
     export PGDATABASE=postgres; \
     cd "${HOME}/src/pg_task"; \
