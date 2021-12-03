@@ -12,6 +12,7 @@ pg_dumpall --clean --if-exists --globals-only --file=globals.sql --quote-all-ide
 psql postgres -qtAc "select datname from pg_database" | grep -v template | grep -v postgres | while read -r NAME; do
     echo "$NAME dump begin at $(date "+%F %T")"
     pg_dump --no-tablespaces --jobs=$(nproc) --blobs --disable-triggers --clean --if-exists --create --format=directory --file="$NAME" --quote-all-identifiers --dbname="$NAME" --exclude-schema="_$NAME"
+    pg_dump --no-tablespaces --schema-only --blobs --disable-triggers --clean --if-exists --create --format=plain --file="$NAME/schema.sql" --quote-all-identifiers --dbname="$NAME" --exclude-schema="_$NAME"
     echo "$NAME dump end at $(date "+%F %T")"
 done
 echo "all dump end at $(date "+%F %T")"
