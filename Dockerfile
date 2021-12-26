@@ -55,6 +55,7 @@ RUN set -eux; \
         nghttp2-dev \
         openldap-dev \
         patch \
+        pcre2-dev \
         pcre-dev \
         perl-dev \
         "postgresql${POSTGRES_VERSION}" \
