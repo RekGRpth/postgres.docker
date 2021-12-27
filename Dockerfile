@@ -100,7 +100,7 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pldebugger.git; \
     git clone -b master https://github.com/RekGRpth/plpgsql_check.git; \
     git clone -b master https://github.com/RekGRpth/plsh.git; \
-    git clone -b master https://github.com/RekGRpth/postgis.git; \
+#    git clone -b master https://github.com/RekGRpth/postgis.git; \
     git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
     git clone -b master https://github.com/RekGRpth/repack_bgw.git; \
@@ -110,9 +110,9 @@ RUN set -eux; \
     cd "${HOME}/src/pgqd"; \
     ./autogen.sh; \
     ./configure; \
-    cd "${HOME}/src/postgis"; \
-    ./autogen.sh; \
-    ./configure; \
+#    cd "${HOME}/src/postgis"; \
+#    ./autogen.sh; \
+#    ./configure; \
     cd "${HOME}"; \
     find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
