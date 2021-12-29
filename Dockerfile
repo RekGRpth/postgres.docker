@@ -4,8 +4,9 @@ ARG POSTGRES_VERSION=13
 CMD [ "/etc/service/postgres/run" ]
 ENV HOME=/var/lib/postgresql
 WORKDIR "${HOME}"
-ENV ARCLOG=../arc \
+ENV ARC=../arc \
     GROUP=postgres \
+    LOG=../log \
     PATH="${PATH}:/usr/lib/postgresql/${POSTGRES_VERSION}/bin" \
     PGDATA="${HOME}/data" \
     USER=postgres
