@@ -116,7 +116,7 @@ RUN set -eux; \
     export PATH="/usr/lib/postgresql/${POSTGRES_VERSION}/bin:${PATH}"; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
-    git clone -b master https://github.com/RekGRpth/pg_async.git; \
+#    git clone -b master https://github.com/RekGRpth/pg_async.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
     git clone -b master https://github.com/RekGRpth/pg_handlebars.git; \
     git clone -b master https://github.com/RekGRpth/pg_htmldoc.git; \
