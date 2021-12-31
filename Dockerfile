@@ -22,6 +22,7 @@ RUN set -eux; \
         cjson-dev \
         clang \
         clang-dev \
+        cmake \
         curl-dev \
         file \
         flex \
@@ -64,6 +65,7 @@ RUN set -eux; \
         proj-dev \
         protobuf-c-dev \
         py3-docutils \
+        python2 \
         readline-dev \
         rtmpdump-dev \
         talloc-dev \
@@ -76,8 +78,10 @@ RUN set -eux; \
     export PATH="/usr/libexec/postgresql${POSTGRES_VERSION}:${PATH}"; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
+    git clone -b master https://github.com/RekGRpth/libgraphqlparser.git; \
 #    git clone -b master https://github.com/RekGRpth/pg_async.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
+    git clone -b master https://github.com/RekGRpth/pg_graphql.git; \
     git clone -b master https://github.com/RekGRpth/pg_handlebars.git; \
     git clone -b master https://github.com/RekGRpth/pg_htmldoc.git; \
     git clone -b master https://github.com/RekGRpth/pg_jobmon.git; \
@@ -107,6 +111,9 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
     git clone -b master --recursive https://github.com/RekGRpth/pgqd.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
+    cd "${HOME}/src/libgraphqlparser"; \
+    cmake .; \
+    make -j"$(nproc)" install; \
     cd "${HOME}/src/pgqd"; \
     ./autogen.sh; \
     ./configure; \
@@ -114,7 +121,7 @@ RUN set -eux; \
 #    ./autogen.sh; \
 #    ./configure; \
     cd "${HOME}"; \
-    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
+    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d | grep -v "libgraphqlparser" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
     apk add --no-cache --virtual .postgresql-rundeps \
         jq \
