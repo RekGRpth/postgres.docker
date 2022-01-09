@@ -2,13 +2,13 @@ name: Docker
 on:
   push:
     branches:
-      - REL_12_STABLE
+      - REL_11_STABLE
   repository_dispatch:
     types:
-      - REL_12_STABLE
+      - REL_11_STABLE
   workflow_dispatch:
 jobs:
-  REL_12_STABLE:
+  REL_11_STABLE:
     concurrency:
       cancel-in-progress: true
       group: ${{ github.ref }}
