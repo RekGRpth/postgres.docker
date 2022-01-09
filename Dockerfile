@@ -12,6 +12,8 @@ ENV ARC=../arc \
 RUN set -eux; \
     addgroup -S "${GROUP}"; \
     adduser -D -S -h "${HOME}" -s /bin/ash -G "${GROUP}" "${USER}"; \
+    ln -s libldap.a /usr/lib/libldap_r.a; \
+    ln -s libldap.so /usr/lib/libldap_r.so; \
     apk update --no-cache; \
     apk upgrade --no-cache; \
     apk add --no-cache --virtual .build-deps \
@@ -110,23 +112,36 @@ RUN set -eux; \
     git clone -b "${POSTGRES_BRANCH}" https://github.com/RekGRpth/postgres.git; \
     cd "${HOME}/src/postgres"; \
     ./configure \
+        --disable-rpath \
+#        --enable-debug \
+        --enable-integer-datetimes \
+#        --enable-nls \
+#        --enable-tap-tests \
         --enable-thread-safety \
         --prefix=/usr/local \
+        --with-gnu-ld \
         --with-gssapi \
         --with-icu \
+        --with-includes=/usr/local/include \
+        --with-krb5 \
         --with-ldap \
         --with-libedit-preferred \
+        --with-libraries=/usr/local/lib \
         --with-libxml \
         --with-libxslt \
         --with-llvm \
         --with-openssl \
         --with-pam \
+#        --with-perl \
+        --with-pgport=5432 \
+#        --with-python \
         --with-system-tzdata=/usr/share/zoneinfo \
+#        --with-tcl \
         --with-uuid=e2fs \
     ; \
     make -j"$(nproc)" -C src install; \
     make -j"$(nproc)" -C contrib install; \
-    make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install; \
+    make -j"$(nproc)" submake-libpq submake-libpgport install; \
     cd "${HOME}/src/pgqd"; \
     ./autogen.sh; \
     ./configure; \
