@@ -82,7 +82,7 @@ RUN set -eux; \
     cd "${HOME}/src"; \
 #    git clone -b master https://github.com/RekGRpth/pg_async.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
-    git clone -b master https://github.com/RekGRpth/pg_graphql.git; \
+#    git clone -b master https://github.com/RekGRpth/pg_graphql.git; \
     git clone -b master https://github.com/RekGRpth/pg_handlebars.git; \
     git clone -b master https://github.com/RekGRpth/pg_htmldoc.git; \
     git clone -b master https://github.com/RekGRpth/pg_jobmon.git; \
@@ -90,8 +90,8 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_mustach.git; \
     git clone -b master https://github.com/RekGRpth/pg_partman.git; \
     git clone -b master https://github.com/RekGRpth/pg_profile.git; \
-    git clone -b master https://github.com/RekGRpth/pgq.git; \
-    git clone -b master https://github.com/RekGRpth/pgq-node.git; \
+#    git clone -b master https://github.com/RekGRpth/pgq.git; \
+#    git clone -b master https://github.com/RekGRpth/pgq-node.git; \
     git clone -b master https://github.com/RekGRpth/pg_qualstats.git; \
     git clone -b master https://github.com/RekGRpth/pg_repack.git; \
     git clone -b master https://github.com/RekGRpth/pg_restrict.git; \
@@ -103,14 +103,14 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_track_settings.git; \
     git clone -b master https://github.com/RekGRpth/pg_wait_sampling.git; \
     git clone -b master https://github.com/RekGRpth/pldebugger.git; \
-    git clone -b master https://github.com/RekGRpth/plpgsql_check.git; \
+#    git clone -b master https://github.com/RekGRpth/plpgsql_check.git; \
     git clone -b master https://github.com/RekGRpth/plsh.git; \
 #    git clone -b master https://github.com/RekGRpth/postgis.git; \
     git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
-    git clone -b master https://github.com/RekGRpth/repack_bgw.git; \
+#    git clone -b master https://github.com/RekGRpth/repack_bgw.git; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
-    git clone -b master --recursive https://github.com/RekGRpth/pgqd.git; \
+#    git clone -b master --recursive https://github.com/RekGRpth/pgqd.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
     git clone -b "${POSTGRES_BRANCH}" https://github.com/RekGRpth/postgres.git; \
     cd "${HOME}/src/postgres"; \
@@ -145,9 +145,9 @@ RUN set -eux; \
     make -j"$(nproc)" -C src install; \
     make -j"$(nproc)" -C contrib install; \
     make -j"$(nproc)" submake-libpq submake-libpgport install; \
-    cd "${HOME}/src/pgqd"; \
-    ./autogen.sh; \
-    ./configure; \
+#    cd "${HOME}/src/pgqd"; \
+#    ./autogen.sh; \
+#    ./configure; \
 #    cd "${HOME}/src/postgis"; \
 #    ./autogen.sh; \
 #    ./configure; \
@@ -165,7 +165,7 @@ RUN set -eux; \
     find /usr/local/bin -type f -exec strip '{}' \;; \
     find /usr/local/lib -type f -name "*.so" -exec strip '{}' \;; \
     apk del --no-cache .build-deps; \
-    find /usr -type f -name "*.a" -delete; \
+#    find /usr -type f -name "*.a" -delete; \
     find /usr -type f -name "*.la" -delete; \
     rm -rf "${HOME}" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
     chmod -R 0755 /etc/service; \
