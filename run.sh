@@ -1,6 +1,6 @@
 #!/bin/sh -eux
 
-docker pull ghcr.io/rekgrpth/postgres.docker:REL9_5_STABLE
+docker pull ghcr.io/rekgrpth/postgres.docker:REL9_4_STABLE
 docker network create --attachable --opt com.docker.network.bridge.name=docker docker || echo $?
 docker volume create postgres
 docker stop postgres || echo $?
@@ -20,4 +20,4 @@ docker run \
     --publish target=5432,published=5432,mode=host \
     --restart always \
     --shm-size=4G \
-    ghcr.io/rekgrpth/postgres.docker:REL9_5_STABLE runsvdir /etc/service
+    ghcr.io/rekgrpth/postgres.docker:REL9_4_STABLE runsvdir /etc/service
