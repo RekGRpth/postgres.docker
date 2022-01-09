@@ -88,7 +88,7 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_jobmon.git; \
     git clone -b master https://github.com/RekGRpth/pgjwt.git; \
     git clone -b master https://github.com/RekGRpth/pg_mustach.git; \
-    git clone -b master https://github.com/RekGRpth/pg_partman.git; \
+#    git clone -b master https://github.com/RekGRpth/pg_partman.git; \
     git clone -b master https://github.com/RekGRpth/pg_profile.git; \
 #    git clone -b master https://github.com/RekGRpth/pgq.git; \
 #    git clone -b master https://github.com/RekGRpth/pgq-node.git; \
