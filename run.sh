@@ -14,9 +14,10 @@ docker run \
     --hostname postgres \
     --mount type=bind,source=/etc/certs,destination=/etc/certs,readonly \
     --mount type=bind,source=/run/postgresql,destination=/run/postgresql \
-    --mount type=volume,source=postgres,destination=/home \
+    --mount type=volume,source=postgres,destination=/var/lib/postgresql \
     --name postgres \
     --network name=docker,alias=postgres."$(hostname -d)" \
     --publish target=5432,published=5432,mode=host \
     --restart always \
+    --shm-size=4G \
     ghcr.io/rekgrpth/postgres.docker:REL_13_STABLE runsvdir /etc/service

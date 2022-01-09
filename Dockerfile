@@ -1,9 +1,12 @@
 FROM ghcr.io/rekgrpth/pdf.docker
 ADD service /etc/service
-ARG POSTGRES_VERSION=13
+ARG POSTGRES_BRANCH=REL_13_STABLE
 CMD [ "/etc/service/postgres/run" ]
-ENV ARCLOG=../arc \
+ENV HOME=/var/lib/postgresql
+WORKDIR "${HOME}"
+ENV ARC=../arc \
     GROUP=postgres \
+    LOG=../log \
     PGDATA="${HOME}/data" \
     USER=postgres
 RUN set -eux; \
@@ -20,11 +23,14 @@ RUN set -eux; \
         c-ares-dev \
         cjson-dev \
         clang \
+        clang-dev \
         curl-dev \
         file \
         flex \
         g++ \
         gcc \
+        gdal-dev \
+        geos-dev \
         gettext-dev \
         git \
         groff \
@@ -51,8 +57,10 @@ RUN set -eux; \
         musl-dev \
         nghttp2-dev \
         openldap-dev \
-        openssl-dev \
         patch \
+        pcre2-dev \
+        pcre-dev \
+        perl-dev \
         proj-dev \
         protobuf-c-dev \
         py3-docutils \
@@ -62,21 +70,20 @@ RUN set -eux; \
         texinfo \
         udns-dev \
         util-linux-dev \
-        zfs-dev \
         zlib-dev \
         zstd-dev \
     ; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
-    git clone -b master https://github.com/RekGRpth/pg_async.git; \
+#    git clone -b master https://github.com/RekGRpth/pg_async.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
+    git clone -b master https://github.com/RekGRpth/pg_graphql.git; \
     git clone -b master https://github.com/RekGRpth/pg_handlebars.git; \
     git clone -b master https://github.com/RekGRpth/pg_htmldoc.git; \
     git clone -b master https://github.com/RekGRpth/pg_jobmon.git; \
     git clone -b master https://github.com/RekGRpth/pgjwt.git; \
     git clone -b master https://github.com/RekGRpth/pg_mustach.git; \
     git clone -b master https://github.com/RekGRpth/pg_partman.git; \
-    git clone -b master https://github.com/RekGRpth/pg_pathman.git; \
     git clone -b master https://github.com/RekGRpth/pg_profile.git; \
     git clone -b master https://github.com/RekGRpth/pgq.git; \
     git clone -b master https://github.com/RekGRpth/pgq-node.git; \
@@ -86,19 +93,21 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_save.git; \
     git clone -b master https://github.com/RekGRpth/pg_ssl.git; \
     git clone -b master https://github.com/RekGRpth/pg_stat_kcache.git; \
+    git clone -b master https://github.com/RekGRpth/pgtap.git; \
     git clone -b master https://github.com/RekGRpth/pg_task.git; \
     git clone -b master https://github.com/RekGRpth/pg_track_settings.git; \
     git clone -b master https://github.com/RekGRpth/pg_wait_sampling.git; \
     git clone -b master https://github.com/RekGRpth/pldebugger.git; \
     git clone -b master https://github.com/RekGRpth/plpgsql_check.git; \
     git clone -b master https://github.com/RekGRpth/plsh.git; \
+#    git clone -b master https://github.com/RekGRpth/postgis.git; \
     git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
     git clone -b master https://github.com/RekGRpth/repack_bgw.git; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
     git clone -b master --recursive https://github.com/RekGRpth/pgqd.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
-    git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/postgres.git; \
+    git clone -b "${POSTGRES_BRANCH}" https://github.com/RekGRpth/postgres.git; \
     cd "${HOME}/src/postgres"; \
     ./configure \
         --enable-thread-safety \
@@ -121,8 +130,11 @@ RUN set -eux; \
     cd "${HOME}/src/pgqd"; \
     ./autogen.sh; \
     ./configure; \
+#    cd "${HOME}/src/postgis"; \
+#    ./autogen.sh; \
+#    ./configure; \
     cd "${HOME}"; \
-    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d ! -name "postgres" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
+    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d | grep -v "libgraphqlparser" | grep -v "postgres" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
     apk add --no-cache --virtual .postgresql-rundeps \
         jq \
