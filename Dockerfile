@@ -3,6 +3,7 @@ ADD service /etc/service
 ARG POSTGRES_BRANCH=REL9_2_STABLE
 CMD [ "/etc/service/postgres/run" ]
 ENV HOME=/var/lib/postgresql
+STOPSIGNAL SIGINT
 WORKDIR "${HOME}"
 ENV ARC=../arc \
     GROUP=postgres \
@@ -66,9 +67,11 @@ RUN set -eux; \
         proj-dev \
         protobuf-c-dev \
         py3-docutils \
+        python3-dev \
         readline-dev \
         rtmpdump-dev \
         talloc-dev \
+        tcl-dev \
         texinfo \
         udns-dev \
         util-linux-dev \
@@ -132,11 +135,11 @@ RUN set -eux; \
         --with-llvm \
         --with-openssl \
         --with-pam \
-#        --with-perl \
+        --with-perl \
         --with-pgport=5432 \
-#        --with-python \
+        --with-python \
         --with-system-tzdata=/usr/share/zoneinfo \
-#        --with-tcl \
+        --with-tcl \
         --with-uuid=e2fs \
     ; \
     make -j"$(nproc)" -C src install; \
@@ -149,7 +152,7 @@ RUN set -eux; \
 #    ./autogen.sh; \
 #    ./configure; \
     cd "${HOME}"; \
-    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d | grep -v "libgraphqlparser" | grep -v "postgres" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
+    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/libgraphqlparser -e src/postgres | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
     apk add --no-cache --virtual .postgresql-rundeps \
         jq \
@@ -157,7 +160,7 @@ RUN set -eux; \
         procps \
         runit \
         sed \
-        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | while read -r lib; do test ! -e "/usr/local/lib/$lib" && echo "so:$lib"; done) \
+        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | grep -v -e perl -e python -e tcl | sort -u | while read -r lib; do test ! -e "/usr/local/lib/$lib" && echo "so:$lib"; done) \
     ; \
     find /usr/local/bin -type f -exec strip '{}' \;; \
     find /usr/local/lib -type f -name "*.so" -exec strip '{}' \;; \
@@ -167,4 +170,12 @@ RUN set -eux; \
     rm -rf "${HOME}" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
     chmod -R 0755 /etc/service; \
     rm -f /var/spool/cron/crontabs/root; \
+    mkdir -p /var/run/postgresql; \
+    mkdir -p "${HOME}"; \
+    chown -R "${USER}":"${GROUP}" "${HOME}"; \
+    chmod 2777 /var/run/postgresql; \
+    mkdir -p "${PGDATA}"; \
+    chown -R "${USER}":"${GROUP}" "${PGDATA}"; \
+    chmod 777 "${PGDATA}"; \
+    mkdir /docker-entrypoint-initdb.d; \
     echo done
