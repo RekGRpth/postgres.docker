@@ -1,6 +1,6 @@
 FROM ghcr.io/rekgrpth/pdf.docker
 ADD service /etc/service
-ARG POSTGRES_BRANCH=REL9_4_STABLE
+ARG POSTGRES_BRANCH=REL9_3_STABLE
 CMD [ "/etc/service/postgres/run" ]
 ENV HOME=/var/lib/postgresql
 WORKDIR "${HOME}"
