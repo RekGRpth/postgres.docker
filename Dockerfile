@@ -93,7 +93,7 @@ RUN set -eux; \
 #    git clone -b master https://github.com/RekGRpth/pgq.git; \
 #    git clone -b master https://github.com/RekGRpth/pgq-node.git; \
     git clone -b master https://github.com/RekGRpth/pg_qualstats.git; \
-    git clone -b master https://github.com/RekGRpth/pg_repack.git; \
+#    git clone -b master https://github.com/RekGRpth/pg_repack.git; \
     git clone -b master https://github.com/RekGRpth/pg_restrict.git; \
 #    git clone -b master https://github.com/RekGRpth/pg_save.git; \
     git clone -b master https://github.com/RekGRpth/pg_ssl.git; \
