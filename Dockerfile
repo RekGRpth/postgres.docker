@@ -67,7 +67,7 @@ RUN set -eux; \
         proj-dev \
         protobuf-c-dev \
         py3-docutils \
-        python3-dev \
+        python2-dev \
         readline-dev \
         rtmpdump-dev \
         talloc-dev \
