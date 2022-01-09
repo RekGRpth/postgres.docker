@@ -95,13 +95,13 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_qualstats.git; \
     git clone -b master https://github.com/RekGRpth/pg_repack.git; \
     git clone -b master https://github.com/RekGRpth/pg_restrict.git; \
-    git clone -b master https://github.com/RekGRpth/pg_save.git; \
+#    git clone -b master https://github.com/RekGRpth/pg_save.git; \
     git clone -b master https://github.com/RekGRpth/pg_ssl.git; \
     git clone -b master https://github.com/RekGRpth/pg_stat_kcache.git; \
     git clone -b master https://github.com/RekGRpth/pgtap.git; \
-    git clone -b master https://github.com/RekGRpth/pg_task.git; \
+#    git clone -b master https://github.com/RekGRpth/pg_task.git; \
     git clone -b master https://github.com/RekGRpth/pg_track_settings.git; \
-    git clone -b master https://github.com/RekGRpth/pg_wait_sampling.git; \
+#    git clone -b master https://github.com/RekGRpth/pg_wait_sampling.git; \
     git clone -b master https://github.com/RekGRpth/pldebugger.git; \
 #    git clone -b master https://github.com/RekGRpth/plpgsql_check.git; \
     git clone -b master https://github.com/RekGRpth/plsh.git; \
