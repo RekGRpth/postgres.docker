@@ -24,7 +24,6 @@ RUN set -eux; \
         cjson-dev \
         clang \
         clang-dev \
-        cmake \
         curl-dev \
         file \
         flex \
@@ -65,7 +64,6 @@ RUN set -eux; \
         proj-dev \
         protobuf-c-dev \
         py3-docutils \
-        python2 \
         readline-dev \
         rtmpdump-dev \
         talloc-dev \
@@ -77,7 +75,6 @@ RUN set -eux; \
     ; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
-    git clone -b master https://github.com/RekGRpth/libgraphqlparser.git; \
 #    git clone -b master https://github.com/RekGRpth/pg_async.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
     git clone -b master https://github.com/RekGRpth/pg_graphql.git; \
@@ -130,9 +127,6 @@ RUN set -eux; \
     make -j"$(nproc)" -C src install; \
     make -j"$(nproc)" -C contrib install; \
     make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install; \
-    cd "${HOME}/src/libgraphqlparser"; \
-    cmake .; \
-    make -j"$(nproc)" install; \
     cd "${HOME}/src/pgqd"; \
     ./autogen.sh; \
     ./configure; \
