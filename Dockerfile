@@ -1,10 +1,13 @@
-FROM rekgrpth/pdf
+FROM ghcr.io/rekgrpth/pdf.docker
 ADD service /etc/service
-ARG POSTGRES_VERSION=13
+ARG POSTGRES_BRANCH=master
 CMD [ "/etc/service/postgres/run" ]
-ENV BACKUP_PATH="${HOME}/pg_rman" \
+ENV HOME=/var/lib/postgresql
+WORKDIR "${HOME}"
+ENV ARC=../arc \
     GROUP=postgres \
-    PGDATA="${HOME}/pg_data" \
+    LOG=../log \
+    PGDATA="${HOME}/data" \
     USER=postgres
 RUN set -eux; \
     addgroup -S "${GROUP}"; \
@@ -20,14 +23,15 @@ RUN set -eux; \
         c-ares-dev \
         cjson-dev \
         clang \
+        clang-dev \
+        cmake \
         curl-dev \
         file \
         flex \
         g++ \
-        gawk \
         gcc \
-#        gdal-dev \
-#        geos-dev \
+        gdal-dev \
+        geos-dev \
         gettext-dev \
         git \
         groff \
@@ -54,26 +58,29 @@ RUN set -eux; \
         musl-dev \
         nghttp2-dev \
         openldap-dev \
-        openssl-dev \
         patch \
+        pcre2-dev \
+        pcre-dev \
+        perl-dev \
         proj-dev \
         protobuf-c-dev \
+        py3-docutils \
+        python2 \
         readline-dev \
         rtmpdump-dev \
         talloc-dev \
         texinfo \
         udns-dev \
         util-linux-dev \
-        zfs-dev \
         zlib-dev \
         zstd-dev \
     ; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
-    git clone -b master https://github.com/RekGRpth/gawkextlib.git; \
-    git clone -b master https://github.com/RekGRpth/pg_auto_failover.git; \
+    git clone -b master https://github.com/RekGRpth/libgraphqlparser.git; \
+#    git clone -b master https://github.com/RekGRpth/pg_async.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
-    git clone -b master https://github.com/RekGRpth/pgdbf.git; \
+    git clone -b master https://github.com/RekGRpth/pg_graphql.git; \
     git clone -b master https://github.com/RekGRpth/pg_handlebars.git; \
     git clone -b master https://github.com/RekGRpth/pg_htmldoc.git; \
     git clone -b master https://github.com/RekGRpth/pg_jobmon.git; \
@@ -83,20 +90,27 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_profile.git; \
     git clone -b master https://github.com/RekGRpth/pgq.git; \
     git clone -b master https://github.com/RekGRpth/pgq-node.git; \
+    git clone -b master https://github.com/RekGRpth/pg_qualstats.git; \
     git clone -b master https://github.com/RekGRpth/pg_repack.git; \
-    git clone -b master https://github.com/RekGRpth/pgsidekick.git; \
+    git clone -b master https://github.com/RekGRpth/pg_restrict.git; \
+    git clone -b master https://github.com/RekGRpth/pg_save.git; \
     git clone -b master https://github.com/RekGRpth/pg_ssl.git; \
     git clone -b master https://github.com/RekGRpth/pg_stat_kcache.git; \
+    git clone -b master https://github.com/RekGRpth/pgtap.git; \
+    git clone -b master https://github.com/RekGRpth/pg_task.git; \
+    git clone -b master https://github.com/RekGRpth/pg_track_settings.git; \
+    git clone -b master https://github.com/RekGRpth/pg_wait_sampling.git; \
     git clone -b master https://github.com/RekGRpth/pldebugger.git; \
+    git clone -b master https://github.com/RekGRpth/plpgsql_check.git; \
     git clone -b master https://github.com/RekGRpth/plsh.git; \
 #    git clone -b master https://github.com/RekGRpth/postgis.git; \
-    git clone -b master https://github.com/RekGRpth/slony1-engine.git; \
-    git clone -b master --recursive https://github.com/RekGRpth/pgbouncer.git; \
-    git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_async.git; \
-    git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_rman.git; \
-    git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_save.git; \
-    git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/pg_task.git; \
-    git clone -b "REL_${POSTGRES_VERSION}_STABLE" https://github.com/RekGRpth/postgres.git; \
+    git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
+    git clone -b master https://github.com/RekGRpth/prefix.git; \
+    git clone -b master https://github.com/RekGRpth/repack_bgw.git; \
+    git clone -b master https://github.com/RekGRpth/session_variable.git; \
+    git clone -b master --recursive https://github.com/RekGRpth/pgqd.git; \
+    git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
+    git clone -b "${POSTGRES_BRANCH}" https://github.com/RekGRpth/postgres.git; \
     cd "${HOME}/src/postgres"; \
     ./configure \
         --enable-thread-safety \
@@ -116,40 +130,20 @@ RUN set -eux; \
     make -j"$(nproc)" -C src install; \
     make -j"$(nproc)" -C contrib install; \
     make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install; \
-    cd "${HOME}/src/gawkextlib/lib"; \
-    autoreconf -vif; \
-    ./configure; \
+    cd "${HOME}/src/libgraphqlparser"; \
+    cmake .; \
     make -j"$(nproc)" install; \
-    cd "${HOME}/src/gawkextlib/pgsql"; \
-    autoreconf -vif; \
+    cd "${HOME}/src/pgqd"; \
+    ./autogen.sh; \
     ./configure; \
-    make -j"$(nproc)" install; \
-    cd "${HOME}/src/pgdbf"; \
-    autoreconf -fi; \
-    ./configure; \
-    make -j"$(nproc)" install; \
-    cd "${HOME}/src/pgsidekick"; \
-    make -j"$(nproc)" pglisten; \
-    cp -f pglisten /usr/local/bin/; \
 #    cd "${HOME}/src/postgis"; \
 #    ./autogen.sh; \
-    cd "${HOME}/src/pgbouncer"; \
-    ./autogen.sh; \
-    ./configure \
-        --disable-debug \
-        --with-pam \
-    ; \
-    cd "${HOME}/src/slony1-engine"; \
-    autoconf; \
-    ./configure; \
-    make; \
+#    ./configure; \
     cd "${HOME}"; \
-    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d ! -name "postgres" ! -name "pgsidekick" ! -name "gawkextlib" ! -name "pgdbf" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
+    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d | grep -v "libgraphqlparser" | grep -v "postgres" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
     apk add --no-cache --virtual .postgresql-rundeps \
-        gawk \
         jq \
-        opensmtpd \
         openssh-client \
         procps \
         runit \
@@ -164,9 +158,4 @@ RUN set -eux; \
     rm -rf "${HOME}" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
     chmod -R 0755 /etc/service; \
     rm -f /var/spool/cron/crontabs/root; \
-    sed -i 's|table aliases|#table aliases|g' /etc/smtpd/smtpd.conf; \
-    sed -i 's|listen on lo|listen on 0.0.0.0|g' /etc/smtpd/smtpd.conf; \
-    sed -i 's|action "local" maildir alias|#action "local" maildir alias|g' /etc/smtpd/smtpd.conf; \
-    sed -i 's|match from local for any action "relay"|match from any for any action "relay"|g' /etc/smtpd/smtpd.conf; \
-    sed -i 's|match for local action "local"|#match for local action "local"|g' /etc/smtpd/smtpd.conf; \
     echo done
