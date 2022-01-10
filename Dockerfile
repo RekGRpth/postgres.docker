@@ -1,4 +1,4 @@
-FROM ghcr.io/rekgrpth/pdf.docker:ubuntu
+FROM ghcr.io/rekgrpth/lib.docker:ubuntu
 ADD service /etc/service
 ARG POSTGRES_VERSION=12
 CMD [ "/etc/service/postgres/run" ]
