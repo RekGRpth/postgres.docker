@@ -1,4 +1,4 @@
-FROM ghcr.io/rekgrpth/pdf.docker
+FROM ghcr.io/rekgrpth/lib.docker
 ADD service /etc/service
 ARG POSTGRES_BRANCH=REL9_2_STABLE
 CMD [ "/etc/service/postgres/run" ]
@@ -94,7 +94,7 @@ RUN set -eux; \
 #    git clone -b master https://github.com/RekGRpth/pgq-node.git; \
 #    git clone -b master https://github.com/RekGRpth/pg_qualstats.git; \
 #    git clone -b master https://github.com/RekGRpth/pg_repack.git; \
-    git clone -b master https://github.com/RekGRpth/pg_restrict.git; \
+#    git clone -b master https://github.com/RekGRpth/pg_restrict.git; \
 #    git clone -b master https://github.com/RekGRpth/pg_save.git; \
     git clone -b master https://github.com/RekGRpth/pg_ssl.git; \
 #    git clone -b master https://github.com/RekGRpth/pg_stat_kcache.git; \
