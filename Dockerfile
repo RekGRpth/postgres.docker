@@ -106,7 +106,7 @@ RUN set -eux; \
 #    git clone -b master https://github.com/RekGRpth/plpgsql_check.git; \
     git clone -b master https://github.com/RekGRpth/plsh.git; \
 #    git clone -b master https://github.com/RekGRpth/postgis.git; \
-    git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
+#    git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
 #    git clone -b master https://github.com/RekGRpth/repack_bgw.git; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
