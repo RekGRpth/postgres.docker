@@ -1,5 +1,0 @@
-#!/bin/sh -eux
-
-cat >".crontab" <<EOF
-0   0   *   *   *  /etc/service/cron/dump
-EOF

@@ -1,7 +1,7 @@
 FROM ghcr.io/rekgrpth/lib.docker
-ADD service /etc/service
+ADD bin /usr/local/bin
 ARG POSTGRES_BRANCH=REL9_2_STABLE
-CMD [ "/etc/service/postgres/run" ]
+CMD [ "postgres" ]
 ENV HOME=/var/lib/postgresql
 STOPSIGNAL SIGINT
 WORKDIR "${HOME}"
@@ -11,8 +11,8 @@ ENV ARC=../arc \
     PGDATA="${HOME}/data" \
     USER=postgres
 RUN set -eux; \
-    addgroup -S "${GROUP}"; \
-    adduser -D -S -h "${HOME}" -s /bin/ash -G "${GROUP}" "${USER}"; \
+    addgroup -g 70 -S "${GROUP}"; \
+    adduser -u 70 -S -D -G "${GROUP}" -H -h "${HOME}" -s /bin/sh "${USER}"; \
     ln -s libldap.a /usr/lib/libldap_r.a; \
     ln -s libldap.so /usr/lib/libldap_r.so; \
     apk update --no-cache; \
@@ -99,7 +99,7 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_ssl.git; \
 #    git clone -b master https://github.com/RekGRpth/pg_stat_kcache.git; \
     git clone -b master https://github.com/RekGRpth/pgtap.git; \
-#    git clone -b master https://github.com/RekGRpth/pg_task.git; \
+    git clone -b master https://github.com/RekGRpth/pg_task.git; \
     git clone -b master https://github.com/RekGRpth/pg_track_settings.git; \
 #    git clone -b master https://github.com/RekGRpth/pg_wait_sampling.git; \
     git clone -b master https://github.com/RekGRpth/pldebugger.git; \
@@ -155,27 +155,23 @@ RUN set -eux; \
     find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/libgraphqlparser -e src/postgres | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
     apk add --no-cache --virtual .postgresql-rundeps \
-        jq \
+#        jq \
         openssh-client \
-        procps \
-        runit \
-        sed \
+#        procps \
+#        runit \
+#        sed \
+        su-exec \
         $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | grep -v -e perl -e python -e tcl | sort -u | while read -r lib; do test ! -e "/usr/local/lib/$lib" && echo "so:$lib"; done) \
     ; \
     find /usr/local/bin -type f -exec strip '{}' \;; \
     find /usr/local/lib -type f -name "*.so" -exec strip '{}' \;; \
     apk del --no-cache .build-deps; \
-#    find /usr -type f -name "*.a" -delete; \
     find /usr -type f -name "*.la" -delete; \
     rm -rf "${HOME}" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
-    chmod -R 0755 /etc/service; \
-    rm -f /var/spool/cron/crontabs/root; \
-    mkdir -p /var/run/postgresql; \
     mkdir -p "${HOME}"; \
     chown -R "${USER}":"${GROUP}" "${HOME}"; \
-    chmod 2777 /var/run/postgresql; \
-    mkdir -p "${PGDATA}"; \
-    chown -R "${USER}":"${GROUP}" "${PGDATA}"; \
-    chmod 777 "${PGDATA}"; \
+    install -d -m 1775 -o "${USER}" -g "${GROUP}" /run/postgresql /run/postgresql/pg_stat_tmp /var/log/postgresql; \
+    install -d -m 0700 -o "${USER}" -g "${GROUP}" "$PGDATA"; \
     mkdir /docker-entrypoint-initdb.d; \
+    chmod +x /usr/local/bin/*.sh; \
     echo done
