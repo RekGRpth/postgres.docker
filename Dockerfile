@@ -1,8 +1,9 @@
 FROM ghcr.io/rekgrpth/lib.docker
-ADD service /etc/service
-ARG POSTGRES_VERSION=14
-CMD [ "/etc/service/postgres/run" ]
+ADD bin /usr/local/bin
+ARG POSTGRES_BRANCH=REL_14_STABLE
+CMD [ "postgres" ]
 ENV HOME=/var/lib/postgresql
+STOPSIGNAL SIGINT
 WORKDIR "${HOME}"
 ENV ARC=../arc \
     GROUP=postgres \
@@ -10,6 +11,8 @@ ENV ARC=../arc \
     PGDATA="${HOME}/data" \
     USER=postgres
 RUN set -eux; \
+    addgroup -g 70 -S "${GROUP}"; \
+    adduser -u 70 -S -D -G "${GROUP}" -H -h "${HOME}" -s /bin/sh "${USER}"; \
     apk update --no-cache; \
     apk upgrade --no-cache; \
     apk add --no-cache --virtual .build-deps \
@@ -22,7 +25,6 @@ RUN set -eux; \
         cjson-dev \
         clang \
         clang-dev \
-        cmake \
         curl-dev \
         file \
         flex \
@@ -51,6 +53,7 @@ RUN set -eux; \
         linux-pam-dev \
         llvm \
         llvm-dev \
+        lz4-dev \
         make \
         mt-st \
         musl-dev \
@@ -60,25 +63,22 @@ RUN set -eux; \
         pcre2-dev \
         pcre-dev \
         perl-dev \
-        "postgresql${POSTGRES_VERSION}" \
-        "postgresql${POSTGRES_VERSION}-dev" \
         proj-dev \
         protobuf-c-dev \
         py3-docutils \
-        python2 \
+        python3-dev \
         readline-dev \
         rtmpdump-dev \
         talloc-dev \
+        tcl-dev \
         texinfo \
         udns-dev \
         util-linux-dev \
         zlib-dev \
         zstd-dev \
     ; \
-    export PATH="/usr/libexec/postgresql${POSTGRES_VERSION}:${PATH}"; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
-    git clone -b master https://github.com/RekGRpth/libgraphqlparser.git; \
 #    git clone -b master https://github.com/RekGRpth/pg_async.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
     git clone -b master https://github.com/RekGRpth/pg_graphql.git; \
@@ -111,9 +111,40 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
     git clone -b master --recursive https://github.com/RekGRpth/pgqd.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
-    cd "${HOME}/src/libgraphqlparser"; \
-    cmake .; \
-    make -j"$(nproc)" install; \
+    git clone -b "${POSTGRES_BRANCH}" https://github.com/RekGRpth/postgres.git; \
+    cd "${HOME}/src/postgres"; \
+    ./configure \
+        --disable-rpath \
+#        --enable-debug \
+        --enable-integer-datetimes \
+#        --enable-nls \
+#        --enable-tap-tests \
+        --enable-thread-safety \
+        --prefix=/usr/local \
+        --with-gnu-ld \
+        --with-gssapi \
+        --with-icu \
+        --with-includes=/usr/local/include \
+        --with-krb5 \
+        --with-ldap \
+        --with-libedit-preferred \
+        --with-libraries=/usr/local/lib \
+        --with-libxml \
+        --with-libxslt \
+        --with-llvm \
+        --with-lz4 \
+        --with-openssl \
+        --with-pam \
+        --with-perl \
+        --with-pgport=5432 \
+        --with-python \
+        --with-system-tzdata=/usr/share/zoneinfo \
+        --with-tcl \
+        --with-uuid=e2fs \
+    ; \
+    make -j"$(nproc)" -C src install; \
+    make -j"$(nproc)" -C contrib install; \
+    make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install; \
     cd "${HOME}/src/pgqd"; \
     ./autogen.sh; \
     ./configure; \
@@ -121,28 +152,26 @@ RUN set -eux; \
 #    ./autogen.sh; \
 #    ./configure; \
     cd "${HOME}"; \
-    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d | grep -v "libgraphqlparser" | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
+    find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/libgraphqlparser -e src/postgres | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
     apk add --no-cache --virtual .postgresql-rundeps \
-        jq \
+#        jq \
         openssh-client \
-        "postgresql${POSTGRES_VERSION}" \
-        "postgresql${POSTGRES_VERSION}-client" \
-        "postgresql${POSTGRES_VERSION}-contrib" \
-        "postgresql${POSTGRES_VERSION}-contrib-jit" \
-        "postgresql${POSTGRES_VERSION}-jit" \
-        procps \
-        runit \
-        sed \
-        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | while read -r lib; do test ! -e "/usr/local/lib/$lib" && echo "so:$lib"; done) \
-        $(scanelf --needed --nobanner --format '%n#p' --recursive "/usr/lib/postgresql${POSTGRES_VERSION}" | tr ',' '\n' | sort -u | while read -r lib; do test ! -e "/usr/local/lib/$lib" && echo "so:$lib"; done) \
+#        procps \
+#        runit \
+#        sed \
+        su-exec \
+        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | grep -v -e perl -e python -e tcl | sort -u | while read -r lib; do test ! -e "/usr/local/lib/$lib" && echo "so:$lib"; done) \
     ; \
     find /usr/local/bin -type f -exec strip '{}' \;; \
     find /usr/local/lib -type f -name "*.so" -exec strip '{}' \;; \
     apk del --no-cache .build-deps; \
-    find /usr -type f -name "*.a" -delete; \
     find /usr -type f -name "*.la" -delete; \
     rm -rf "${HOME}" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
-    chmod -R 0755 /etc/service; \
-    rm -f /var/spool/cron/crontabs/root; \
+    mkdir -p "${HOME}"; \
+    chown -R "${USER}":"${GROUP}" "${HOME}"; \
+    install -d -m 1775 -o "${USER}" -g "${GROUP}" /run/postgresql /run/postgresql/pg_stat_tmp /var/log/postgresql; \
+    install -d -m 0700 -o "${USER}" -g "${GROUP}" "$PGDATA"; \
+    mkdir /docker-entrypoint-initdb.d; \
+    chmod +x /usr/local/bin/*.sh; \
     echo done

@@ -20,6 +20,7 @@ jobs:
       - uses: rekgrpth/git-clone-shell-action@v1
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 20
   oracle:
     needs: latest
     env:
@@ -32,34 +33,8 @@ jobs:
       - env:
           INPUTS_TAG: oracle
         uses: rekgrpth/docker-login-build-push-shell-action@v1
-  ubuntu:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/ubuntu
-    env:
-      GITHUB_TOKEN: ${{ github.token }}
-    runs-on: ubuntu-latest
-    steps:
-      - env:
-          INPUTS_BRANCH: ubuntu
-        uses: rekgrpth/git-clone-shell-action@v1
-      - env:
-          INPUTS_TAG: ubuntu
-        uses: rekgrpth/docker-login-build-push-shell-action@v1
-  debian:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/debian
-    env:
-      GITHUB_TOKEN: ${{ github.token }}
-    runs-on: ubuntu-latest
-    steps:
-      - env:
-          INPUTS_BRANCH: debian
-        uses: rekgrpth/git-clone-shell-action@v1
-      - env:
-          INPUTS_TAG: debian
-        uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 20
   edge:
     concurrency:
       cancel-in-progress: true
@@ -74,138 +49,133 @@ jobs:
       - env:
           INPUTS_TAG: edge
         uses: rekgrpth/docker-login-build-push-shell-action@v1
-  alpine14:
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 20
+  REL_14_STABLE:
     concurrency:
       cancel-in-progress: true
-      group: ${{ github.ref }}/alpine14
+      group: ${{ github.ref }}/REL_14_STABLE
     env:
       GITHUB_TOKEN: ${{ github.token }}
     runs-on: ubuntu-latest
     steps:
       - env:
-          INPUTS_BRANCH: alpine-14
+          INPUTS_BRANCH: REL_14_STABLE
         uses: rekgrpth/git-clone-shell-action@v1
       - env:
-          INPUTS_TAG: alpine-14
+          INPUTS_TAG: REL_14_STABLE
         uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 10
-  alpine13:
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 20
+  REL_13_STABLE:
     concurrency:
       cancel-in-progress: true
-      group: ${{ github.ref }}/alpine13
+      group: ${{ github.ref }}/REL_13_STABLE
     env:
       GITHUB_TOKEN: ${{ github.token }}
     runs-on: ubuntu-latest
     steps:
       - env:
-          INPUTS_BRANCH: alpine-13
+          INPUTS_BRANCH: REL_13_STABLE
         uses: rekgrpth/git-clone-shell-action@v1
       - env:
-          INPUTS_TAG: alpine-13
+          INPUTS_TAG: REL_13_STABLE
         uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 10
-  alpine12:
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 20
+  REL_12_STABLE:
     concurrency:
       cancel-in-progress: true
-      group: ${{ github.ref }}/alpine12
+      group: ${{ github.ref }}/REL_12_STABLE
     env:
       GITHUB_TOKEN: ${{ github.token }}
     runs-on: ubuntu-latest
     steps:
       - env:
-          INPUTS_BRANCH: alpine-12
+          INPUTS_BRANCH: REL_12_STABLE
         uses: rekgrpth/git-clone-shell-action@v1
       - env:
-          INPUTS_TAG: alpine-12
+          INPUTS_TAG: REL_12_STABLE
         uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 10
-  ubuntu14:
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 20
+  REL_11_STABLE:
     concurrency:
       cancel-in-progress: true
-      group: ${{ github.ref }}/ubuntu14
+      group: ${{ github.ref }}/REL_11_STABLE
     env:
       GITHUB_TOKEN: ${{ github.token }}
     runs-on: ubuntu-latest
     steps:
       - env:
-          INPUTS_BRANCH: ubuntu-14
+          INPUTS_BRANCH: REL_11_STABLE
         uses: rekgrpth/git-clone-shell-action@v1
       - env:
-          INPUTS_TAG: ubuntu-14
+          INPUTS_TAG: REL_11_STABLE
         uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 10
-  ubuntu13:
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 20
+  REL_10_STABLE:
     concurrency:
       cancel-in-progress: true
-      group: ${{ github.ref }}/ubuntu13
+      group: ${{ github.ref }}/REL_10_STABLE
     env:
       GITHUB_TOKEN: ${{ github.token }}
     runs-on: ubuntu-latest
     steps:
       - env:
-          INPUTS_BRANCH: ubuntu-13
+          INPUTS_BRANCH: REL_10_STABLE
         uses: rekgrpth/git-clone-shell-action@v1
       - env:
-          INPUTS_TAG: ubuntu-13
+          INPUTS_TAG: REL_10_STABLE
         uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 10
-  ubuntu12:
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 20
+  REL9_6_STABLE:
     concurrency:
       cancel-in-progress: true
-      group: ${{ github.ref }}/ubuntu12
+      group: ${{ github.ref }}/REL9_6_STABLE
     env:
       GITHUB_TOKEN: ${{ github.token }}
     runs-on: ubuntu-latest
     steps:
       - env:
-          INPUTS_BRANCH: ubuntu-12
+          INPUTS_BRANCH: REL9_6_STABLE
         uses: rekgrpth/git-clone-shell-action@v1
       - env:
-          INPUTS_TAG: ubuntu-12
+          INPUTS_TAG: REL9_6_STABLE
         uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 10
-  ubuntu11:
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 20
+  REL9_5_STABLE:
     concurrency:
       cancel-in-progress: true
-      group: ${{ github.ref }}/ubuntu11
+      group: ${{ github.ref }}/REL9_5_STABLE
     env:
       GITHUB_TOKEN: ${{ github.token }}
     runs-on: ubuntu-latest
     steps:
       - env:
-          INPUTS_BRANCH: ubuntu-11
+          INPUTS_BRANCH: REL9_5_STABLE
         uses: rekgrpth/git-clone-shell-action@v1
       - env:
-          INPUTS_TAG: ubuntu-11
+          INPUTS_TAG: REL9_5_STABLE
         uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 10
-  ubuntu10:
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 20
+  REL9_4_STABLE:
     concurrency:
       cancel-in-progress: true
-      group: ${{ github.ref }}/ubuntu10
+      group: ${{ github.ref }}/REL9_4_STABLE
     env:
       GITHUB_TOKEN: ${{ github.token }}
     runs-on: ubuntu-latest
     steps:
       - env:
-          INPUTS_BRANCH: ubuntu-10
+          INPUTS_BRANCH: REL9_4_STABLE
         uses: rekgrpth/git-clone-shell-action@v1
       - env:
-          INPUTS_TAG: ubuntu-10
+          INPUTS_TAG: REL9_4_STABLE
         uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 10
-  ubuntu9:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/ubuntu9
-    env:
-      GITHUB_TOKEN: ${{ github.token }}
-    runs-on: ubuntu-latest
-    steps:
-      - env:
-          INPUTS_BRANCH: ubuntu-9
-        uses: rekgrpth/git-clone-shell-action@v1
-      - env:
-          INPUTS_TAG: ubuntu-9
-        uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 10
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 20
