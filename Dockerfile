@@ -79,8 +79,8 @@ RUN set -eux; \
     ; \
     mkdir -p "${HOME}/src"; \
     cd "${HOME}/src"; \
+    git clone -b main https://github.com/RekGRpth/pgcopydb.git; \
 #    git clone -b master https://github.com/RekGRpth/pg_async.git; \
-    git clone -b master https://github.com/RekGRpth/pgcopydb.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
     git clone -b master https://github.com/RekGRpth/pg_graphql.git; \
     git clone -b master https://github.com/RekGRpth/pg_handlebars.git; \
