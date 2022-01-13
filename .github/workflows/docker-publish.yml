@@ -25,14 +25,12 @@ jobs:
     needs: latest
     env:
       GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_BRANCH: oracle
+      INPUTS_TAG: oracle
     runs-on: ubuntu-latest
     steps:
-      - env:
-          INPUTS_BRANCH: oracle
-        uses: rekgrpth/git-clone-shell-action@v1
-      - env:
-          INPUTS_TAG: oracle
-        uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   edge:
@@ -41,14 +39,12 @@ jobs:
       group: ${{ github.ref }}/edge
     env:
       GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_BRANCH: edge
+      INPUTS_TAG: edge
     runs-on: ubuntu-latest
     steps:
-      - env:
-          INPUTS_BRANCH: edge
-        uses: rekgrpth/git-clone-shell-action@v1
-      - env:
-          INPUTS_TAG: edge
-        uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   REL_14_STABLE:
@@ -57,14 +53,12 @@ jobs:
       group: ${{ github.ref }}/REL_14_STABLE
     env:
       GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_BRANCH: edge
+      INPUTS_TAG: edge
     runs-on: ubuntu-latest
     steps:
-      - env:
-          INPUTS_BRANCH: REL_14_STABLE
-        uses: rekgrpth/git-clone-shell-action@v1
-      - env:
-          INPUTS_TAG: REL_14_STABLE
-        uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   REL_13_STABLE:
@@ -73,14 +67,12 @@ jobs:
       group: ${{ github.ref }}/REL_13_STABLE
     env:
       GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_BRANCH: edge
+      INPUTS_TAG: edge
     runs-on: ubuntu-latest
     steps:
-      - env:
-          INPUTS_BRANCH: REL_13_STABLE
-        uses: rekgrpth/git-clone-shell-action@v1
-      - env:
-          INPUTS_TAG: REL_13_STABLE
-        uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   REL_12_STABLE:
@@ -89,14 +81,12 @@ jobs:
       group: ${{ github.ref }}/REL_12_STABLE
     env:
       GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_BRANCH: edge
+      INPUTS_TAG: edge
     runs-on: ubuntu-latest
     steps:
-      - env:
-          INPUTS_BRANCH: REL_12_STABLE
-        uses: rekgrpth/git-clone-shell-action@v1
-      - env:
-          INPUTS_TAG: REL_12_STABLE
-        uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   REL_11_STABLE:
@@ -105,14 +95,12 @@ jobs:
       group: ${{ github.ref }}/REL_11_STABLE
     env:
       GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_BRANCH: edge
+      INPUTS_TAG: edge
     runs-on: ubuntu-latest
     steps:
-      - env:
-          INPUTS_BRANCH: REL_11_STABLE
-        uses: rekgrpth/git-clone-shell-action@v1
-      - env:
-          INPUTS_TAG: REL_11_STABLE
-        uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   REL_10_STABLE:
@@ -121,14 +109,12 @@ jobs:
       group: ${{ github.ref }}/REL_10_STABLE
     env:
       GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_BRANCH: edge
+      INPUTS_TAG: edge
     runs-on: ubuntu-latest
     steps:
-      - env:
-          INPUTS_BRANCH: REL_10_STABLE
-        uses: rekgrpth/git-clone-shell-action@v1
-      - env:
-          INPUTS_TAG: REL_10_STABLE
-        uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   REL9_6_STABLE:
@@ -137,14 +123,12 @@ jobs:
       group: ${{ github.ref }}/REL9_6_STABLE
     env:
       GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_BRANCH: edge
+      INPUTS_TAG: edge
     runs-on: ubuntu-latest
     steps:
-      - env:
-          INPUTS_BRANCH: REL9_6_STABLE
-        uses: rekgrpth/git-clone-shell-action@v1
-      - env:
-          INPUTS_TAG: REL9_6_STABLE
-        uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   REL9_5_STABLE:
@@ -153,14 +137,12 @@ jobs:
       group: ${{ github.ref }}/REL9_5_STABLE
     env:
       GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_BRANCH: edge
+      INPUTS_TAG: edge
     runs-on: ubuntu-latest
     steps:
-      - env:
-          INPUTS_BRANCH: REL9_5_STABLE
-        uses: rekgrpth/git-clone-shell-action@v1
-      - env:
-          INPUTS_TAG: REL9_5_STABLE
-        uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   REL9_4_STABLE:
@@ -169,13 +151,11 @@ jobs:
       group: ${{ github.ref }}/REL9_4_STABLE
     env:
       GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_BRANCH: edge
+      INPUTS_TAG: edge
     runs-on: ubuntu-latest
     steps:
-      - env:
-          INPUTS_BRANCH: REL9_4_STABLE
-        uses: rekgrpth/git-clone-shell-action@v1
-      - env:
-          INPUTS_TAG: REL9_4_STABLE
-        uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
