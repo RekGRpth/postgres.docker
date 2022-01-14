@@ -114,7 +114,7 @@ RUN set -eux; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
     git clone -b "${POSTGRES_BRANCH}" https://github.com/RekGRpth/postgres.git; \
     export CFLAGS="${CFLAGS:-} -W -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wmissing-prototypes -Werror -Wno-discarded-qualifiers -g -O"; \
-    export CPPFLAGS="${CPPFLAGS:-} -W -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wmissing-prototypes -Werror -Wno-discarded-qualifiers -g -O"; \
+    export CXXFLAGS="${CXXFLAGS:-} -W -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wmissing-prototypes -Werror -Wno-discarded-qualifiers -g -O"; \
     cd "${HOME}/src/postgres"; \
     ./configure \
         --disable-rpath \
