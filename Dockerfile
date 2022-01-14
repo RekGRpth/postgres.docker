@@ -102,7 +102,7 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_task.git; \
     git clone -b master https://github.com/RekGRpth/pg_track_settings.git; \
 #    git clone -b master https://github.com/RekGRpth/pg_wait_sampling.git; \
-    git clone -b master https://github.com/RekGRpth/pldebugger.git; \
+#    git clone -b master https://github.com/RekGRpth/pldebugger.git; \
     git clone -b master https://github.com/RekGRpth/plpgsql_check.git; \
     git clone -b master https://github.com/RekGRpth/plsh.git; \
 #    git clone -b master https://github.com/RekGRpth/postgis.git; \
@@ -113,6 +113,8 @@ RUN set -eux; \
     git clone -b master --recursive https://github.com/RekGRpth/pgqd.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
     git clone -b "${POSTGRES_BRANCH}" https://github.com/RekGRpth/postgres.git; \
+    export CFLAGS="${CFLAGS:-} -W -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wmissing-prototypes -Werror -Wno-discarded-qualifiers -g -O"; \
+    export CPPFLAGS="${CPPFLAGS:-} -W -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wmissing-prototypes -Werror -Wno-discarded-qualifiers -g -O"; \
     cd "${HOME}/src/postgres"; \
     ./configure \
         --disable-rpath \
