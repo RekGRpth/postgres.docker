@@ -159,3 +159,14 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
+  test_REL_14_STABLE:
+    needs: REL_14_STABLE
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_BRANCH: test_REL_14_STABLE
+      INPUTS_TAG: test_REL_14_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 20
