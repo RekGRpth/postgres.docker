@@ -170,3 +170,80 @@ jobs:
       - uses: rekgrpth/git-clone-shell-action@v1
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
+  test_REL_13_STABLE:
+    needs: REL_13_STABLE
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_BRANCH: test_REL_13_STABLE
+      INPUTS_TAG: test_REL_13_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 20
+  test_REL_12_STABLE:
+    needs: REL_12_STABLE
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_BRANCH: test_REL_12_STABLE
+      INPUTS_TAG: test_REL_12_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 20
+  test_REL_11_STABLE:
+    needs: REL_11_STABLE
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_BRANCH: test_REL_11_STABLE
+      INPUTS_TAG: test_REL_11_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 20
+  test_REL_10_STABLE:
+    needs: REL_10_STABLE
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_BRANCH: test_REL_10_STABLE
+      INPUTS_TAG: test_REL_10_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 20
+  test_REL9_6_STABLE:
+    needs: REL9_6_STABLE
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_BRANCH: test_REL9_6_STABLE
+      INPUTS_TAG: test_REL9_6_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 20
+  test_REL9_5_STABLE:
+    needs: REL9_5_STABLE
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_BRANCH: test_REL9_5_STABLE
+      INPUTS_TAG: test_REL9_5_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 20
+  test_REL9_4_STABLE:
+    needs: REL9_4_STABLE
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_BRANCH: test_REL9_4_STABLE
+      INPUTS_TAG: test_REL9_4_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 20
