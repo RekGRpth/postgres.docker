@@ -143,8 +143,7 @@ RUN set -eux; \
         --with-tcl \
         --with-uuid=e2fs \
     ; \
-    export CFLAGS="${CFLAGS:-} -W -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wmissing-prototypes -Werror -Wno-discarded-qualifiers -g -O"; \
-    export CXXFLAGS="${CXXFLAGS:-} -W -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wmissing-prototypes -Werror -Wno-discarded-qualifiers -g -O"; \
+    export COPT="-W -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wmissing-prototypes -Werror -Wno-discarded-qualifiers -g -O"; \
     make -j"$(nproc)" -C src install; \
     make -j"$(nproc)" -C contrib install; \
     make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install; \
