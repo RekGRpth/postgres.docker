@@ -143,6 +143,7 @@ RUN set -eux; \
         --with-tcl \
         --with-uuid=e2fs \
     ; \
+    export COPT="-Werror"; \
     make -j"$(nproc)" -C src install; \
     make -j"$(nproc)" -C contrib install; \
     make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install; \
