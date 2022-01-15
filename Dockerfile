@@ -153,7 +153,6 @@ RUN set -eux; \
 #    ./autogen.sh; \
 #    ./configure; \
     cd "${HOME}"; \
-    export COPT="-W -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wmissing-prototypes -Werror -Wno-discarded-qualifiers -g -O"; \
     find "${HOME}/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/libgraphqlparser -e src/postgres | sort -u | while read -r NAME; do echo "$NAME" && cd "$NAME" && make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
     apk add --no-cache --virtual .postgresql-rundeps \
