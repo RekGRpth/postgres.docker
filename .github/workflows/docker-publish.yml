@@ -47,6 +47,20 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
+  master:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/master
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_BRANCH: master
+      INPUTS_TAG: master
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 20
   debian:
     concurrency:
       cancel-in-progress: true
