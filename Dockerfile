@@ -29,5 +29,5 @@ RUN set -eux; \
     chown -R "$USER":"$GROUP" "$HOME"; \
     install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql /run/postgresql/pg_stat_tmp /var/log/postgresql; \
     install -d -m 0700 -o "$USER" -g "$GROUP" "$PGDATA"; \
-    mkdir /docker-entrypoint-initdb.d; \
+    mkdir -p /docker-entrypoint-initdb.d; \
     echo done
