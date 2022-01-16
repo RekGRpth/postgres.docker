@@ -7,7 +7,7 @@ echo "shared_preload_libraries = 'auto_explain,pg_stat_statements,pg_stat_kcache
 "$DOCKER_TYPE" postgres pg_ctl start
 sleep 10
 export PGUSER=postgres
-find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/pg_task | sort -u | while read -r NAME; do
+find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/pg_task -e src/postgres | sort -u | while read -r NAME; do
     cd "$NAME"
     make -j"$(nproc)" USE_PGXS=1 installcheck || (cat regression.diffs; exit 1)
 done

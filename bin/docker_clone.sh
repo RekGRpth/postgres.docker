@@ -3,7 +3,6 @@
 mkdir -p "$HOME/src"
 cd "$HOME/src"
 git clone -b main https://github.com/RekGRpth/pgcopydb.git
-#    git clone -b master https://github.com/RekGRpth/pg_async.git
 git clone -b master https://github.com/RekGRpth/pg_curl.git
 git clone -b master https://github.com/RekGRpth/pg_graphql.git
 git clone -b master https://github.com/RekGRpth/pg_handlebars.git
@@ -35,4 +34,6 @@ git clone -b master https://github.com/RekGRpth/repack_bgw.git
 git clone -b master https://github.com/RekGRpth/session_variable.git
 git clone -b master --recursive https://github.com/RekGRpth/pgqd.git
 git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git
-git clone -b "$POSTGRES_BRANCH" https://github.com/RekGRpth/postgres.git
+if [ "$DOCKER_BUILD" = "build" ]; then
+    git clone -b "$POSTGRES_BRANCH" https://github.com/RekGRpth/postgres.git
+fi
