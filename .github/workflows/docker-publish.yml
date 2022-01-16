@@ -38,9 +38,10 @@ jobs:
       cancel-in-progress: true
       group: ${{ github.ref }}/test-latest
     env:
-      DOCKER_BUILD: false
+      DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:latest
       GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_TAG: test-latest
     needs: latest
     runs-on: ubuntu-latest
     steps:

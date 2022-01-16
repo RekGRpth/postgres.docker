@@ -1,6 +1,6 @@
 ARG DOCKER_FROM=lib.docker:latest
 FROM "ghcr.io/rekgrpth/$DOCKER_FROM"
-ARG DOCKER_BUILD=true
+ARG DOCKER_BUILD=build
 ARG DOCKER_TYPE=su-exec
 ARG INPUTS_BRANCH=latest
 ARG POSTGRES_BRANCH=REL_14_STABLE
@@ -22,10 +22,9 @@ RUN set -eux; \
     env; \
     chmod +x /usr/local/bin/*.sh; \
     test "$DOCKER_BUILD" = "true" && "docker_add_group_and_user_$DOCKER_TYPE.sh"; \
-    "docker_build_$DOCKER_TYPE.sh"; \
+    "docker_${DOCKER_BUILD}_$DOCKER_TYPE.sh"; \
     docker_clone.sh; \
-    test "$DOCKER_BUILD" = "true" && docker_install.sh; \
-    test "$DOCKER_BUILD" = "false" && docker_test.sh; \
+    "docker_$DOCKER_BUILD.sh"; \
     "docker_clean_$DOCKER_TYPE.sh"; \
     rm -rf "$HOME" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
     find /usr -type f -name "*.la" -delete; \
