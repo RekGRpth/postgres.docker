@@ -35,8 +35,8 @@ jobs:
     timeout-minutes: 20
   edge:
     env:
+      DOCKER_FROM: lib.docker:edge
       GITHUB_TOKEN: ${{ github.token }}
-      INPUTS_BRANCH: edge
       INPUTS_TAG: edge
     runs-on: ubuntu-latest
     steps:
@@ -62,7 +62,6 @@ jobs:
   REL_14_STABLE:
     env:
       GITHUB_TOKEN: ${{ github.token }}
-      INPUTS_BRANCH: REL_14_STABLE
       INPUTS_TAG: REL_14_STABLE
     runs-on: ubuntu-latest
     steps:
@@ -87,9 +86,9 @@ jobs:
     timeout-minutes: 20
   debian:
     env:
+      DOCKER_FROM: lib.docker:debian
       DOCKER_TYPE: gosu
       GITHUB_TOKEN: ${{ github.token }}
-      INPUTS_BRANCH: debian
       INPUTS_TAG: debian
     runs-on: ubuntu-latest
     steps:
@@ -115,9 +114,9 @@ jobs:
     timeout-minutes: 20
   ubuntu:
     env:
+      DOCKER_FROM: lib.docker:ubuntu
       DOCKER_TYPE: gosu
       GITHUB_TOKEN: ${{ github.token }}
-      INPUTS_BRANCH: ubuntu
       INPUTS_TAG: ubuntu
     runs-on: ubuntu-latest
     steps:
