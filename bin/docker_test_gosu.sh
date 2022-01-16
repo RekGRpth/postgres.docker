@@ -8,4 +8,5 @@ apt-get install -y --no-install-recommends \
     git \
     make \
     patch \
+    perl \
 ;

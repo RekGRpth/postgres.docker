@@ -7,4 +7,5 @@ apk add --no-cache --virtual .build-deps \
     git \
     make \
     patch \
+    perl \
 ;
