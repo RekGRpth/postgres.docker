@@ -1,14 +1,11 @@
 ARG DOCKER_FROM=lib.docker:latest
 FROM "ghcr.io/rekgrpth/$DOCKER_FROM"
-ARG DOCKER_BUILD
-ARG DOCKER_POSTGRES_BRANCH
-ARG DOCKER_TYPE
 ADD bin /usr/local/bin
+ARG DOCKER_BUILD=build
+ARG DOCKER_POSTGRES_BRANCH=REL_14_STABLE
+ARG DOCKER_TYPE=su-exec
 CMD [ "postgres" ]
-ENV DOCKER_BUILD="${DOCKER_BUILD:-build}" \
-    DOCKER_POSTGRES_BRANCH="${DOCKER_POSTGRES_BRANCH:-REL_14_STABLE}" \
-    DOCKER_TYPE="${DOCKER_TYPE:-su-exec}" \
-    HOME=/var/lib/postgresql
+ENV HOME=/var/lib/postgresql
 STOPSIGNAL SIGINT
 WORKDIR "$HOME"
 ENV ARC=../arc \
@@ -17,7 +14,9 @@ ENV ARC=../arc \
     PGDATA="$HOME/data" \
     USER=postgres
 RUN set -eux; \
-    env; \
+    export DOCKER_BUILD="$DOCKER_BUILD"; \
+    export DOCKER_POSTGRES_BRANCH="$DOCKER_POSTGRES_BRANCH"; \
+    export DOCKER_TYPE="$DOCKER_TYPE"; \
     chmod +x /usr/local/bin/*.sh; \
     test "$DOCKER_BUILD" = "build" && "docker_add_group_and_user_$DOCKER_TYPE.sh"; \
     "docker_${DOCKER_BUILD}_$DOCKER_TYPE.sh"; \
