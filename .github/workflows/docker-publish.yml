@@ -44,6 +44,21 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
+  test-edge:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/test-edge
+    env:
+      DOCKER_BUILD: test
+      DOCKER_FROM: postgres.docker:edge
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_TAG: test-edge
+    needs: edge
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 20
   REL_14_STABLE:
     env:
       GITHUB_TOKEN: ${{ github.token }}
