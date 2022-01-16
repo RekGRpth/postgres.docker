@@ -1,4 +1,9 @@
-FROM "ghcr.io/rekgrpth/${DOCKER_FROM:-lib.docker:${INPUTS_BRANCH:-latest}}"
+ARG DOCKER_BUILD=true
+ARG DOCKER_FROM=lib.docker
+ARG DOCKER_TYPE=su-exec
+ARG INPUTS_BRANCH=latest
+ARG POSTGRES_BRANCH=REL_14_STABLE
+FROM "ghcr.io/rekgrpth/${DOCKER_FROM:${INPUTS_BRANCH}}"
 ADD bin /usr/local/bin
 CMD [ "postgres" ]
 ENV HOME=/var/lib/postgresql
@@ -11,12 +16,12 @@ ENV ARC=../arc \
     USER=postgres
 RUN set -eux; \
     chmod +x /usr/local/bin/*.sh; \
-    test "${DOCKER_BUILD:-true}" = "true" && "docker_add_group_and_user_${DOCKER_TYPE:-su-exec}.sh"; \
-    "docker_build_${DOCKER_TYPE:-su-exec}.sh"; \
+    test "${DOCKER_BUILD}" = "true" && "docker_add_group_and_user_${DOCKER_TYPE}.sh"; \
+    "docker_build_${DOCKER_TYPE}.sh"; \
     docker_clone.sh; \
-    test "${DOCKER_BUILD:-true}" = "true" && docker_install.sh; \
-    test "${DOCKER_BUILD:-true}" = "false" && docker_test.sh; \
-    "docker_clean_${DOCKER_TYPE:-su-exec}.sh"; \
+    test "${DOCKER_BUILD}" = "true" && docker_install.sh; \
+    test "${DOCKER_BUILD}" = "false" && docker_test.sh; \
+    "docker_clean_${DOCKER_TYPE}.sh"; \
     rm -rf "${HOME}" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
     find /usr -type f -name "*.la" -delete; \
     mkdir -p "${HOME}"; \
