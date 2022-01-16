@@ -39,7 +39,7 @@ jobs:
       group: ${{ github.ref }}/test-latest
     env:
       DOCKER_BUILD: false
-      DOCKER_FROM: postgres:latest
+      DOCKER_FROM: postgres.docker:latest
       GITHUB_TOKEN: ${{ github.token }}
     needs: latest
     runs-on: ubuntu-latest
