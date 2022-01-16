@@ -87,6 +87,7 @@ jobs:
     timeout-minutes: 20
   debian:
     env:
+      DOCKER_TYPE: gosu
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_BRANCH: debian
       INPUTS_TAG: debian
@@ -102,6 +103,7 @@ jobs:
       group: ${{ github.ref }}/test-debian
     env:
       DOCKER_BUILD: test
+      DOCKER_TYPE: gosu
       DOCKER_FROM: postgres.docker:debian
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-debian
@@ -113,6 +115,7 @@ jobs:
     timeout-minutes: 20
   ubuntu:
     env:
+      DOCKER_TYPE: gosu
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_BRANCH: ubuntu
       INPUTS_TAG: ubuntu
@@ -127,6 +130,7 @@ jobs:
       cancel-in-progress: true
       group: ${{ github.ref }}/test-ubuntu
     env:
+      DOCKER_TYPE: gosu
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:ubuntu
       GITHUB_TOKEN: ${{ github.token }}
