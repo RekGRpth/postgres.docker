@@ -1,6 +1,5 @@
 #!/bin/sh -eux
 
-export DEBIAN_FRONTEND=noninteractive
 cd /
 apt-mark auto '.*' > /dev/null
 apt-mark manual $savedAptMark

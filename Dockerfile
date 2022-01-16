@@ -17,6 +17,10 @@ RUN set -eux; \
     export DOCKER_BUILD="$DOCKER_BUILD"; \
     export DOCKER_POSTGRES_BRANCH="$DOCKER_POSTGRES_BRANCH"; \
     export DOCKER_TYPE="$DOCKER_TYPE"; \
+    if [ $DOCKER_TYPE = "gosu" ]; then \
+        export DEBIAN_FRONTEND=noninteractive; \
+        export savedAptMark="$(apt-mark showmanual)"; \
+    fi; \
     chmod +x /usr/local/bin/*.sh; \
     test "$DOCKER_BUILD" = "build" && "docker_add_group_and_user_$DOCKER_TYPE.sh"; \
     "docker_${DOCKER_BUILD}_$DOCKER_TYPE.sh"; \
