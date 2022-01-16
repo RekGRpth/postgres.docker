@@ -22,24 +22,26 @@ jobs:
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   oracle:
-    needs: latest
     env:
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_BRANCH: oracle
       INPUTS_TAG: oracle
+    needs: latest
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
-  test:
+  test-latest:
     concurrency:
       cancel-in-progress: true
-      group: ${{ github.ref }}/test
+      group: ${{ github.ref }}/test-latest
     env:
       DOCKER_BUILD: false
+      DOCKER_FROM: postgres:latest
       GITHUB_TOKEN: ${{ github.token }}
+    needs: latest
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
