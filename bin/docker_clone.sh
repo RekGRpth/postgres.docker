@@ -24,7 +24,7 @@ git clone -b master https://github.com/RekGRpth/powa-archivist.git
 git clone -b master https://github.com/RekGRpth/prefix.git
 git clone -b master https://github.com/RekGRpth/session_variable.git
 git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git
-test "$DOCKER_BUILD" = "build" && git clone -b "$POSTGRES_BRANCH" https://github.com/RekGRpth/postgres.git
+test "$DOCKER_BUILD" = "build" && git clone -b "$DOCKER_POSTGRES_BRANCH" https://github.com/RekGRpth/postgres.git
 test "$DOCKER_BUILD" = "build" && git clone -b main https://github.com/RekGRpth/pgcopydb.git
 test "$DOCKER_BUILD" = "build" && git clone -b master https://github.com/RekGRpth/pg_graphql.git
 test "$DOCKER_BUILD" = "build" && git clone -b master https://github.com/RekGRpth/pg_profile.git
