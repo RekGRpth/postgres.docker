@@ -33,21 +33,6 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
-  test-latest:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/test-latest
-    env:
-      DOCKER_BUILD: test
-      DOCKER_FROM: postgres.docker:latest
-      GITHUB_TOKEN: ${{ github.token }}
-      INPUTS_TAG: test-latest
-    needs: latest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rekgrpth/git-clone-shell-action@v1
-      - uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 20
   edge:
     env:
       GITHUB_TOKEN: ${{ github.token }}
@@ -58,6 +43,32 @@ jobs:
       - uses: rekgrpth/git-clone-shell-action@v1
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 20
+  REL_14_STABLE:
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_BRANCH: REL_14_STABLE
+      INPUTS_TAG: REL_14_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 20
+  test-REL_14_STABLE:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/test-REL_14_STABLE
+    env:
+      DOCKER_BUILD: test
+      DOCKER_FROM: postgres.docker:REL_14_STABLE
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_TAG: test-REL_14_STABLE
+    needs: REL_14_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   debian:
     env:
