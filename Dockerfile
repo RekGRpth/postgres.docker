@@ -1,4 +1,4 @@
-ARG DOCKER_FROM=lib.docker.latest
+ARG DOCKER_FROM=lib.docker:latest
 FROM "ghcr.io/rekgrpth/$DOCKER_FROM"
 ARG DOCKER_BUILD=true
 ARG DOCKER_TYPE=su-exec
