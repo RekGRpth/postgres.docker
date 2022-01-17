@@ -33,7 +33,11 @@ cd "$HOME/src/postgres"
 ;
 make -j"$(nproc)" -C src install
 make -j"$(nproc)" -C contrib install
-make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install
+if [ "$DOCKER_POSTGRES_BRANCH" = "REL9_5_STABLE" ] || [ "$DOCKER_POSTGRES_BRANCH" = "REL9_4_STABLE" ]; then
+    make -j"$(nproc)" submake-libpq submake-libpgport install
+else
+    make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install
+fi
 cd "$HOME/src/pgqd" && ./autogen.sh && ./configure
 cd "$HOME/src/postgis" && ./autogen.sh && ./configure
 cd "$HOME"
