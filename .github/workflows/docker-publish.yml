@@ -84,6 +84,31 @@ jobs:
       - uses: rekgrpth/git-clone-shell-action@v1
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
+  REL_13_STABLE:
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_TAG: REL_13_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 20
+  test-REL_13_STABLE:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/test-REL_13_STABLE
+    env:
+      DOCKER_BUILD: test
+      DOCKER_FROM: postgres.docker:REL_13_STABLE
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_TAG: test-REL_13_STABLE
+    needs: REL_13_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 20
   debian:
     env:
       DOCKER_FROM: lib.docker:debian
