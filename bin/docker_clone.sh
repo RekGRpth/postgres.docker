@@ -36,7 +36,13 @@ git clone -b master https://github.com/RekGRpth/pldebugger.git
 if [ "$DOCKER_POSTGRES_BRANCH" != "REL9_6_STABLE" ] && [ "$DOCKER_POSTGRES_BRANCH" != "REL9_5_STABLE" ] && [ "$DOCKER_POSTGRES_BRANCH" != "REL9_4_STABLE" ]; then
     git clone -b master https://github.com/RekGRpth/plpgsql_check.git
 fi
-git clone -b master https://github.com/RekGRpth/powa-archivist.git
+if [ "$DOCKER_BUILD" = "build" ]; then
+    git clone -b master https://github.com/RekGRpth/powa-archivist.git
+else
+    if [ "$DOCKER_POSTGRES_BRANCH" != "REL9_4_STABLE" ]; then
+        git clone -b master https://github.com/RekGRpth/powa-archivist.git
+    fi
+fi
 git clone -b master https://github.com/RekGRpth/prefix.git
 if [ "$DOCKER_BUILD" = "build" ]; then
     git clone -b master https://github.com/RekGRpth/session_variable.git
