@@ -3,7 +3,7 @@ FROM "ghcr.io/rekgrpth/$DOCKER_FROM"
 ADD bin /usr/local/bin
 ARG DOCKER_BUILD=build
 ARG DOCKER_POSTGRES_BRANCH=REL_14_STABLE
-ARG DOCKER_TYPE=su-exec
+ARG DOCKER_TYPE=apk
 CMD [ "postgres" ]
 ENV HOME=/var/lib/postgresql
 STOPSIGNAL SIGINT
@@ -17,9 +17,11 @@ RUN set -eux; \
     export DOCKER_BUILD="$DOCKER_BUILD"; \
     export DOCKER_POSTGRES_BRANCH="$DOCKER_POSTGRES_BRANCH"; \
     export DOCKER_TYPE="$DOCKER_TYPE"; \
-    if [ $DOCKER_TYPE = "gosu" ]; then \
+    if [ $DOCKER_TYPE = "apt" ]; then \
         export DEBIAN_FRONTEND=noninteractive; \
         export savedAptMark="$(apt-mark showmanual)"; \
+    else \
+        ln -s su-exec /sbin/gosu; \
     fi; \
     chmod +x /usr/local/bin/*.sh; \
     test "$DOCKER_BUILD" = "build" && "docker_add_group_and_user_$DOCKER_TYPE.sh"; \

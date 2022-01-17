@@ -21,7 +21,7 @@ if [ "$(id -u)" = '0' ]; then
     find /var/run/postgresql \! -user "$USER" -exec chown "$USER" '{}' +
 fi
 if [ "$1" = 'postgres' ]; then
-    if [ "$(id -u)" = '0' ]; then exec su-exec "$USER" "$0" "$@"; fi
+    if [ "$(id -u)" = '0' ]; then exec gosu "$USER" "$0" "$@"; fi
     if [ -s "$PGDATA/PG_VERSION" ]; then
         echo done
     else

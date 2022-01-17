@@ -87,7 +87,7 @@ jobs:
   debian:
     env:
       DOCKER_FROM: lib.docker:debian
-      DOCKER_TYPE: gosu
+      DOCKER_TYPE: apt
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: debian
     runs-on: ubuntu-latest
@@ -102,7 +102,7 @@ jobs:
       group: ${{ github.ref }}/test-debian
     env:
       DOCKER_BUILD: test
-      DOCKER_TYPE: gosu
+      DOCKER_TYPE: apt
       DOCKER_FROM: postgres.docker:debian
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-debian
@@ -115,7 +115,7 @@ jobs:
   ubuntu:
     env:
       DOCKER_FROM: lib.docker:ubuntu
-      DOCKER_TYPE: gosu
+      DOCKER_TYPE: apt
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: ubuntu
     runs-on: ubuntu-latest
@@ -129,7 +129,7 @@ jobs:
       cancel-in-progress: true
       group: ${{ github.ref }}/test-ubuntu
     env:
-      DOCKER_TYPE: gosu
+      DOCKER_TYPE: apt
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:ubuntu
       GITHUB_TOKEN: ${{ github.token }}
