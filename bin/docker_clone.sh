@@ -21,7 +21,7 @@ if [ "$DOCKER_POSTGRES_BRANCH" != "REL9_5_STABLE" ] && [ "$DOCKER_POSTGRES_BRANC
 fi
 git clone -b master https://github.com/RekGRpth/pg_wait_sampling.git
 git clone -b master https://github.com/RekGRpth/pldebugger.git
-if [ "$DOCKER_POSTGRES_BRANCH" != "REL9_5_STABLE" ] && [ "$DOCKER_POSTGRES_BRANCH" != "REL9_4_STABLE" ]; then
+if [ "$DOCKER_POSTGRES_BRANCH" != "REL9_6_STABLE" ] && [ "$DOCKER_POSTGRES_BRANCH" != "REL9_5_STABLE" ] && [ "$DOCKER_POSTGRES_BRANCH" != "REL9_4_STABLE" ]; then
     git clone -b master https://github.com/RekGRpth/plpgsql_check.git
 fi
 git clone -b master https://github.com/RekGRpth/powa-archivist.git
