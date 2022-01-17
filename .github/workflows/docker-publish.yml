@@ -318,8 +318,8 @@ jobs:
       group: ${{ github.ref }}/test-debian
     env:
       DOCKER_BUILD: test
-      DOCKER_TYPE: apt
       DOCKER_FROM: postgres.docker:debian
+      DOCKER_TYPE: apt
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-debian
     needs: debian
@@ -348,9 +348,9 @@ jobs:
       cancel-in-progress: true
       group: ${{ github.ref }}/test-ubuntu
     env:
-      DOCKER_TYPE: apt
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:ubuntu
+      DOCKER_TYPE: apt
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-ubuntu
     needs: ubuntu
