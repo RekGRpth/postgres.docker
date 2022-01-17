@@ -2,7 +2,13 @@
 
 mkdir -p "$HOME/src"
 cd "$HOME/src"
-git clone -b master https://github.com/RekGRpth/pg_curl.git
+if [ "$DOCKER_BUILD" = "build" ]; then
+    git clone -b master https://github.com/RekGRpth/pg_curl.git
+else
+    if [ "$DOCKER_POSTGRES_BRANCH" != "REL_12_STABLE" ] && [ "$DOCKER_POSTGRES_BRANCH" != "REL_11_STABLE" ] && [ "$DOCKER_POSTGRES_BRANCH" != "REL_10_STABLE" ] && [ "$DOCKER_POSTGRES_BRANCH" != "REL9_6_STABLE" ] && [ "$DOCKER_POSTGRES_BRANCH" != "REL9_5_STABLE" ] && [ "$DOCKER_POSTGRES_BRANCH" != "REL9_4_STABLE" ]; then
+        git clone -b master https://github.com/RekGRpth/pg_curl.git
+    fi
+fi
 git clone -b master https://github.com/RekGRpth/pg_handlebars.git
 git clone -b master https://github.com/RekGRpth/pg_htmldoc.git
 git clone -b master https://github.com/RekGRpth/pg_jobmon.git
