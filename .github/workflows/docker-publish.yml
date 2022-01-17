@@ -22,6 +22,9 @@ jobs:
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   oracle:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/oracle
     env:
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_BRANCH: oracle
@@ -34,6 +37,9 @@ jobs:
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   edge:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/edge
     env:
       DOCKER_FROM: lib.docker:edge
       GITHUB_TOKEN: ${{ github.token }}
@@ -60,6 +66,9 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL_14_STABLE:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/REL_14_STABLE
     env:
       DOCKER_POSTGRES_BRANCH: REL_14_STABLE
       GITHUB_TOKEN: ${{ github.token }}
@@ -86,6 +95,9 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL_13_STABLE:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/REL_13_STABLE
     env:
       DOCKER_POSTGRES_BRANCH: REL_13_STABLE
       GITHUB_TOKEN: ${{ github.token }}
@@ -112,6 +124,9 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL_12_STABLE:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/REL_12_STABLE
     env:
       DOCKER_POSTGRES_BRANCH: REL_12_STABLE
       GITHUB_TOKEN: ${{ github.token }}
@@ -138,6 +153,9 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL_11_STABLE:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/REL_11_STABLE
     env:
       DOCKER_POSTGRES_BRANCH: REL_11_STABLE
       GITHUB_TOKEN: ${{ github.token }}
@@ -164,6 +182,9 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL_10_STABLE:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/REL_10_STABLE
     env:
       DOCKER_POSTGRES_BRANCH: REL_10_STABLE
       GITHUB_TOKEN: ${{ github.token }}
@@ -190,6 +211,9 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL9_6_STABLE:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/REL9_6_STABLE
     env:
       DOCKER_POSTGRES_BRANCH: REL9_6_STABLE
       GITHUB_TOKEN: ${{ github.token }}
@@ -216,6 +240,9 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL9_5_STABLE:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/REL9_5_STABLE
     env:
       DOCKER_POSTGRES_BRANCH: REL9_5_STABLE
       GITHUB_TOKEN: ${{ github.token }}
@@ -242,6 +269,9 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL9_4_STABLE:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/REL9_4_STABLE
     env:
       DOCKER_POSTGRES_BRANCH: REL9_4_STABLE
       GITHUB_TOKEN: ${{ github.token }}
@@ -268,6 +298,9 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   debian:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/debian
     env:
       DOCKER_FROM: lib.docker:debian
       DOCKER_TYPE: apt
@@ -296,6 +329,9 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   ubuntu:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/ubuntu
     env:
       DOCKER_FROM: lib.docker:ubuntu
       DOCKER_TYPE: apt
