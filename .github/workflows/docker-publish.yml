@@ -61,6 +61,7 @@ jobs:
     timeout-minutes: 20
   REL_14_STABLE:
     env:
+      DOCKER_POSTGRES_BRANCH: REL_14_STABLE
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: REL_14_STABLE
     runs-on: ubuntu-latest
@@ -86,6 +87,7 @@ jobs:
     timeout-minutes: 20
   REL_13_STABLE:
     env:
+      DOCKER_POSTGRES_BRANCH: REL_13_STABLE
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: REL_13_STABLE
     runs-on: ubuntu-latest
@@ -111,6 +113,7 @@ jobs:
     timeout-minutes: 20
   REL_12_STABLE:
     env:
+      DOCKER_POSTGRES_BRANCH: REL_12_STABLE
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: REL_12_STABLE
     runs-on: ubuntu-latest
@@ -136,6 +139,7 @@ jobs:
     timeout-minutes: 20
   REL_11_STABLE:
     env:
+      DOCKER_POSTGRES_BRANCH: REL_11_STABLE
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: REL_11_STABLE
     runs-on: ubuntu-latest
@@ -161,6 +165,7 @@ jobs:
     timeout-minutes: 20
   REL_10_STABLE:
     env:
+      DOCKER_POSTGRES_BRANCH: REL_10_STABLE
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: REL_10_STABLE
     runs-on: ubuntu-latest
@@ -186,6 +191,7 @@ jobs:
     timeout-minutes: 20
   REL9_6_STABLE:
     env:
+      DOCKER_POSTGRES_BRANCH: REL9_6_STABLE
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: REL9_6_STABLE
     runs-on: ubuntu-latest
@@ -211,6 +217,7 @@ jobs:
     timeout-minutes: 20
   REL9_5_STABLE:
     env:
+      DOCKER_POSTGRES_BRANCH: REL9_5_STABLE
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: REL9_5_STABLE
     runs-on: ubuntu-latest
@@ -236,6 +243,7 @@ jobs:
     timeout-minutes: 20
   REL9_4_STABLE:
     env:
+      DOCKER_POSTGRES_BRANCH: REL9_4_STABLE
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: REL9_4_STABLE
     runs-on: ubuntu-latest
