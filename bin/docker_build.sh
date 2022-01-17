@@ -1,5 +1,9 @@
 #!/bin/sh -eux
 
+if [ "$DOCKER_POSTGRES_BRANCH" = "REL9_5_STABLE" ] || [ "$DOCKER_POSTGRES_BRANCH" = "REL9_4_STABLE" ]; then
+    ln -fs libldap.a /usr/lib/libldap_r.a
+    ln -fs libldap.so /usr/lib/libldap_r.so
+fi
 cd "$HOME/src/postgres"
 ./configure \
     --disable-rpath \
