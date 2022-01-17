@@ -21,7 +21,7 @@ RUN set -eux; \
         export DEBIAN_FRONTEND=noninteractive; \
         export savedAptMark="$(apt-mark showmanual)"; \
     else \
-        ln -s su-exec /sbin/gosu; \
+        ln -fs su-exec /sbin/gosu; \
     fi; \
     chmod +x /usr/local/bin/*.sh; \
     test "$DOCKER_BUILD" = "build" && "docker_add_group_and_user_$DOCKER_TYPE.sh"; \
