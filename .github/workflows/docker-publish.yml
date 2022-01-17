@@ -134,6 +134,131 @@ jobs:
       - uses: rekgrpth/git-clone-shell-action@v1
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
+  REL_11_STABLE:
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_TAG: REL_11_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 20
+  test-REL_11_STABLE:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/test-REL_11_STABLE
+    env:
+      DOCKER_BUILD: test
+      DOCKER_FROM: postgres.docker:REL_11_STABLE
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_TAG: test-REL_11_STABLE
+    needs: REL_11_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 20
+  REL_10_STABLE:
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_TAG: REL_10_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 20
+  test-REL_10_STABLE:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/test-REL_10_STABLE
+    env:
+      DOCKER_BUILD: test
+      DOCKER_FROM: postgres.docker:REL_10_STABLE
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_TAG: test-REL_10_STABLE
+    needs: REL_10_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 20
+  REL9_6_STABLE:
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_TAG: REL9_6_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 20
+  test-REL9_6_STABLE:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/test-REL9_6_STABLE
+    env:
+      DOCKER_BUILD: test
+      DOCKER_FROM: postgres.docker:REL9_6_STABLE
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_TAG: test-REL9_6_STABLE
+    needs: REL9_6_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 20
+  REL9_5_STABLE:
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_TAG: REL9_5_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 20
+  test-REL9_5_STABLE:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/test-REL9_5_STABLE
+    env:
+      DOCKER_BUILD: test
+      DOCKER_FROM: postgres.docker:REL9_5_STABLE
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_TAG: test-REL9_5_STABLE
+    needs: REL9_5_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 20
+  REL9_4_STABLE:
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_TAG: REL9_4_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 20
+  test-REL9_4_STABLE:
+    concurrency:
+      cancel-in-progress: true
+      group: ${{ github.ref }}/test-REL9_4_STABLE
+    env:
+      DOCKER_BUILD: test
+      DOCKER_FROM: postgres.docker:REL9_4_STABLE
+      GITHUB_TOKEN: ${{ github.token }}
+      INPUTS_TAG: test-REL9_4_STABLE
+    needs: REL9_4_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 20
   debian:
     env:
       DOCKER_FROM: lib.docker:debian
