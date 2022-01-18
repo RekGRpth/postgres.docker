@@ -1,6 +1,10 @@
 #!/bin/sh -eux
 
-if [ "$DOCKER_POSTGRES_BRANCH" = "REL9_5_STABLE" ] || [ "$DOCKER_POSTGRES_BRANCH" = "REL9_4_STABLE" ]; then
+PACKAGE_VERSION="$(cat "$HOME/src/postgres/configure" | grep PACKAGE_VERSION= | cut -f2 -d= | tr -d "'")"
+PG_MAJORVERSION=`expr "$PACKAGE_VERSION" : '\([0-9][0-9]*\)'`
+PG_MINORVERSION=`expr "$PACKAGE_VERSION" : '.*\.\([0-9][0-9]*\)'`
+PG_VERSION_NUM=`echo $PG_MAJORVERSION $PG_MINORVERSION | awk '{printf "%d%04d", $1, $2}'`
+if [ "$PG_VERSION_NUM" -lt 90600 ]; then
     ln -fs libldap.a /usr/lib/libldap_r.a
     ln -fs libldap.so /usr/lib/libldap_r.so
 fi
@@ -33,10 +37,10 @@ cd "$HOME/src/postgres"
 ;
 make -j"$(nproc)" -C src install
 make -j"$(nproc)" -C contrib install
-if [ "$DOCKER_POSTGRES_BRANCH" = "REL9_5_STABLE" ] || [ "$DOCKER_POSTGRES_BRANCH" = "REL9_4_STABLE" ]; then
-    make -j"$(nproc)" submake-libpq submake-libpgport install
-else
+if [ "$PG_VERSION_NUM" -ge 90600 ]; then
     make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install
+else
+    make -j"$(nproc)" submake-libpq submake-libpgport install
 fi
 cd "$HOME/src/postgis" && ./autogen.sh && ./configure
 cd "$HOME"

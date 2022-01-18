@@ -86,7 +86,6 @@ jobs:
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL_14_STABLE
-      DOCKER_POSTGRES_BRANCH: REL_14_STABLE
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-REL_14_STABLE
     needs: REL_14_STABLE
@@ -116,7 +115,6 @@ jobs:
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL_13_STABLE
-      DOCKER_POSTGRES_BRANCH: REL_13_STABLE
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-REL_13_STABLE
     needs: REL_13_STABLE
@@ -146,7 +144,6 @@ jobs:
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL_12_STABLE
-      DOCKER_POSTGRES_BRANCH: REL_12_STABLE
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-REL_12_STABLE
     needs: REL_12_STABLE
@@ -176,7 +173,6 @@ jobs:
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL_11_STABLE
-      DOCKER_POSTGRES_BRANCH: REL_11_STABLE
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-REL_11_STABLE
     needs: REL_11_STABLE
@@ -206,7 +202,6 @@ jobs:
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL_10_STABLE
-      DOCKER_POSTGRES_BRANCH: REL_10_STABLE
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-REL_10_STABLE
     needs: REL_10_STABLE
@@ -236,7 +231,6 @@ jobs:
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL9_6_STABLE
-      DOCKER_POSTGRES_BRANCH: REL9_6_STABLE
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-REL9_6_STABLE
     needs: REL9_6_STABLE
@@ -266,7 +260,6 @@ jobs:
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL9_5_STABLE
-      DOCKER_POSTGRES_BRANCH: REL9_5_STABLE
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-REL9_5_STABLE
     needs: REL9_5_STABLE
@@ -296,7 +289,6 @@ jobs:
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL9_4_STABLE
-      DOCKER_POSTGRES_BRANCH: REL9_4_STABLE
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-REL9_4_STABLE
     needs: REL9_4_STABLE
