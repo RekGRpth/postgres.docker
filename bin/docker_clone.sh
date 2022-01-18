@@ -16,13 +16,6 @@ git clone -b master https://github.com/RekGRpth/pgjwt.git
 git clone -b master https://github.com/RekGRpth/pg_mustach.git
 git clone -b master https://github.com/RekGRpth/pg_partman.git
 git clone -b master https://github.com/RekGRpth/pg_qualstats.git
-if [ "$DOCKER_BUILD" = "build" ]; then
-    git clone -b master https://github.com/RekGRpth/pg_restrict.git
-else
-    if [ "$DOCKER_POSTGRES_BRANCH" != "REL9_6_STABLE" ] && [ "$DOCKER_POSTGRES_BRANCH" != "REL9_5_STABLE" ] && [ "$DOCKER_POSTGRES_BRANCH" != "REL9_4_STABLE" ]; then
-        git clone -b master https://github.com/RekGRpth/pg_restrict.git
-    fi
-fi
 #git clone -b master https://github.com/RekGRpth/pg_save.git
 git clone -b master https://github.com/RekGRpth/pg_ssl.git
 git clone -b master https://github.com/RekGRpth/pg_stat_kcache.git
