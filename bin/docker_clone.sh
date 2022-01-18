@@ -5,9 +5,7 @@ cd "$HOME/src"
 if [ "$DOCKER_BUILD" = "build" ]; then
     git clone -b "$DOCKER_POSTGRES_BRANCH" https://github.com/RekGRpth/postgres.git
     PACKAGE_VERSION="$(cat "$HOME/src/postgres/configure" | grep PACKAGE_VERSION= | cut -f2 -d= | tr -d "'")"
-    PG_MAJORVERSION=`expr "$PACKAGE_VERSION" : '\([0-9][0-9]*\)'`
-    PG_MINORVERSION=`expr "$PACKAGE_VERSION" : '.*\.\([0-9][0-9]*\)'`
-    PG_VERSION_NUM=`echo $PG_MAJORVERSION $PG_MINORVERSION | awk '{printf "%d%04d", $1, $2}'`
+    PG_VERSION_NUM="$(echo "$PACKAGE_VERSION" | sed 's/[A-Za-z].*$//' | tr '.' '	' | awk '{printf "%d%02d%02d", $1, (NF >= 3) ? $2 : 0, (NF >= 3) ? $3 : $2}')"
     git clone -b master https://github.com/RekGRpth/pg_curl.git
     git clone -b master https://github.com/RekGRpth/plsh.git
     git clone -b master https://github.com/RekGRpth/powa-archivist.git

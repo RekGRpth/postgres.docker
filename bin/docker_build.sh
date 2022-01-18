@@ -1,9 +1,7 @@
 #!/bin/sh -eux
 
 PACKAGE_VERSION="$(cat "$HOME/src/postgres/configure" | grep PACKAGE_VERSION= | cut -f2 -d= | tr -d "'")"
-PG_MAJORVERSION=`expr "$PACKAGE_VERSION" : '\([0-9][0-9]*\)'`
-PG_MINORVERSION=`expr "$PACKAGE_VERSION" : '.*\.\([0-9][0-9]*\)'`
-PG_VERSION_NUM=`echo $PG_MAJORVERSION $PG_MINORVERSION | awk '{printf "%d%04d", $1, $2}'`
+PG_VERSION_NUM="$(echo "$PACKAGE_VERSION" | sed 's/[A-Za-z].*$//' | tr '.' '	' | awk '{printf "%d%02d%02d", $1, (NF >= 3) ? $2 : 0, (NF >= 3) ? $3 : $2}')"
 if [ "$PG_VERSION_NUM" -lt 90600 ]; then
     ln -fs libldap.a /usr/lib/libldap_r.a
     ln -fs libldap.so /usr/lib/libldap_r.so
