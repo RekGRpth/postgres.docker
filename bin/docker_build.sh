@@ -38,7 +38,6 @@ if [ "$DOCKER_POSTGRES_BRANCH" = "REL9_5_STABLE" ] || [ "$DOCKER_POSTGRES_BRANCH
 else
     make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install
 fi
-cd "$HOME/src/pgqd" && ./autogen.sh && ./configure
 cd "$HOME/src/postgis" && ./autogen.sh && ./configure
 cd "$HOME"
 find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres | sort -u | while read -r NAME; do

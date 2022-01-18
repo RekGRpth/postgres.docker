@@ -50,8 +50,6 @@ if [ "$DOCKER_BUILD" = "build" ]; then
     if [ "$DOCKER_POSTGRES_BRANCH" != "REL_11_STABLE" ] && [ "$DOCKER_POSTGRES_BRANCH" != "REL_10_STABLE" ] && [ "$DOCKER_POSTGRES_BRANCH" != "REL9_6_STABLE" ] && [ "$DOCKER_POSTGRES_BRANCH" != "REL9_5_STABLE" ] && [ "$DOCKER_POSTGRES_BRANCH" != "REL9_4_STABLE" ]; then
         git clone -b master https://github.com/RekGRpth/pg_graphql.git
     fi
-    git clone -b master https://github.com/RekGRpth/pgq.git
-    git clone -b master https://github.com/RekGRpth/pgq-node.git
     git clone -b master https://github.com/RekGRpth/pg_repack.git
     git clone -b master https://github.com/RekGRpth/plsh.git
     if [ "$DOCKER_POSTGRES_BRANCH" != "REL9_5_STABLE" ] && [ "$DOCKER_POSTGRES_BRANCH" != "REL9_4_STABLE" ]; then
@@ -60,5 +58,4 @@ if [ "$DOCKER_BUILD" = "build" ]; then
     if [ "$DOCKER_POSTGRES_BRANCH" != "REL_10_STABLE" ] && [ "$DOCKER_POSTGRES_BRANCH" != "REL9_6_STABLE" ] && [ "$DOCKER_POSTGRES_BRANCH" != "REL9_5_STABLE" ] && [ "$DOCKER_POSTGRES_BRANCH" != "REL9_4_STABLE" ]; then
         git clone -b master https://github.com/RekGRpth/repack_bgw.git
     fi
-    git clone -b master --recursive https://github.com/RekGRpth/pgqd.git
 fi
