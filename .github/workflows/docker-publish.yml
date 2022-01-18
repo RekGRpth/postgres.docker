@@ -311,7 +311,6 @@ jobs:
       group: ${{ github.ref }}/debian
     env:
       DOCKER_FROM: lib.docker:debian
-      DOCKER_TYPE: apt
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: debian
     runs-on: ubuntu-latest
@@ -327,7 +326,6 @@ jobs:
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:debian
-      DOCKER_TYPE: apt
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-debian
     needs: debian
@@ -342,7 +340,6 @@ jobs:
       group: ${{ github.ref }}/ubuntu
     env:
       DOCKER_FROM: lib.docker:ubuntu
-      DOCKER_TYPE: apt
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: ubuntu
     runs-on: ubuntu-latest
@@ -358,7 +355,6 @@ jobs:
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:ubuntu
-      DOCKER_TYPE: apt
       GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-ubuntu
     needs: ubuntu
