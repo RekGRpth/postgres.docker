@@ -16,9 +16,7 @@ RUN set -eux; \
     export DOCKER_BUILD="$DOCKER_BUILD"; \
     export DOCKER_POSTGRES_BRANCH="$DOCKER_POSTGRES_BRANCH"; \
     export DOCKER_TYPE="$(cat /etc/os-release | grep -E '^ID=' | cut -f2 -d '=')"; \
-    if [ $DOCKER_TYPE = "alpine" ]; then \
-        ln -fs su-exec /sbin/gosu; \
-    else \
+    if [ $DOCKER_TYPE != "alpine" ]; then \
         export DEBIAN_FRONTEND=noninteractive; \
         export savedAptMark="$(apt-mark showmanual)"; \
     fi; \
