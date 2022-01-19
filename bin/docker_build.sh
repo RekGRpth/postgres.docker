@@ -36,7 +36,9 @@ if [ "$PG_VERSION_NUM" -ge 90600 ]; then
 else
     make -j"$(nproc)" submake-libpq submake-libpgport install
 fi
-cd "$HOME/src/postgis" && ./autogen.sh && ./configure
+cd "$HOME/src/postgis"
+./autogen.sh
+./configure
 cd "$HOME"
 find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres | sort -u | while read -r NAME; do
     cd "$NAME"
