@@ -19,6 +19,7 @@ else
     if [ "$PG_VERSION_NUM" -ge 90500 ]; then git clone -b master https://github.com/RekGRpth/powa-archivist.git; fi
     if [ "$PG_VERSION_NUM" -ge 110000 ]; then git clone -b master https://github.com/RekGRpth/session_variable.git; fi
 fi
+git clone -b main https://github.com/RekGRpth/pg_injection.git
 git clone -b master https://github.com/RekGRpth/pg_handlebars.git
 git clone -b master https://github.com/RekGRpth/pg_htmldoc.git
 git clone -b master https://github.com/RekGRpth/pg_jobmon.git
