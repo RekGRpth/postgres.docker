@@ -2,10 +2,6 @@
 
 PACKAGE_VERSION="$(cat "$HOME/src/postgres/configure" | grep PACKAGE_VERSION= | cut -f2 -d= | tr -d "'")"
 PG_VERSION_NUM="$(echo "$PACKAGE_VERSION" | sed 's/[A-Za-z].*$//' | tr '.' '	' | awk '{printf "%d%02d%02d", $1, (NF >= 3) ? $2 : 0, (NF >= 3) ? $3 : $2}')"
-if [ "$PG_VERSION_NUM" -lt 90600 ]; then
-    ln -fs libldap.a /usr/lib/libldap_r.a
-    ln -fs libldap.so /usr/lib/libldap_r.so
-fi
 cd "$HOME/src/postgres"
 ./configure \
     --disable-rpath \
