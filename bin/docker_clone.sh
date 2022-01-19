@@ -19,7 +19,6 @@ else
     if [ "$PG_VERSION_NUM" -ge 90500 ]; then git clone -b master https://github.com/RekGRpth/powa-archivist.git; fi
     if [ "$PG_VERSION_NUM" -ge 110000 ]; then git clone -b master https://github.com/RekGRpth/session_variable.git; fi
 fi
-git clone -b main https://github.com/RekGRpth/pg_injection.git
 git clone -b master https://github.com/RekGRpth/pg_handlebars.git
 git clone -b master https://github.com/RekGRpth/pg_htmldoc.git
 git clone -b master https://github.com/RekGRpth/pg_jobmon.git
@@ -35,5 +34,6 @@ git clone -b master https://github.com/RekGRpth/pg_task.git
 git clone -b master https://github.com/RekGRpth/pldebugger.git
 git clone -b master https://github.com/RekGRpth/prefix.git
 git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git
+if [ "$PG_VERSION_NUM" -ge 140000 ]; then git clone -b main https://github.com/RekGRpth/pg_injection.git; fi
 if [ "$PG_VERSION_NUM" -ge 90600 ]; then git clone -b master https://github.com/RekGRpth/pg_track_settings.git; fi
 if [ "$PG_VERSION_NUM" -ge 90600 ]; then git clone -b master https://github.com/RekGRpth/pg_wait_sampling.git; fi
