@@ -1,7 +1,7 @@
 #!/bin/sh -eux
 
 cd /
-gosu postgres pg_ctl initdb --auth=trust
+gosu postgres initdb --auth=trust
 echo "max_worker_processes = '128'" >>"$PGDATA/postgresql.auto.conf"
 PG_VERSION_NUM="$(cat /usr/local/include/postgresql/server/pg_config.h | grep PG_VERSION_NUM | cut -f3 -d ' ')"
 if [ "$PG_VERSION_NUM" -ge 90600 ]; then
