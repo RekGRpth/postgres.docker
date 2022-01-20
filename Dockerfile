@@ -15,17 +15,93 @@ ENV ARC=../arc \
 RUN set -eux; \
     export DOCKER_BUILD="$DOCKER_BUILD"; \
     export DOCKER_POSTGRES_BRANCH="$DOCKER_POSTGRES_BRANCH"; \
-    export DOCKER_TYPE="$(cat /etc/os-release | grep -E '^ID=' | cut -f2 -d '=')"; \
-    if [ $DOCKER_TYPE != "alpine" ]; then \
-        export DEBIAN_FRONTEND=noninteractive; \
-        export savedAptMark="$(apt-mark showmanual)"; \
-    fi; \
     chmod +x /usr/local/bin/*.sh; \
-    test "$DOCKER_BUILD" = "build" && "docker_add_group_and_user_$DOCKER_TYPE.sh"; \
-    "docker_${DOCKER_BUILD}_$DOCKER_TYPE.sh"; \
+    apk update --no-cache; \
+    apk upgrade --no-cache; \
+    if [ "$DOCKER_BUILD" = "build" ]; then \
+        addgroup -g 70 -S "$GROUP"; \
+        adduser -u 70 -S -D -G "$GROUP" -H -h "$HOME" -s /bin/sh "$USER"; \
+        apk add --no-cache --virtual .build \
+            autoconf \
+            automake \
+            binutils \
+            bison \
+            brotli-dev \
+            c-ares-dev \
+            cjson-dev \
+            clang \
+            clang-dev \
+            curl-dev \
+            file \
+            flex \
+            g++ \
+            gcc \
+            gdal-dev \
+            geos-dev \
+            gettext-dev \
+            git \
+            groff \
+            icu-dev \
+            jansson-dev \
+            json-c-dev \
+            krb5-dev \
+            libedit-dev \
+            libevent-dev \
+            libgss-dev \
+            libidn2-dev \
+            libidn-dev \
+            libpsl-dev \
+            libssh-dev \
+            libtool \
+            libxml2-dev \
+            libxslt-dev \
+            linux-headers \
+            linux-pam-dev \
+            llvm \
+            llvm-dev \
+            lz4-dev \
+            make \
+            mt-st \
+            musl-dev \
+            nghttp2-dev \
+            openldap-dev \
+            patch \
+            pcre2-dev \
+            pcre-dev \
+            perl-dev \
+            proj-dev \
+            protobuf-c-dev \
+            py3-docutils \
+            python3-dev \
+            readline-dev \
+            rtmpdump-dev \
+            talloc-dev \
+            tcl-dev \
+            texinfo \
+            udns-dev \
+            util-linux-dev \
+            zlib-dev \
+            zstd-dev \
+        ; \
+    else \
+        apk add --no-cache --virtual .build \
+            diffutils \
+            git \
+            make \
+            patch \
+            perl \
+        ; \
+    fi; \
     docker_clone.sh; \
     "docker_$DOCKER_BUILD.sh"; \
-    "docker_clean_$DOCKER_TYPE.sh"; \
+    cd /; \
+    apk add --no-cache --virtual .postgres \
+        openssh-client \
+        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | grep -v "^$" | grep -v -e gdal -e geos -e perl -e proj -e python -e tcl | sort -u | while read -r lib; do test -z "$(find /usr/local/lib -name "$lib")" && echo "so:$lib"; done) \
+    ; \
+    find /usr/local/bin -type f -exec strip '{}' \;; \
+    find /usr/local/lib -type f -name "*.so" -exec strip '{}' \;; \
+    apk del --no-cache .build; \
     rm -rf "$HOME" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
     find /usr -type f -name "*.la" -delete; \
     mkdir -p "$HOME"; \
