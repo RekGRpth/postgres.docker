@@ -27,6 +27,7 @@ jobs:
     timeout-minutes: 20
   oracle:
     env:
+      DOCKER_FROM: postgres.docker:latest
       INPUTS_DOCKERFILE: Dockerfile.oracle
     needs: latest
     runs-on: ubuntu-latest
