@@ -7,14 +7,14 @@ on:
     types:
       - latest
   workflow_dispatch:
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.repository }}/${{ github.job }}
 jobs:
   latest:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/latest
-    env:
-      GITHUB_TOKEN: ${{ github.token }}
-    name: ${{ github.event.client_payload.repository }} ${{ github.event_name }} ${{ github.event.branch }}
+    name: ${{ github.job }} ${{ github.event.client_payload.repository }} ${{ github.event_name }} ${{ github.event.branch }}
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -22,11 +22,7 @@ jobs:
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   oracle:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/oracle
     env:
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_DOCKERFILE: Dockerfile.oracle
       INPUTS_TAG: oracle
     needs: latest
@@ -37,12 +33,8 @@ jobs:
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   edge:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/edge
     env:
       DOCKER_FROM: lib.docker:edge
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: edge
     runs-on: ubuntu-latest
     steps:
@@ -51,13 +43,9 @@ jobs:
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   test-edge:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/test-edge
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:edge
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-edge
     needs: edge
     runs-on: ubuntu-latest
@@ -66,12 +54,8 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL_14_STABLE:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/REL_14_STABLE
     env:
       DOCKER_POSTGRES_BRANCH: REL_14_STABLE
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: REL_14_STABLE
     runs-on: ubuntu-latest
     steps:
@@ -80,13 +64,9 @@ jobs:
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   test-REL_14_STABLE:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/test-REL_14_STABLE
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL_14_STABLE
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-REL_14_STABLE
     needs: REL_14_STABLE
     runs-on: ubuntu-latest
@@ -95,12 +75,8 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL_13_STABLE:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/REL_13_STABLE
     env:
       DOCKER_POSTGRES_BRANCH: REL_13_STABLE
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: REL_13_STABLE
     runs-on: ubuntu-latest
     steps:
@@ -109,13 +85,9 @@ jobs:
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   test-REL_13_STABLE:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/test-REL_13_STABLE
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL_13_STABLE
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-REL_13_STABLE
     needs: REL_13_STABLE
     runs-on: ubuntu-latest
@@ -124,12 +96,8 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL_12_STABLE:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/REL_12_STABLE
     env:
       DOCKER_POSTGRES_BRANCH: REL_12_STABLE
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: REL_12_STABLE
     runs-on: ubuntu-latest
     steps:
@@ -138,13 +106,9 @@ jobs:
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   test-REL_12_STABLE:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/test-REL_12_STABLE
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL_12_STABLE
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-REL_12_STABLE
     needs: REL_12_STABLE
     runs-on: ubuntu-latest
@@ -153,12 +117,8 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL_11_STABLE:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/REL_11_STABLE
     env:
       DOCKER_POSTGRES_BRANCH: REL_11_STABLE
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: REL_11_STABLE
     runs-on: ubuntu-latest
     steps:
@@ -167,13 +127,9 @@ jobs:
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   test-REL_11_STABLE:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/test-REL_11_STABLE
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL_11_STABLE
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-REL_11_STABLE
     needs: REL_11_STABLE
     runs-on: ubuntu-latest
@@ -182,12 +138,8 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL_10_STABLE:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/REL_10_STABLE
     env:
       DOCKER_POSTGRES_BRANCH: REL_10_STABLE
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: REL_10_STABLE
     runs-on: ubuntu-latest
     steps:
@@ -196,13 +148,9 @@ jobs:
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   test-REL_10_STABLE:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/test-REL_10_STABLE
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL_10_STABLE
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-REL_10_STABLE
     needs: REL_10_STABLE
     runs-on: ubuntu-latest
@@ -211,12 +159,8 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL9_6_STABLE:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/REL9_6_STABLE
     env:
       DOCKER_POSTGRES_BRANCH: REL9_6_STABLE
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: REL9_6_STABLE
     runs-on: ubuntu-latest
     steps:
@@ -225,13 +169,9 @@ jobs:
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   test-REL9_6_STABLE:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/test-REL9_6_STABLE
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL9_6_STABLE
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-REL9_6_STABLE
     needs: REL9_6_STABLE
     runs-on: ubuntu-latest
@@ -240,12 +180,8 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL9_5_STABLE:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/REL9_5_STABLE
     env:
       DOCKER_POSTGRES_BRANCH: REL9_5_STABLE
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: REL9_5_STABLE
     runs-on: ubuntu-latest
     steps:
@@ -254,13 +190,9 @@ jobs:
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   test-REL9_5_STABLE:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/test-REL9_5_STABLE
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL9_5_STABLE
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-REL9_5_STABLE
     needs: REL9_5_STABLE
     runs-on: ubuntu-latest
@@ -269,12 +201,8 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL9_4_STABLE:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/REL9_4_STABLE
     env:
       DOCKER_POSTGRES_BRANCH: REL9_4_STABLE
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: REL9_4_STABLE
     runs-on: ubuntu-latest
     steps:
@@ -283,13 +211,9 @@ jobs:
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   test-REL9_4_STABLE:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/test-REL9_4_STABLE
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL9_4_STABLE
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_TAG: test-REL9_4_STABLE
     needs: REL9_4_STABLE
     runs-on: ubuntu-latest
@@ -298,12 +222,8 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   debian:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/debian
     env:
       DOCKER_FROM: lib.docker:debian
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_DOCKERFILE: Dockerfile.debian
       INPUTS_TAG: debian
     runs-on: ubuntu-latest
@@ -313,13 +233,9 @@ jobs:
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   test-debian:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/test-debian
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:debian
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_DOCKERFILE: Dockerfile.debian
       INPUTS_TAG: test-debian
     needs: debian
@@ -329,12 +245,8 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   ubuntu:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/ubuntu
     env:
       DOCKER_FROM: lib.docker:ubuntu
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_DOCKERFILE: Dockerfile.debian
       INPUTS_TAG: ubuntu
     runs-on: ubuntu-latest
@@ -344,13 +256,9 @@ jobs:
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
   test-ubuntu:
-    concurrency:
-      cancel-in-progress: true
-      group: ${{ github.ref }}/test-ubuntu
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:ubuntu
-      GITHUB_TOKEN: ${{ github.token }}
       INPUTS_DOCKERFILE: Dockerfile.debian
       INPUTS_TAG: test-ubuntu
     needs: ubuntu
