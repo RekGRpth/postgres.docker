@@ -8,13 +8,17 @@ on:
       - latest
   workflow_dispatch:
 env:
+  DOCKER_FROM: lib.docker:${{ github.job }}
+  DOCKER_POSTGRES_BRANCH: ${{ github.job }}
   GITHUB_TOKEN: ${{ github.token }}
+  INPUTS_TAG: ${{ github.job }}
 concurrency:
   cancel-in-progress: true
   group: ${{ github.repository }}/${{ github.job }}
 jobs:
   latest:
-    name: ${{ github.job }} ${{ github.event.client_payload.repository }} ${{ github.event_name }} ${{ github.event.branch }}
+    env:
+      DOCKER_POSTGRES_BRANCH: REL_14_STABLE
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -24,7 +28,6 @@ jobs:
   oracle:
     env:
       INPUTS_DOCKERFILE: Dockerfile.oracle
-      INPUTS_TAG: oracle
     needs: latest
     runs-on: ubuntu-latest
     steps:
@@ -34,8 +37,7 @@ jobs:
     timeout-minutes: 20
   edge:
     env:
-      DOCKER_FROM: lib.docker:edge
-      INPUTS_TAG: edge
+      DOCKER_POSTGRES_BRANCH: REL_14_STABLE
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -46,7 +48,6 @@ jobs:
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:edge
-      INPUTS_TAG: test-edge
     needs: edge
     runs-on: ubuntu-latest
     steps:
@@ -54,9 +55,6 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL_14_STABLE:
-    env:
-      DOCKER_POSTGRES_BRANCH: REL_14_STABLE
-      INPUTS_TAG: REL_14_STABLE
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -67,7 +65,6 @@ jobs:
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL_14_STABLE
-      INPUTS_TAG: test-REL_14_STABLE
     needs: REL_14_STABLE
     runs-on: ubuntu-latest
     steps:
@@ -75,9 +72,6 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL_13_STABLE:
-    env:
-      DOCKER_POSTGRES_BRANCH: REL_13_STABLE
-      INPUTS_TAG: REL_13_STABLE
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -88,7 +82,6 @@ jobs:
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL_13_STABLE
-      INPUTS_TAG: test-REL_13_STABLE
     needs: REL_13_STABLE
     runs-on: ubuntu-latest
     steps:
@@ -96,9 +89,6 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL_12_STABLE:
-    env:
-      DOCKER_POSTGRES_BRANCH: REL_12_STABLE
-      INPUTS_TAG: REL_12_STABLE
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -109,7 +99,6 @@ jobs:
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL_12_STABLE
-      INPUTS_TAG: test-REL_12_STABLE
     needs: REL_12_STABLE
     runs-on: ubuntu-latest
     steps:
@@ -117,9 +106,6 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL_11_STABLE:
-    env:
-      DOCKER_POSTGRES_BRANCH: REL_11_STABLE
-      INPUTS_TAG: REL_11_STABLE
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -130,7 +116,6 @@ jobs:
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL_11_STABLE
-      INPUTS_TAG: test-REL_11_STABLE
     needs: REL_11_STABLE
     runs-on: ubuntu-latest
     steps:
@@ -138,9 +123,6 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL_10_STABLE:
-    env:
-      DOCKER_POSTGRES_BRANCH: REL_10_STABLE
-      INPUTS_TAG: REL_10_STABLE
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -151,7 +133,6 @@ jobs:
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL_10_STABLE
-      INPUTS_TAG: test-REL_10_STABLE
     needs: REL_10_STABLE
     runs-on: ubuntu-latest
     steps:
@@ -159,9 +140,6 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL9_6_STABLE:
-    env:
-      DOCKER_POSTGRES_BRANCH: REL9_6_STABLE
-      INPUTS_TAG: REL9_6_STABLE
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -172,7 +150,6 @@ jobs:
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL9_6_STABLE
-      INPUTS_TAG: test-REL9_6_STABLE
     needs: REL9_6_STABLE
     runs-on: ubuntu-latest
     steps:
@@ -180,9 +157,6 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL9_5_STABLE:
-    env:
-      DOCKER_POSTGRES_BRANCH: REL9_5_STABLE
-      INPUTS_TAG: REL9_5_STABLE
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -193,7 +167,6 @@ jobs:
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL9_5_STABLE
-      INPUTS_TAG: test-REL9_5_STABLE
     needs: REL9_5_STABLE
     runs-on: ubuntu-latest
     steps:
@@ -201,9 +174,6 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL9_4_STABLE:
-    env:
-      DOCKER_POSTGRES_BRANCH: REL9_4_STABLE
-      INPUTS_TAG: REL9_4_STABLE
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -214,7 +184,6 @@ jobs:
     env:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:REL9_4_STABLE
-      INPUTS_TAG: test-REL9_4_STABLE
     needs: REL9_4_STABLE
     runs-on: ubuntu-latest
     steps:
@@ -223,9 +192,8 @@ jobs:
     timeout-minutes: 20
   debian:
     env:
-      DOCKER_FROM: lib.docker:debian
+      DOCKER_POSTGRES_BRANCH: REL_14_STABLE
       INPUTS_DOCKERFILE: Dockerfile.debian
-      INPUTS_TAG: debian
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -237,7 +205,6 @@ jobs:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:debian
       INPUTS_DOCKERFILE: Dockerfile.debian
-      INPUTS_TAG: test-debian
     needs: debian
     runs-on: ubuntu-latest
     steps:
@@ -246,9 +213,8 @@ jobs:
     timeout-minutes: 20
   ubuntu:
     env:
-      DOCKER_FROM: lib.docker:ubuntu
+      DOCKER_POSTGRES_BRANCH: REL_14_STABLE
       INPUTS_DOCKERFILE: Dockerfile.debian
-      INPUTS_TAG: ubuntu
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -260,7 +226,6 @@ jobs:
       DOCKER_BUILD: test
       DOCKER_FROM: postgres.docker:ubuntu
       INPUTS_DOCKERFILE: Dockerfile.debian
-      INPUTS_TAG: test-ubuntu
     needs: ubuntu
     runs-on: ubuntu-latest
     steps:
