@@ -56,6 +56,8 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL_14_STABLE:
+    env:
+      DOCKER_FROM: lib.docker:latest
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -73,6 +75,8 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL_13_STABLE:
+    env:
+      DOCKER_FROM: lib.docker:latest
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -90,6 +94,8 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL_12_STABLE:
+    env:
+      DOCKER_FROM: lib.docker:latest
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -107,6 +113,8 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL_11_STABLE:
+    env:
+      DOCKER_FROM: lib.docker:latest
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -124,6 +132,8 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL_10_STABLE:
+    env:
+      DOCKER_FROM: lib.docker:latest
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -141,6 +151,8 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL9_6_STABLE:
+    env:
+      DOCKER_FROM: lib.docker:latest
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -158,6 +170,8 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL9_5_STABLE:
+    env:
+      DOCKER_FROM: lib.docker:latest
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -175,6 +189,8 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 20
   REL9_4_STABLE:
+    env:
+      DOCKER_FROM: lib.docker:latest
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
