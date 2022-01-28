@@ -7,6 +7,7 @@ docker stop postgres || echo $?
 docker rm postgres || echo $?
 docker run \
     --detach \
+    --env ASAN_OPTIONS="detect_odr_violation=0,alloc_dealloc_mismatch=false,halt_on_error=false" \
     --env GROUP_ID="$(id -g)" \
     --env LANG=ru_RU.UTF-8 \
     --env TZ=Asia/Yekaterinburg \
