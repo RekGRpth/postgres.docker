@@ -12,7 +12,7 @@ if [ "$DOCKER_BUILD" = "build" ]; then
     git clone -b master https://github.com/RekGRpth/session_variable.git
     if [ "$PG_VERSION_NUM" -ge 100000 ]; then git clone -b main https://github.com/RekGRpth/pgcopydb.git; fi
     if [ "$PG_VERSION_NUM" -ge 120000 ]; then git clone -b master https://github.com/RekGRpth/pg_graphql.git; fi
-    if [ "$PG_VERSION_NUM" -ge 90600 ]; then git clone -b master https://github.com/RekGRpth/postgis.git; fi
+    if [ "$PG_VERSION_NUM" -ge 110000 ]; then git clone -b master https://github.com/RekGRpth/postgis.git; fi
 else
     PG_VERSION_NUM="$(cat /usr/local/include/postgresql/server/pg_config.h | grep PG_VERSION_NUM | cut -f3 -d ' ')"
     if [ "$PG_VERSION_NUM" -ge 130000 ]; then git clone -b master https://github.com/RekGRpth/pg_curl.git; fi

@@ -36,7 +36,7 @@ if [ "$PG_VERSION_NUM" -ge 90600 ]; then
 else
     make -j"$(nproc)" submake-libpq submake-libpgport install
 fi
-if [ "$PG_VERSION_NUM" -ge 90600 ]; then
+if [ "$PG_VERSION_NUM" -ge 110000 ]; then
     cd "$HOME/src/postgis"
     ./autogen.sh
     ./configure
