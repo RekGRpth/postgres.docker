@@ -1,0 +1,73 @@
+FROM ghcr.io/rekgrpth/lib.docker:latest
+ADD bin /usr/local/bin
+ARG DOCKER_POSTGRES_BRANCH=REL_14_STABLE
+CMD [ "postgres" ]
+ENV HOME=/var/lib/postgresql
+STOPSIGNAL SIGINT
+WORKDIR "$HOME"
+ENV ARC=../arc \
+    GROUP=postgres \
+    LOG=../log \
+    PGDATA="$HOME/data" \
+    USER=postgres
+RUN set -eux; \
+    export DOCKER_POSTGRES_BRANCH="$DOCKER_POSTGRES_BRANCH"; \
+    chmod +x /usr/local/bin/*.sh; \
+    apk update --no-cache; \
+    apk upgrade --no-cache; \
+    apk add --no-cache --virtual .build \
+        diffutils \
+        git \
+        make \
+        patch \
+        perl \
+    ; \
+    mkdir -p "$HOME/src"; \
+    cd "$HOME/src"; \
+    git clone -b master https://github.com/RekGRpth/pg_handlebars.git; \
+    git clone -b master https://github.com/RekGRpth/pg_htmldoc.git; \
+    git clone -b master https://github.com/RekGRpth/pg_jobmon.git; \
+    git clone -b master https://github.com/RekGRpth/pgjwt.git; \
+    git clone -b master https://github.com/RekGRpth/pg_mustach.git; \
+    git clone -b master https://github.com/RekGRpth/pg_partman.git; \
+    git clone -b master https://github.com/RekGRpth/pg_qualstats.git; \
+    #git clone -b master https://github.com/RekGRpth/pg_save.git; \
+    git clone -b master https://github.com/RekGRpth/pg_ssl.git; \
+    git clone -b master https://github.com/RekGRpth/pg_stat_kcache.git; \
+    git clone -b master https://github.com/RekGRpth/pgtap.git; \
+    git clone -b master https://github.com/RekGRpth/pg_task.git; \
+    git clone -b master https://github.com/RekGRpth/pldebugger.git; \
+    git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
+    git clone -b master https://github.com/RekGRpth/prefix.git; \
+    git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
+    cd /; \
+    gosu postgres initdb --auth=trust; \
+    echo "max_worker_processes = '128'" >>"$PGDATA/postgresql.auto.conf"; \
+    echo "shared_preload_libraries = 'auto_explain,pg_stat_statements,pg_stat_kcache,pg_qualstats,plugin_debugger,pg_partman_bgw,pg_task'" >>"$PGDATA/postgresql.auto.conf"; \
+    gosu postgres pg_ctl -w start; \
+    sleep 10; \
+    export PGUSER=postgres; \
+    find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/pg_task -e src/postgres | sort -u | while read -r NAME; do; \
+        cd "$NAME"; \
+        make -j"$(nproc)" USE_PGXS=1 installcheck || (cat regression.diffs; exit 1); \
+    done; \
+    cd "$HOME/src/pg_task"; \
+    export PGDATABASE=postgres; \
+    make -j"$(nproc)" USE_PGXS=1 installcheck CONTRIB_TESTDB="$PGDATABASE" || (cat "$HOME/src/pg_task/regression.diffs"; exit 1); \
+    gosu postgres pg_ctl -m fast -w stop; \
+    cd /; \
+    apk add --no-cache --virtual .postgres \
+        openssh-client \
+        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | grep -v "^$" | grep -v -e gdal -e geos -e perl -e proj -e python -e tcl | sort -u | while read -r lib; do test -z "$(find /usr/local/lib -name "$lib")" && echo "so:$lib"; done) \
+    ; \
+    find /usr/local/bin -type f -exec strip '{}' \;; \
+    find /usr/local/lib -type f -name "*.so" -exec strip '{}' \;; \
+    apk del --no-cache .build; \
+    rm -rf "$HOME" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
+    find /usr -type f -name "*.la" -delete; \
+    mkdir -p "$HOME"; \
+    chown -R "$USER":"$GROUP" "$HOME"; \
+    install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql /run/postgresql/pg_stat_tmp /var/log/postgresql; \
+    install -d -m 0700 -o "$USER" -g "$GROUP" "$PGDATA"; \
+    mkdir -p /docker-entrypoint-initdb.d; \
+    echo done

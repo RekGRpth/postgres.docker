@@ -17,101 +17,16 @@ RUN set -eux; \
     apt-get update; \
     apt-get full-upgrade -y --no-install-recommends; \
     export savedAptMark="$(apt-mark showmanual)"; \
-    addgroup --system --gid 999 "$GROUP"; \
-    adduser --system --uid 999 --home "$HOME" --shell /bin/bash --ingroup "$GROUP" "$USER"; \
     apt-get install -y --no-install-recommends \
-        apt-utils \
-        autoconf \
-        automake \
-        autopoint \
-        binutils \
-        bison \
-        check \
-        clang \
-        file \
-        flex \
-        g++ \
-        gcc \
-        gettext \
         git \
-        gnupg \
-        gnutls-dev \
-        groff \
-        libbrotli-dev \
-        libc-ares-dev \
-        libc-dev \
-        libcjson-dev \
-        libclang-dev \
-        libcurl4-openssl-dev \
-        libedit-dev \
-        libevent-dev \
-        libfltk1.3-dev \
-        libgcrypt20-dev \
-        libgdal-dev \
-        libgdal-dev \
-        libgeos-dev \
-        libgeos-dev \
-        libgss-dev \
-        libicu-dev \
-        libidn11-dev \
-        libidn2-dev \
-        libjansson-dev \
-        libjpeg-dev \
-        libjson-c-dev \
-        libkrb5-dev \
-        libldap2-dev \
-        liblmdb-dev \
-        liblz4-dev \
-        libnghttp2-dev \
-        libpam0g-dev \
-        libpcre2-dev \
-        libpcre3-dev \
-        libperl-dev \
-        libpng-dev \
-        libpq-dev \
-        libproj-dev \
-        libprotobuf-c-dev \
-        libpsl-dev \
-        libreadline-dev \
-        libselinux1-dev \
-        libssh-dev \
-        libssl-dev \
-        libsubunit-dev \
-        libtalloc-dev \
-        libtool \
-        libtool \
-        libudns-dev \
-        libunwind-dev \
-        libxml2-dev \
-        libxslt-dev \
-        libyaml-dev \
-        libzstd-dev \
-        linux-headers-generic \
-        linux-libc-dev \
-        llvm \
-        llvm-dev \
-        lsb-release \
         make \
-        mt-st \
         patch \
-        pkg-config \
-        protobuf-c-compiler \
-        python3 \
-        python3-dev \
-        python3-docutils \
-        rtmpdump \
-        systemtap-sdt-dev \
-        tcl-dev \
-        texinfo \
-        zlib1g-dev \
+        perl \
     ; \
     mkdir -p "$HOME/src"; \
     cd "$HOME/src"; \
-    git clone -b "$DOCKER_POSTGRES_BRANCH" https://github.com/RekGRpth/postgres.git; \
-    git clone -b main https://github.com/RekGRpth/pgcopydb.git; \
     git clone -b main https://github.com/RekGRpth/pg_injection.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
-    git clone -b master https://github.com/RekGRpth/pg_graphql.git; \
     git clone -b master https://github.com/RekGRpth/pg_handlebars.git; \
     git clone -b master https://github.com/RekGRpth/pg_htmldoc.git; \
     git clone -b master https://github.com/RekGRpth/pg_jobmon.git; \
@@ -127,50 +42,25 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_track_settings.git; \
     git clone -b master https://github.com/RekGRpth/pg_wait_sampling.git; \
     git clone -b master https://github.com/RekGRpth/pldebugger.git; \
-    git clone -b master https://github.com/RekGRpth/plsh.git; \
-    git clone -b master https://github.com/RekGRpth/postgis.git; \
     git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
-    cd "$HOME/src/postgres"; \
-    ./configure \
-        --disable-rpath \
-        --enable-integer-datetimes \
-        --enable-thread-safety \
-        --prefix=/usr/local \
-        --with-gnu-ld \
-        --with-gssapi \
-        --with-icu \
-        --with-includes=/usr/local/include \
-        --with-krb5 \
-        --with-ldap \
-        --with-libedit-preferred \
-        --with-libraries=/usr/local/lib \
-        --with-libxml \
-        --with-libxslt \
-        --with-llvm \
-        --with-lz4 \
-        --with-openssl \
-        --with-pam \
-        --with-perl \
-        --with-pgport=5432 \
-        --with-python \
-        --with-system-tzdata=/usr/share/zoneinfo \
-        --with-tcl \
-        --with-uuid=e2fs \
-    ; \
-    make -j"$(nproc)" -C src install; \
-    make -j"$(nproc)" -C contrib install; \
-    make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install; \
-    cd "$HOME/src/postgis"; \
-    ./autogen.sh; \
-    ./configure; \
-    cd "$HOME"; \
-    find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres | sort -u | while read -r NAME; do; \
+    cd /; \
+    gosu postgres initdb --auth=trust; \
+    echo "max_worker_processes = '128'" >>"$PGDATA/postgresql.auto.conf"; \
+    echo "shared_preload_libraries = 'auto_explain,pg_stat_statements,pg_stat_kcache,pg_qualstats,pg_wait_sampling,plugin_debugger,pg_partman_bgw,pg_task'" >>"$PGDATA/postgresql.auto.conf"; \
+    gosu postgres pg_ctl -w start; \
+    sleep 10; \
+    export PGUSER=postgres; \
+    find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/pg_task -e src/postgres | sort -u | while read -r NAME; do; \
         cd "$NAME"; \
-        make -j"$(nproc)" USE_PGXS=1 install || exit 1; \
+        make -j"$(nproc)" USE_PGXS=1 installcheck || (cat regression.diffs; exit 1); \
     done; \
+    cd "$HOME/src/pg_task"; \
+    export PGDATABASE=postgres; \
+    make -j"$(nproc)" USE_PGXS=1 installcheck CONTRIB_TESTDB="$PGDATABASE" || (cat "$HOME/src/pg_task/regression.diffs"; exit 1); \
+    gosu postgres pg_ctl -m fast -w stop; \
     cd /; \
     apt-mark auto '.*' > /dev/null; \
     apt-mark manual $savedAptMark; \

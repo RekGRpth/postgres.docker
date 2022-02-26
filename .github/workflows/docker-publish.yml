@@ -8,244 +8,180 @@ on:
       - latest
   workflow_dispatch:
 env:
-  DOCKER_FROM: lib.docker:${{ github.job }}
   DOCKER_POSTGRES_BRANCH: ${{ github.job }}
   GITHUB_TOKEN: ${{ github.token }}
+  INPUTS_DOCKERFILE: Dockerfile.${{ github.job }}
   INPUTS_TAG: ${{ github.job }}
 concurrency:
   cancel-in-progress: true
   group: ${{ github.repository }}/${{ github.job }}
 jobs:
-  latest:
+  alpine:
     env:
       DOCKER_POSTGRES_BRANCH: REL_14_STABLE
+      INPUTS_TAG: latest
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
-    timeout-minutes: 20
-  oracle:
-    env:
-      DOCKER_FROM: postgres.docker:latest
-      INPUTS_DOCKERFILE: Dockerfile.oracle
-    needs: latest
+    timeout-minutes: 30
+  alpine-test:
+    needs: alpine
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
-      - uses: rekgrpth/github-publish-action-shell-action@v1
-    timeout-minutes: 20
-  edge:
-    env:
-      DOCKER_POSTGRES_BRANCH: REL_14_STABLE
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rekgrpth/git-clone-shell-action@v1
-      - uses: rekgrpth/docker-login-build-push-shell-action@v1
-      - uses: rekgrpth/github-publish-action-shell-action@v1
-    timeout-minutes: 20
-  test-edge:
-    env:
-      DOCKER_BUILD: test
-      DOCKER_FROM: postgres.docker:edge
-    needs: edge
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rekgrpth/git-clone-shell-action@v1
-      - uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 20
-  REL_14_STABLE:
-    env:
-      DOCKER_FROM: lib.docker:latest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rekgrpth/git-clone-shell-action@v1
-      - uses: rekgrpth/docker-login-build-push-shell-action@v1
-      - uses: rekgrpth/github-publish-action-shell-action@v1
-    timeout-minutes: 20
-  test-REL_14_STABLE:
-    env:
-      DOCKER_BUILD: test
-      DOCKER_FROM: postgres.docker:REL_14_STABLE
-    needs: REL_14_STABLE
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rekgrpth/git-clone-shell-action@v1
-      - uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 20
-  REL_13_STABLE:
-    env:
-      DOCKER_FROM: lib.docker:latest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rekgrpth/git-clone-shell-action@v1
-      - uses: rekgrpth/docker-login-build-push-shell-action@v1
-      - uses: rekgrpth/github-publish-action-shell-action@v1
-    timeout-minutes: 20
-  test-REL_13_STABLE:
-    env:
-      DOCKER_BUILD: test
-      DOCKER_FROM: postgres.docker:REL_13_STABLE
-    needs: REL_13_STABLE
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rekgrpth/git-clone-shell-action@v1
-      - uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 20
-  REL_12_STABLE:
-    env:
-      DOCKER_FROM: lib.docker:latest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rekgrpth/git-clone-shell-action@v1
-      - uses: rekgrpth/docker-login-build-push-shell-action@v1
-      - uses: rekgrpth/github-publish-action-shell-action@v1
-    timeout-minutes: 20
-  test-REL_12_STABLE:
-    env:
-      DOCKER_BUILD: test
-      DOCKER_FROM: postgres.docker:REL_12_STABLE
-    needs: REL_12_STABLE
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rekgrpth/git-clone-shell-action@v1
-      - uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 20
-  REL_11_STABLE:
-    env:
-      DOCKER_FROM: lib.docker:latest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rekgrpth/git-clone-shell-action@v1
-      - uses: rekgrpth/docker-login-build-push-shell-action@v1
-      - uses: rekgrpth/github-publish-action-shell-action@v1
-    timeout-minutes: 20
-  test-REL_11_STABLE:
-    env:
-      DOCKER_BUILD: test
-      DOCKER_FROM: postgres.docker:REL_11_STABLE
-    needs: REL_11_STABLE
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rekgrpth/git-clone-shell-action@v1
-      - uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 20
-  REL_10_STABLE:
-    env:
-      DOCKER_FROM: lib.docker:latest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rekgrpth/git-clone-shell-action@v1
-      - uses: rekgrpth/docker-login-build-push-shell-action@v1
-      - uses: rekgrpth/github-publish-action-shell-action@v1
-    timeout-minutes: 20
-  test-REL_10_STABLE:
-    env:
-      DOCKER_BUILD: test
-      DOCKER_FROM: postgres.docker:REL_10_STABLE
-    needs: REL_10_STABLE
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rekgrpth/git-clone-shell-action@v1
-      - uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 20
-  REL9_6_STABLE:
-    env:
-      DOCKER_FROM: lib.docker:latest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rekgrpth/git-clone-shell-action@v1
-      - uses: rekgrpth/docker-login-build-push-shell-action@v1
-      - uses: rekgrpth/github-publish-action-shell-action@v1
-    timeout-minutes: 20
-  test-REL9_6_STABLE:
-    env:
-      DOCKER_BUILD: test
-      DOCKER_FROM: postgres.docker:REL9_6_STABLE
-    needs: REL9_6_STABLE
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rekgrpth/git-clone-shell-action@v1
-      - uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 20
-  REL9_5_STABLE:
-    env:
-      DOCKER_FROM: lib.docker:latest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rekgrpth/git-clone-shell-action@v1
-      - uses: rekgrpth/docker-login-build-push-shell-action@v1
-      - uses: rekgrpth/github-publish-action-shell-action@v1
-    timeout-minutes: 20
-  test-REL9_5_STABLE:
-    env:
-      DOCKER_BUILD: test
-      DOCKER_FROM: postgres.docker:REL9_5_STABLE
-    needs: REL9_5_STABLE
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rekgrpth/git-clone-shell-action@v1
-      - uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 20
-  REL9_4_STABLE:
-    env:
-      DOCKER_FROM: lib.docker:latest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rekgrpth/git-clone-shell-action@v1
-      - uses: rekgrpth/docker-login-build-push-shell-action@v1
-      - uses: rekgrpth/github-publish-action-shell-action@v1
-    timeout-minutes: 20
-  test-REL9_4_STABLE:
-    env:
-      DOCKER_BUILD: test
-      DOCKER_FROM: postgres.docker:REL9_4_STABLE
-    needs: REL9_4_STABLE
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rekgrpth/git-clone-shell-action@v1
-      - uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 20
+    timeout-minutes: 30
   debian:
     env:
       DOCKER_POSTGRES_BRANCH: REL_14_STABLE
-      INPUTS_DOCKERFILE: Dockerfile.debian
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
-    timeout-minutes: 20
-  test-debian:
-    env:
-      DOCKER_BUILD: test
-      DOCKER_FROM: postgres.docker:debian
-      INPUTS_DOCKERFILE: Dockerfile.debian
+    timeout-minutes: 30
+  debian-test:
     needs: debian
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 20
+    timeout-minutes: 30
   ubuntu:
     env:
       DOCKER_POSTGRES_BRANCH: REL_14_STABLE
-      INPUTS_DOCKERFILE: Dockerfile.debian
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 30
+  ubuntu-test:
+    needs: ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 30
+  oracle:
+    needs: alpine
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 30
+  REL_14_STABLE:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 30
+  REL_14_STABLE-test:
+    needs: REL_14_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 30
+  REL_13_STABLE:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 30
+  REL_13_STABLE-test:
+    needs: REL_13_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 30
+  REL_12_STABLE:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 30
+  REL_12_STABLE-test:
+    needs: REL_12_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 30
+  REL_11_STABLE:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 30
+  REL_11_STABLE-test:
+    needs: REL_11_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 30
+  REL_10_STABLE:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 30
+  REL_10_STABLE-test:
+    needs: REL_10_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 30
+  REL9_6_STABLE:
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
     timeout-minutes: 20
-  test-ubuntu:
-    env:
-      DOCKER_BUILD: test
-      DOCKER_FROM: postgres.docker:ubuntu
-      INPUTS_DOCKERFILE: Dockerfile.debian
-    needs: ubuntu
+  REL9_6_STABLE-test:
+    needs: REL9_6_STABLE
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
-    timeout-minutes: 20
+    timeout-minutes: 30
+  REL9_5_STABLE:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 30
+  REL9_5_STABLE-test:
+    needs: REL9_5_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 30
+  REL9_4_STABLE:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+      - uses: rekgrpth/github-publish-action-shell-action@v1
+    timeout-minutes: 30
+  REL9_4_STABLE-test:
+    needs: REL9_4_STABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
+    timeout-minutes: 30

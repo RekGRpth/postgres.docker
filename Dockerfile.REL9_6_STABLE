@@ -1,4 +1,4 @@
-FROM ghcr.io/rekgrpth/lib.docker:debian
+FROM ghcr.io/rekgrpth/lib.docker:latest
 ADD bin /usr/local/bin
 ARG DOCKER_POSTGRES_BRANCH=REL_14_STABLE
 CMD [ "postgres" ]
@@ -11,107 +11,78 @@ ENV ARC=../arc \
     PGDATA="$HOME/data" \
     USER=postgres
 RUN set -eux; \
-    export DEBIAN_FRONTEND=noninteractive; \
     export DOCKER_POSTGRES_BRANCH="$DOCKER_POSTGRES_BRANCH"; \
     chmod +x /usr/local/bin/*.sh; \
-    apt-get update; \
-    apt-get full-upgrade -y --no-install-recommends; \
-    export savedAptMark="$(apt-mark showmanual)"; \
-    addgroup --system --gid 999 "$GROUP"; \
-    adduser --system --uid 999 --home "$HOME" --shell /bin/bash --ingroup "$GROUP" "$USER"; \
-    apt-get install -y --no-install-recommends \
-        apt-utils \
+    apk update --no-cache; \
+    apk upgrade --no-cache; \
+    addgroup -g 70 -S "$GROUP"; \
+    adduser -u 70 -S -D -G "$GROUP" -H -h "$HOME" -s /bin/sh "$USER"; \
+    apk add --no-cache --virtual .build \
         autoconf \
         automake \
-        autopoint \
         binutils \
         bison \
-        check \
+        brotli-dev \
+        c-ares-dev \
+        cjson-dev \
         clang \
+        clang-dev \
+        curl-dev \
         file \
         flex \
         g++ \
         gcc \
-        gettext \
+        gdal-dev \
+        geos-dev \
+        gettext-dev \
         git \
-        gnupg \
-        gnutls-dev \
         groff \
-        libbrotli-dev \
-        libc-ares-dev \
-        libc-dev \
-        libcjson-dev \
-        libclang-dev \
-        libcurl4-openssl-dev \
+        icu-dev \
+        jansson-dev \
+        json-c-dev \
+        krb5-dev \
         libedit-dev \
         libevent-dev \
-        libfltk1.3-dev \
-        libgcrypt20-dev \
-        libgdal-dev \
-        libgdal-dev \
-        libgeos-dev \
-        libgeos-dev \
         libgss-dev \
-        libicu-dev \
-        libidn11-dev \
         libidn2-dev \
-        libjansson-dev \
-        libjpeg-dev \
-        libjson-c-dev \
-        libkrb5-dev \
-        libldap2-dev \
-        liblmdb-dev \
-        liblz4-dev \
-        libnghttp2-dev \
-        libpam0g-dev \
-        libpcre2-dev \
-        libpcre3-dev \
-        libperl-dev \
-        libpng-dev \
-        libpq-dev \
-        libproj-dev \
-        libprotobuf-c-dev \
+        libidn-dev \
         libpsl-dev \
-        libreadline-dev \
-        libselinux1-dev \
         libssh-dev \
-        libssl-dev \
-        libsubunit-dev \
-        libtalloc-dev \
         libtool \
-        libtool \
-        libudns-dev \
-        libunwind-dev \
         libxml2-dev \
         libxslt-dev \
-        libyaml-dev \
-        libzstd-dev \
-        linux-headers-generic \
-        linux-libc-dev \
+        linux-headers \
+        linux-pam-dev \
         llvm \
         llvm-dev \
-        lsb-release \
+        lz4-dev \
         make \
         mt-st \
+        musl-dev \
+        nghttp2-dev \
+        openldap-dev \
         patch \
-        pkg-config \
-        protobuf-c-compiler \
-        python3 \
+        pcre2-dev \
+        pcre-dev \
+        perl-dev \
+        proj-dev \
+        protobuf-c-dev \
+        py3-docutils \
         python3-dev \
-        python3-docutils \
-        rtmpdump \
-        systemtap-sdt-dev \
+        readline-dev \
+        rtmpdump-dev \
+        talloc-dev \
         tcl-dev \
         texinfo \
-        zlib1g-dev \
+        udns-dev \
+        util-linux-dev \
+        zlib-dev \
+        zstd-dev \
     ; \
     mkdir -p "$HOME/src"; \
     cd "$HOME/src"; \
     git clone -b "$DOCKER_POSTGRES_BRANCH" https://github.com/RekGRpth/postgres.git; \
-    git clone -b main https://github.com/RekGRpth/pgcopydb.git; \
-    git clone -b main https://github.com/RekGRpth/pg_injection.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
-    git clone -b master https://github.com/RekGRpth/pg_graphql.git; \
     git clone -b master https://github.com/RekGRpth/pg_handlebars.git; \
     git clone -b master https://github.com/RekGRpth/pg_htmldoc.git; \
     git clone -b master https://github.com/RekGRpth/pg_jobmon.git; \
@@ -128,7 +99,6 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_wait_sampling.git; \
     git clone -b master https://github.com/RekGRpth/pldebugger.git; \
     git clone -b master https://github.com/RekGRpth/plsh.git; \
-    git clone -b master https://github.com/RekGRpth/postgis.git; \
     git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
@@ -163,24 +133,19 @@ RUN set -eux; \
     make -j"$(nproc)" -C src install; \
     make -j"$(nproc)" -C contrib install; \
     make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install; \
-    cd "$HOME/src/postgis"; \
-    ./autogen.sh; \
-    ./configure; \
     cd "$HOME"; \
     find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres | sort -u | while read -r NAME; do; \
         cd "$NAME"; \
         make -j"$(nproc)" USE_PGXS=1 install || exit 1; \
     done; \
     cd /; \
-    apt-mark auto '.*' > /dev/null; \
-    apt-mark manual $savedAptMark; \
-    find /usr/local -type f -executable -exec ldd '{}' ';' | grep -v 'not found' | awk '/=>/ { print $(NF-1) }' | sort -u | xargs -r dpkg-query --search | cut -d: -f1 | grep -v -e gdal -e geos -e perl -e python -e tcl | sort -u | xargs -r apt-mark manual; \
-    find /usr/local -type f -executable -exec ldd '{}' ';' | grep -v 'not found' | awk '/=>/ { print $(NF-1) }' | sort -u | xargs -r -i echo "/usr{}" | xargs -r dpkg-query --search | cut -d: -f1 | grep -v -e gdal -e geos -e perl -e python -e tcl | sort -u | xargs -r apt-mark manual; \
-    apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-    apt-get install -y --no-install-recommends \
+    apk add --no-cache --virtual .postgres \
         openssh-client \
+        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | grep -v "^$" | grep -v -e gdal -e geos -e perl -e proj -e python -e tcl | sort -u | while read -r lib; do test -z "$(find /usr/local/lib -name "$lib")" && echo "so:$lib"; done) \
     ; \
-    rm -rf /var/lib/apt/lists/* /var/cache/ldconfig/aux-cache /var/cache/ldconfig; \
+    find /usr/local/bin -type f -exec strip '{}' \;; \
+    find /usr/local/lib -type f -name "*.so" -exec strip '{}' \;; \
+    apk del --no-cache .build; \
     rm -rf "$HOME" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
     find /usr -type f -name "*.la" -delete; \
     mkdir -p "$HOME"; \
