@@ -1,4 +1,4 @@
-FROM ghcr.io/rekgrpth/lib.docker:ubuntu
+FROM ghcr.io/rekgrpth/postgres.docker:ubuntu
 ADD bin /usr/local/bin
 ARG DOCKER_POSTGRES_BRANCH=REL_14_STABLE
 CMD [ "postgres" ]
