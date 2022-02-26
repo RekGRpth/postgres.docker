@@ -34,10 +34,7 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/dblink_plus.git; \
     git clone -b master https://github.com/RekGRpth/oracle_fdw.git; \
     cd "$HOME"; \
-    find "$HOME/src" -maxdepth 1 -mindepth 1 -type d ! -name "instantclient*" | sort -u | while read -r NAME; do; \
-        cd "$NAME"; \
-        make -j"$(nproc)" USE_PGXS=1 install || exit 1; \
-    done; \
+    find "$HOME/src" -maxdepth 1 -mindepth 1 -type d ! -name "instantclient*" | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     apk add --no-cache --virtual .oracle \
         libaio \
         libc6-compat \
