@@ -24,18 +24,22 @@ RUN set -eux; \
         bison \
         brotli-dev \
         c-ares-dev \
+        check-dev \
         cjson-dev \
         clang \
         clang-dev \
+        cmake \
         curl-dev \
         file \
         flex \
+        fltk-dev \
         g++ \
         gcc \
         gdal-dev \
         geos-dev \
         gettext-dev \
         git \
+        gnutls-dev \
         groff \
         icu-dev \
         jansson-dev \
@@ -43,6 +47,7 @@ RUN set -eux; \
         krb5-dev \
         libedit-dev \
         libevent-dev \
+        libgcrypt-dev \
         libgss-dev \
         libidn2-dev \
         libidn-dev \
@@ -55,6 +60,7 @@ RUN set -eux; \
         linux-pam-dev \
         llvm \
         llvm-dev \
+        lmdb-dev \
         lz4-dev \
         make \
         mt-st \
@@ -68,9 +74,11 @@ RUN set -eux; \
         proj-dev \
         protobuf-c-dev \
         py3-docutils \
+        python2-dev \
         python3-dev \
         readline-dev \
         rtmpdump-dev \
+        subunit-dev \
         talloc-dev \
         tcl-dev \
         texinfo \
@@ -83,6 +91,7 @@ RUN set -eux; \
     cd "$HOME/src"; \
     git clone -b "$DOCKER_POSTGRES_BRANCH" https://github.com/RekGRpth/postgres.git; \
     git clone -b main https://github.com/RekGRpth/pgcopydb.git; \
+    git clone -b master https://github.com/RekGRpth/libgraphqlparser.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
     git clone -b master https://github.com/RekGRpth/pg_graphql.git; \
 #    git clone -b master https://github.com/RekGRpth/pg_handlebars.git; \
@@ -106,6 +115,7 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
+    cd "$HOME/src/libgraphqlparser" && cmake . && make -j"$(nproc)" install; \
     cd "$HOME/src/postgres"; \
     ./configure \
         --disable-rpath \
@@ -140,7 +150,7 @@ RUN set -eux; \
     ./autogen.sh; \
     ./configure; \
     cd "$HOME"; \
-    find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
+    find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres -e src/libgraphqlparser | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
     apk add --no-cache --virtual .postgres \
         openssh-client \
