@@ -105,6 +105,7 @@ RUN set -eux; \
         systemtap-sdt-dev \
         tcl-dev \
         texinfo \
+        wget \
         zlib1g-dev \
     ; \
     mkdir -p "$HOME/src"; \
