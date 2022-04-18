@@ -1,6 +1,5 @@
 FROM ghcr.io/rekgrpth/postgres.docker:latest
 ADD bin /usr/local/bin
-ARG DOCKER_POSTGRES_BRANCH=REL_14_STABLE
 CMD [ "postgres" ]
 ENV HOME=/var/lib/postgresql
 STOPSIGNAL SIGINT
@@ -11,7 +10,6 @@ ENV ARC=../arc \
     PGDATA="$HOME/data" \
     USER=postgres
 RUN set -eux; \
-    export DOCKER_POSTGRES_BRANCH="$DOCKER_POSTGRES_BRANCH"; \
     chmod +x /usr/local/bin/*.sh; \
     apk update --no-cache; \
     apk upgrade --no-cache; \

@@ -8,7 +8,6 @@ on:
       - latest
   workflow_dispatch:
 env:
-  DOCKER_POSTGRES_BRANCH: ${{ github.job }}
   GITHUB_TOKEN: ${{ github.token }}
   INPUTS_DOCKERFILE: Dockerfile.${{ github.job }}
   INPUTS_TAG: ${{ github.job }}
@@ -18,7 +17,6 @@ concurrency:
 jobs:
   alpine:
     env:
-      DOCKER_POSTGRES_BRANCH: REL_14_STABLE
       INPUTS_TAG: latest
     runs-on: ubuntu-latest
     steps:
@@ -34,8 +32,6 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 30
   debian:
-    env:
-      DOCKER_POSTGRES_BRANCH: REL_14_STABLE
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
@@ -50,8 +46,6 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 30
   ubuntu:
-    env:
-      DOCKER_POSTGRES_BRANCH: REL_14_STABLE
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1

@@ -1,6 +1,5 @@
 FROM ghcr.io/rekgrpth/postgres.docker:debian
 ADD bin /usr/local/bin
-ARG DOCKER_POSTGRES_BRANCH=REL_14_STABLE
 CMD [ "postgres" ]
 ENV HOME=/var/lib/postgresql
 STOPSIGNAL SIGINT
@@ -12,7 +11,6 @@ ENV ARC=../arc \
     USER=postgres
 RUN set -eux; \
     export DEBIAN_FRONTEND=noninteractive; \
-    export DOCKER_POSTGRES_BRANCH="$DOCKER_POSTGRES_BRANCH"; \
     chmod +x /usr/local/bin/*.sh; \
     apt-get update; \
     apt-get full-upgrade -y --no-install-recommends; \

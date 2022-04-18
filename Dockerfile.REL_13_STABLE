@@ -1,6 +1,5 @@
 FROM ghcr.io/rekgrpth/lib.docker:latest
 ADD bin /usr/local/bin
-ARG DOCKER_POSTGRES_BRANCH=REL_14_STABLE
 CMD [ "postgres" ]
 ENV HOME=/var/lib/postgresql
 STOPSIGNAL SIGINT
@@ -11,7 +10,6 @@ ENV ARC=../arc \
     PGDATA="$HOME/data" \
     USER=postgres
 RUN set -eux; \
-    export DOCKER_POSTGRES_BRANCH="$DOCKER_POSTGRES_BRANCH"; \
     chmod +x /usr/local/bin/*.sh; \
     apk update --no-cache; \
     apk upgrade --no-cache; \
@@ -89,7 +87,7 @@ RUN set -eux; \
     ; \
     mkdir -p "$HOME/src"; \
     cd "$HOME/src"; \
-    git clone -b "$DOCKER_POSTGRES_BRANCH" https://github.com/RekGRpth/postgres.git; \
+    git clone -b REL_13_STABLE https://github.com/RekGRpth/postgres.git; \
     git clone -b main https://github.com/RekGRpth/pgcopydb.git; \
     git clone -b master https://github.com/RekGRpth/libgraphqlparser.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
