@@ -20,5 +20,4 @@ docker run \
     --network name=docker,alias=postgres."$(hostname -d)" \
     --publish target=5432,published=5432,mode=host \
     --restart always \
-    --shm-size=4G \
     "ghcr.io/rekgrpth/postgres.docker:${INPUTS_BRANCH:-latest}"
