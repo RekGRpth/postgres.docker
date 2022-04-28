@@ -37,7 +37,7 @@ RUN set -eux; \
         geos-dev \
         gettext-dev \
         git \
-        gnutls-dev \
+#        gnutls-dev \
         groff \
         icu-dev \
         jansson-dev \

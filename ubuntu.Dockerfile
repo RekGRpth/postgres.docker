@@ -34,7 +34,7 @@ RUN set -eux; \
         gettext \
         git \
         gnupg \
-        gnutls-dev \
+#        gnutls-dev \
         groff \
         libbrotli-dev \
         libc-ares-dev \
