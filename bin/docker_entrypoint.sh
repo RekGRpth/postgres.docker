@@ -1,4 +1,4 @@
-#!/bin/sh -eux
+#!/bin/sh -ex
 
 if [ "$(id -u)" = '0' ]; then
     if [ -n "$GROUP" ] && [ -n "$GROUP_ID" ] && [ "$GROUP_ID" != "$(id -g "$GROUP")" ]; then
