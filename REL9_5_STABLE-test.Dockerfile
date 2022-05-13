@@ -22,6 +22,7 @@ RUN set -eux; \
     ; \
     mkdir -p "$HOME/src"; \
     cd "$HOME/src"; \
+    git clone -b master https://github.com/RekGRpth/pg_curl.git; \
     git clone -b master https://github.com/RekGRpth/pg_htmldoc.git; \
     git clone -b master https://github.com/RekGRpth/pg_jobmon.git; \
     git clone -b master https://github.com/RekGRpth/pgjwt.git; \
