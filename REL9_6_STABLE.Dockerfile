@@ -79,7 +79,6 @@ RUN set -eux; \
     ; \
     mkdir -p "$HOME/src"; \
     cd "$HOME/src"; \
-    git clone -b REL9_6_STABLE https://github.com/RekGRpth/postgres.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
     git clone -b master https://github.com/RekGRpth/pg_htmldoc.git; \
     git clone -b master https://github.com/RekGRpth/pg_jobmon.git; \
@@ -99,6 +98,8 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
+    git clone -b REL9_6_STABLE https://github.com/RekGRpth/pg_rman.git; \
+    git clone -b REL9_6_STABLE https://github.com/RekGRpth/postgres.git; \
     cd "$HOME/src/postgres"; \
     ./configure \
         --disable-rpath \

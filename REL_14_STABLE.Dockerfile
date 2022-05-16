@@ -87,7 +87,6 @@ RUN set -eux; \
     ; \
     mkdir -p "$HOME/src"; \
     cd "$HOME/src"; \
-    git clone -b REL_14_STABLE https://github.com/RekGRpth/postgres.git; \
     git clone -b main https://github.com/RekGRpth/pgcopydb.git; \
     git clone -b master https://github.com/RekGRpth/libgraphqlparser.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
@@ -110,6 +109,8 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
+    git clone -b REL_14_STABLE https://github.com/RekGRpth/pg_rman.git; \
+    git clone -b REL_14_STABLE https://github.com/RekGRpth/postgres.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
     cd "$HOME/src/libgraphqlparser" && cmake . && make -j"$(nproc)" install; \
     cd "$HOME/src/postgres"; \
