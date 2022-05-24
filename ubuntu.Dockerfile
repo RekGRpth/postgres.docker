@@ -95,7 +95,6 @@ RUN set -eux; \
         patch \
         pkg-config \
         protobuf-c-compiler \
-        python2-dev \
         python3 \
         python3-dev \
         python3-docutils \

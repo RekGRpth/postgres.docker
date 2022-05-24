@@ -72,7 +72,6 @@ RUN set -eux; \
         proj-dev \
         protobuf-c-dev \
         py3-docutils \
-#        python2-dev \
         python3-dev \
         readline-dev \
         rtmpdump-dev \
