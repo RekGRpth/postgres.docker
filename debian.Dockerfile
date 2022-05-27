@@ -102,6 +102,7 @@ RUN set -eux; \
         systemtap-sdt-dev \
         tcl-dev \
         texinfo \
+        uuid-dev \
         wget \
         zlib1g-dev \
     ; \
