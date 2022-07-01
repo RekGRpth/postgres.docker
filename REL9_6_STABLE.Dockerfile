@@ -7,7 +7,7 @@ WORKDIR "$HOME"
 ENV ARC=../arc \
     GROUP=postgres \
     LOG=../log \
-    PGDATA="$HOME/data" \
+    PGDATA="$HOME/96/data" \
     USER=postgres
 RUN set -eux; \
     chmod +x /usr/local/bin/*.sh; \

@@ -8,7 +8,7 @@ WORKDIR "$HOME"
 ENV ARC=../arc \
     GROUP=postgres \
     LOG=../log \
-    PGDATA="$HOME/PG_MAJOR/data" \
+    PGDATA="$HOME/$PG_MAJOR/data" \
     USER=postgres
 RUN set -eux; \
     export DEBIAN_FRONTEND=noninteractive; \
