@@ -8,6 +8,7 @@ ENV ARC=../arc \
     GROUP=postgres \
     LOG=../log \
     PGDATA="$HOME/95/data" \
+    PGDUMP="$HOME/95/dump" \
     USER=postgres
 RUN set -eux; \
     chmod +x /usr/local/bin/*.sh; \
