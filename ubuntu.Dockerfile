@@ -1,13 +1,14 @@
 FROM ghcr.io/rekgrpth/lib.docker:ubuntu
 ADD bin /usr/local/bin
 CMD [ "postgres" ]
-ENV HOME=/var/lib/postgresql
+ENV HOME=/var/lib/postgresql \
+    PG_MAJOR=14
 STOPSIGNAL SIGINT
 WORKDIR "$HOME"
 ENV ARC=../arc \
     GROUP=postgres \
     LOG=../log \
-    PGDATA="$HOME/data" \
+    PGDATA="$HOME/PG_MAJOR/data" \
     USER=postgres
 RUN set -eux; \
     export DEBIAN_FRONTEND=noninteractive; \
@@ -130,8 +131,8 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
-    git clone -b REL_14_STABLE https://github.com/RekGRpth/pg_rman.git; \
-    git clone -b REL_14_STABLE https://github.com/RekGRpth/postgres.git; \
+    git clone -b "REL_${PG_MAJOR}_STABLE" https://github.com/RekGRpth/pg_rman.git; \
+    git clone -b "REL_${PG_MAJOR}_STABLE" https://github.com/RekGRpth/postgres.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
     cd "$HOME/src/libgraphqlparser" && cmake . && make -j"$(nproc)" install; \
     cd "$HOME/src/postgres"; \

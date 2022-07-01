@@ -1,16 +1,5 @@
 FROM ghcr.io/rekgrpth/postgres.docker:REL9_5_STABLE
-ADD bin /usr/local/bin
-CMD [ "postgres" ]
-ENV HOME=/var/lib/postgresql
-STOPSIGNAL SIGINT
-WORKDIR "$HOME"
-ENV ARC=../arc \
-    GROUP=postgres \
-    LOG=../log \
-    PGDATA="$HOME/data" \
-    USER=postgres
 RUN set -eux; \
-    chmod +x /usr/local/bin/*.sh; \
     apk update --no-cache; \
     apk upgrade --no-cache; \
     apk add --no-cache --virtual .build \

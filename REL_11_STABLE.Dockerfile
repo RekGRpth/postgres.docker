@@ -1,13 +1,14 @@
 FROM ghcr.io/rekgrpth/lib.docker:latest
 ADD bin /usr/local/bin
 CMD [ "postgres" ]
-ENV HOME=/var/lib/postgresql
+ENV HOME=/var/lib/postgresql \
+    PG_MAJOR=11
 STOPSIGNAL SIGINT
 WORKDIR "$HOME"
 ENV ARC=../arc \
     GROUP=postgres \
     LOG=../log \
-    PGDATA="$HOME/data" \
+    PGDATA="$HOME/PG_MAJOR/data" \
     USER=postgres
 RUN set -eux; \
     chmod +x /usr/local/bin/*.sh; \
@@ -99,8 +100,8 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
-    git clone -b REL_11_STABLE https://github.com/RekGRpth/pg_rman.git; \
-    git clone -b REL_11_STABLE https://github.com/RekGRpth/postgres.git; \
+    git clone -b "REL_${PG_MAJOR}_STABLE" https://github.com/RekGRpth/pg_rman.git; \
+    git clone -b "REL_${PG_MAJOR}_STABLE" https://github.com/RekGRpth/postgres.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
     cd "$HOME/src/postgres"; \
     ./configure \
@@ -140,7 +141,7 @@ RUN set -eux; \
     cd /; \
     apk add --no-cache --virtual .postgres \
         openssh-client \
-        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | grep -v "^$" | grep -v -e libcrypto -e gdal -e geos -e perl -e proj -e python -e tcl | sort -u | while read -r lib; do test -z "$(find /usr/local/lib -name "$lib")" && echo "so:$lib"; done) \
+        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | grep -v "^$" | grep -v -e gdal -e libcrypto -e geos -e perl -e proj -e python -e tcl | sort -u | while read -r lib; do test -z "$(find /usr/local/lib -name "$lib")" && echo "so:$lib"; done) \
     ; \
     find /usr/local/bin -type f -exec strip '{}' \;; \
     find /usr/local/lib -type f -name "*.so" -exec strip '{}' \;; \

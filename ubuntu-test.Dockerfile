@@ -1,17 +1,6 @@
 FROM ghcr.io/rekgrpth/postgres.docker:ubuntu
-ADD bin /usr/local/bin
-CMD [ "postgres" ]
-ENV HOME=/var/lib/postgresql
-STOPSIGNAL SIGINT
-WORKDIR "$HOME"
-ENV ARC=../arc \
-    GROUP=postgres \
-    LOG=../log \
-    PGDATA="$HOME/data" \
-    USER=postgres
 RUN set -eux; \
     export DEBIAN_FRONTEND=noninteractive; \
-    chmod +x /usr/local/bin/*.sh; \
     apt-get update; \
     apt-get full-upgrade -y --no-install-recommends; \
     export savedAptMark="$(apt-mark showmanual)"; \
