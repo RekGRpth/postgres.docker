@@ -97,7 +97,6 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_wait_sampling.git; \
     git clone -b master https://github.com/RekGRpth/pldebugger.git; \
     git clone -b master https://github.com/RekGRpth/plsh.git; \
-    git clone -b master https://github.com/RekGRpth/postgis.git; \
     git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
