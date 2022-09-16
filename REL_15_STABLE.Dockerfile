@@ -146,6 +146,7 @@ RUN set -eux; \
     cd "$HOME/src/postgis"; \
     ./autogen.sh; \
     ./configure; \
+    ln -fs build-aux config; \
     cd "$HOME"; \
     find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres -e src/libgraphqlparser | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
