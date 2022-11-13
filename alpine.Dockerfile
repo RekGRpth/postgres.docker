@@ -2,7 +2,7 @@ FROM ghcr.io/rekgrpth/lib.docker:latest
 ADD bin /usr/local/bin
 CMD [ "postgres" ]
 ENV HOME=/var/lib/postgresql \
-    PG_MAJOR=14
+    PG_MAJOR=15
 STOPSIGNAL SIGINT
 WORKDIR "$HOME"
 ENV ARC=../arc \
