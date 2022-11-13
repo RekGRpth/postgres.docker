@@ -89,9 +89,7 @@ RUN set -eux; \
     mkdir -p "$HOME/src"; \
     cd "$HOME/src"; \
     git clone -b main https://github.com/RekGRpth/pgcopydb.git; \
-    git clone -b master https://github.com/RekGRpth/libgraphqlparser.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
-    git clone -b master https://github.com/RekGRpth/pg_graphql.git; \
     git clone -b master https://github.com/RekGRpth/pg_htmldoc.git; \
     git clone -b master https://github.com/RekGRpth/pg_jobmon.git; \
     git clone -b master https://github.com/RekGRpth/pgjwt.git; \
@@ -113,7 +111,6 @@ RUN set -eux; \
     git clone -b "REL_${PG_MAJOR}_STABLE" https://github.com/RekGRpth/pg_rman.git; \
     git clone -b "REL_${PG_MAJOR}_STABLE" https://github.com/RekGRpth/postgres.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
-    cd "$HOME/src/libgraphqlparser" && cmake . && make -j"$(nproc)" install; \
     cd "$HOME/src/postgres"; \
     ./configure \
         --disable-rpath \
@@ -149,7 +146,7 @@ RUN set -eux; \
     ./configure; \
     ln -fs build-aux config; \
     cd "$HOME"; \
-    find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres -e src/libgraphqlparser | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
+    find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
     apk add --no-cache --virtual .postgres \
         openssh-client \
