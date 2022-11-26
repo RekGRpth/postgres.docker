@@ -101,6 +101,8 @@ RUN set -eux; \
     git clone -b REL9_5_STABLE https://github.com/RekGRpth/postgres.git; \
     cd "$HOME/src/postgres"; \
     ./configure \
+        CFLAGS="-fno-omit-frame-pointer -Werror-implicit-function-declaration" \
+        CXXFLAGS="-fno-omit-frame-pointer -Werror-implicit-function-declaration" \
         --disable-rpath \
         --enable-integer-datetimes \
         --enable-thread-safety \
