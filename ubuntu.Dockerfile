@@ -2,6 +2,7 @@ FROM ghcr.io/rekgrpth/lib.docker:ubuntu
 ADD bin /usr/local/bin
 CMD [ "postgres" ]
 ENV HOME=/var/lib/postgresql \
+    PG_BUILD_FROM_SOURCE=yes \
     PG_MAJOR=15
 STOPSIGNAL SIGINT
 WORKDIR "$HOME"
