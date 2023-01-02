@@ -1,14 +1,15 @@
 FROM ghcr.io/rekgrpth/lib.docker:latest
 ADD bin /usr/local/bin
 CMD [ "postgres" ]
-ENV HOME=/var/lib/postgresql
+ENV HOME=/var/lib/postgresql \
+    PG_MAJOR=4
 STOPSIGNAL SIGINT
 WORKDIR "$HOME"
 ENV ARC=../arc \
     GROUP=postgres \
     LOG=../log \
-    PGDATA="$HOME/94/data" \
-    PGDUMP="$HOME/94/dump" \
+    PGDATA="$HOME/9_$PG_MAJOR/data" \
+    PGDUMP="$HOME/9_$PG_MAJOR/dump" \
     USER=postgres
 RUN set -eux; \
     chmod +x /usr/local/bin/*.sh; \
@@ -96,9 +97,9 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
+    git clone -b "REL9_${PG_MAJOR}_STABLE" https://github.com/RekGRpth/pg_rman.git; \
+    git clone -b "REL9_${PG_MAJOR}_STABLE" https://github.com/RekGRpth/postgres.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
-    git clone -b REL9_4_STABLE https://github.com/RekGRpth/pg_rman.git; \
-    git clone -b REL9_4_STABLE https://github.com/RekGRpth/postgres.git; \
     cd "$HOME/src/postgres"; \
     ./configure \
         CFLAGS="-fno-omit-frame-pointer -Werror-implicit-function-declaration" \
