@@ -15,6 +15,7 @@ if [ "$(id -u)" = '0' ]; then
     fi
 fi
 install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql /run/postgresql/pg_stat_tmp /var/log/postgresql
+install -d -m 0755 -o "$USER" -g "$GROUP" "$(dirname "$PGDATA")"
 install -d -m 0700 -o "$USER" -g "$GROUP" "$PGDATA"
 if [ "$(id -u)" = '0' ]; then
     find "$PGDATA" \! -user "$USER" -exec chown "$USER" '{}' +
