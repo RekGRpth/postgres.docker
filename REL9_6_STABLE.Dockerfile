@@ -28,6 +28,7 @@ RUN set -eux; \
         cjson-dev \
         clang \
         clang-dev \
+        cunit-dev \
         curl-dev \
         file \
         flex \

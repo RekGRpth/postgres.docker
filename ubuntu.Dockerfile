@@ -44,6 +44,7 @@ RUN set -eux; \
         libc-dev \
         libcjson-dev \
         libclang-dev \
+        libcunit1-dev \
         libcurl4-openssl-dev \
         libedit-dev \
         libevent-dev \

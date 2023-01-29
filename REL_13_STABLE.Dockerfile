@@ -30,6 +30,7 @@ RUN set -eux; \
         clang \
         clang-dev \
         cmake \
+        cunit-dev \
         curl-dev \
         file \
         flex \
