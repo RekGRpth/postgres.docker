@@ -27,7 +27,6 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pldebugger.git; \
     git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
-    git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
     cd /; \
     gosu postgres initdb --auth=trust; \
     echo "max_worker_processes = '128'" >>"$PGDATA/postgresql.auto.conf"; \

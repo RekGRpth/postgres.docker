@@ -112,7 +112,6 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
     git clone -b master https://github.com/RekGRpth/pg_rman.git; \
     git clone -b master https://github.com/RekGRpth/postgres.git; \
-    git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
     cd "$HOME/src/postgres"; \
     ./configure \
         CFLAGS="-fno-omit-frame-pointer -Werror-implicit-function-declaration" \
