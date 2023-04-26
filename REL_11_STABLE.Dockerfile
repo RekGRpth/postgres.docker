@@ -134,6 +134,7 @@ RUN set -eux; \
         --with-system-tzdata=/usr/share/zoneinfo \
         --with-tcl \
         --with-uuid=e2fs \
+        --with-zstd \
     ; \
     make -j"$(nproc)" -C src install; \
     make -j"$(nproc)" -C contrib install; \
