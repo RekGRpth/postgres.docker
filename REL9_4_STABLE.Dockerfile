@@ -26,8 +26,8 @@ RUN set -eux; \
         brotli-dev \
         c-ares-dev \
         cjson-dev \
-        clang \
-        clang-dev \
+        clang15 \
+        clang15-dev \
         cunit-dev \
         curl-dev \
         file \

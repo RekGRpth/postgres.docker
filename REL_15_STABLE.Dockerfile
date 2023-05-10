@@ -27,8 +27,8 @@ RUN set -eux; \
         c-ares-dev \
         check-dev \
         cjson-dev \
-        clang \
-        clang-dev \
+        clang15 \
+        clang15-dev \
         cmake \
         cunit-dev \
         curl-dev \
