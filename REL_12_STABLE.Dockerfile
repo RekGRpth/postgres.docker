@@ -118,6 +118,7 @@ RUN set -eux; \
     cd "$HOME/src/postgres"; \
     ./configure \
         CFLAGS="-fno-omit-frame-pointer -Werror-implicit-function-declaration" \
+        CLANG=clang-15 \
         CXXFLAGS="-fno-omit-frame-pointer -Werror-implicit-function-declaration" \
         LLVM_CONFIG=/usr/lib/llvm15/bin/llvm-config \
         --disable-rpath \
