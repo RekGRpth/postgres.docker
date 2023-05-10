@@ -60,8 +60,8 @@ RUN set -eux; \
         libxslt-dev \
         linux-headers \
         linux-pam-dev \
-        llvm \
-        llvm-dev \
+        llvm15 \
+        llvm15-dev \
         lmdb-dev \
         lz4-dev \
         make \
