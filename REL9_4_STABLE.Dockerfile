@@ -107,6 +107,7 @@ RUN set -eux; \
     ./configure \
         CFLAGS="-fno-omit-frame-pointer -Werror-implicit-function-declaration" \
         CXXFLAGS="-fno-omit-frame-pointer -Werror-implicit-function-declaration" \
+        LLVM_CONFIG=/usr/lib/llvm15/bin/llvm-config \
         --disable-rpath \
         --enable-integer-datetimes \
         --enable-thread-safety \
