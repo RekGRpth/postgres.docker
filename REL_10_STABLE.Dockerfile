@@ -67,6 +67,7 @@ RUN set -eux; \
         pcre2-dev \
         pcre-dev \
         perl-dev \
+        pkgconf \
         proj-dev \
         protobuf-c-dev \
         py3-docutils \
