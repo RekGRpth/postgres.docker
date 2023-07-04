@@ -3,7 +3,7 @@ ADD bin /usr/local/bin
 CMD [ "postgres" ]
 ENV HOME=/var/lib/postgresql \
     PG_BUILD_FROM_SOURCE=yes \
-    PG_MAJOR=15
+    PG_MAJOR=16
 STOPSIGNAL SIGINT
 WORKDIR "$HOME"
 ENV ARC=../arc \
