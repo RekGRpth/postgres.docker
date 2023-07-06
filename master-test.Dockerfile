@@ -19,10 +19,15 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_partman.git; \
     git clone -b master https://github.com/RekGRpth/pg_qualstats.git; \
     git clone -b master https://github.com/RekGRpth/pg_ssl.git; \
+    git clone -b master https://github.com/RekGRpth/pg_stat_kcache.git; \
+    git clone -b master https://github.com/RekGRpth/pgtap.git; \
     git clone -b master https://github.com/RekGRpth/pg_task.git; \
     git clone -b master https://github.com/RekGRpth/pg_track_settings.git; \
     git clone -b master https://github.com/RekGRpth/pg_wait_sampling.git; \
     git clone -b master https://github.com/RekGRpth/pldebugger.git; \
+    git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
+    git clone -b master https://github.com/RekGRpth/prefix.git; \
+    git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
     cd /; \
     gosu postgres initdb --auth=trust; \
     echo "max_worker_processes = '128'" >>"$PGDATA/postgresql.auto.conf"; \
