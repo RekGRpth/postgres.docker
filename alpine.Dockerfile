@@ -27,8 +27,8 @@ RUN set -eux; \
         c-ares-dev \
         check-dev \
         cjson-dev \
-        clang \
-        clang-dev \
+        clang15 \
+        clang15-dev \
         cmake \
         cunit-dev \
         curl-dev \
@@ -60,8 +60,8 @@ RUN set -eux; \
         libxslt-dev \
         linux-headers \
         linux-pam-dev \
-        llvm \
-        llvm-dev \
+        llvm15 \
+        llvm15-dev \
         lmdb-dev \
         lz4-dev \
         make \
@@ -117,7 +117,9 @@ RUN set -eux; \
     cd "$HOME/src/postgres"; \
     ./configure \
         CFLAGS="-fno-omit-frame-pointer -Werror-implicit-function-declaration" \
+        CLANG=clang-15 \
         CXXFLAGS="-fno-omit-frame-pointer -Werror-implicit-function-declaration" \
+        LLVM_CONFIG=/usr/lib/llvm15/bin/llvm-config \
         --disable-rpath \
         --enable-integer-datetimes \
         --enable-thread-safety \
