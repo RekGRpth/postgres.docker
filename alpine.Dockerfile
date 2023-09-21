@@ -27,8 +27,8 @@ RUN set -eux; \
         c-ares-dev \
         check-dev \
         cjson-dev \
-        clang15 \
-        clang15-dev \
+        clang \
+        clang-dev \
         cmake \
         cunit-dev \
         curl-dev \
@@ -60,8 +60,8 @@ RUN set -eux; \
         libxslt-dev \
         linux-headers \
         linux-pam-dev \
-        llvm15 \
-        llvm15-dev \
+        llvm \
+        llvm-dev \
         lmdb-dev \
         lz4-dev \
         make \
@@ -117,9 +117,7 @@ RUN set -eux; \
     cd "$HOME/src/postgres"; \
     ./configure \
         CFLAGS="-fno-omit-frame-pointer -Werror-implicit-function-declaration" \
-        CLANG=clang-15 \
         CXXFLAGS="-fno-omit-frame-pointer -Werror-implicit-function-declaration" \
-        LLVM_CONFIG=/usr/lib/llvm15/bin/llvm-config \
         --disable-rpath \
         --enable-integer-datetimes \
         --enable-thread-safety \
@@ -153,6 +151,7 @@ RUN set -eux; \
     ./autogen.sh; \
     ./configure; \
     ln -fs build-aux config; \
+    make postgis_revision.h; \
     cd "$HOME"; \
     find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \

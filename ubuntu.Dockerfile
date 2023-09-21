@@ -171,6 +171,7 @@ RUN set -eux; \
     cd "$HOME/src/postgis"; \
     ./autogen.sh; \
     ./configure; \
+    make postgis_revision.h; \
     cd "$HOME"; \
     find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
