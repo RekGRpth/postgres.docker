@@ -29,7 +29,7 @@ RUN set -eux; \
     cd /; \
     gosu postgres initdb --auth=trust; \
     echo "max_worker_processes = '128'" >>"$PGDATA/postgresql.auto.conf"; \
-    echo "shared_preload_libraries = 'auto_explain,pg_stat_statements,pg_stat_kcache,pg_qualstats,pg_wait_sampling,plugin_debugger,pg_partman_bgw,pg_task'" >>"$PGDATA/postgresql.auto.conf"; \
+    echo "shared_preload_libraries = 'auto_explain,pg_stat_statements,pg_stat_kcache,pg_qualstats,pg_wait_sampling,plugin_debugger,pg_task'" >>"$PGDATA/postgresql.auto.conf"; \
     gosu postgres pg_ctl -w start; \
     sleep 10; \
     export PGUSER=postgres; \
