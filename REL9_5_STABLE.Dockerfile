@@ -104,9 +104,9 @@ RUN set -eux; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
     cd "$HOME/src/postgres"; \
     ./configure \
-        CFLAGS="-fno-omit-frame-pointer -Werror-implicit-function-declaration" \
+        CFLAGS="-fno-omit-frame-pointer -Werror-implicit-function-declaration -Werror-incompatible-pointer-types" \
         CLANG=clang-15 \
-        CXXFLAGS="-fno-omit-frame-pointer -Werror-implicit-function-declaration" \
+        CXXFLAGS="-fno-omit-frame-pointer -Werror-implicit-function-declaration -Werror-incompatible-pointer-types" \
         LLVM_CONFIG=/usr/lib/llvm15/bin/llvm-config \
         --disable-rpath \
         --enable-integer-datetimes \
