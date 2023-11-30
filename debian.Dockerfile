@@ -138,7 +138,7 @@ RUN set -eux; \
     cd "$HOME/src/postgres"; \
     ./configure \
         CFLAGS="-fno-omit-frame-pointer -Werror=implicit-function-declaration -Werror=incompatible-pointer-types" \
-        CXXFLAGS="-fno-omit-frame-pointer -Werror=implicit-function-declaration -Werror=incompatible-pointer-types" \
+        CXXFLAGS="-fno-omit-frame-pointer" \
         --disable-rpath \
         --enable-integer-datetimes \
         --enable-thread-safety \
