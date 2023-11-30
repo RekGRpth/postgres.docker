@@ -26,8 +26,8 @@ RUN set -eux; \
         brotli-dev \
         c-ares-dev \
         cjson-dev \
-        clang15 \
-        clang15-dev \
+        clang \
+        clang-dev \
         cunit-dev \
         curl-dev \
         file \
@@ -55,8 +55,8 @@ RUN set -eux; \
         libxslt-dev \
         linux-headers \
         linux-pam-dev \
-        llvm15 \
-        llvm15-dev \
+        llvm \
+        llvm-dev \
         lz4-dev \
         make \
         mt-st \
@@ -105,9 +105,7 @@ RUN set -eux; \
     cd "$HOME/src/postgres"; \
     ./configure \
         CFLAGS="-fno-omit-frame-pointer -Werror=implicit-function-declaration -Werror=incompatible-pointer-types" \
-        CLANG=clang-15 \
         CXXFLAGS="-fno-omit-frame-pointer" \
-        LLVM_CONFIG=/usr/lib/llvm15/bin/llvm-config \
         --disable-rpath \
         --enable-integer-datetimes \
         --enable-thread-safety \
