@@ -1,4 +1,4 @@
-FROM ghcr.io/rekgrpth/lib.docker:alpine_1_1_1
+FROM ghcr.io/rekgrpth/lib.docker:alpine_3_16
 ADD bin /usr/local/bin
 CMD [ "postgres" ]
 ENV HOME=/var/lib/postgresql \
