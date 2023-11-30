@@ -122,7 +122,6 @@ RUN set -eux; \
         LLVM_CONFIG=/usr/lib/llvm15/bin/llvm-config \
         --disable-rpath \
         --enable-integer-datetimes \
-        --enable-thread-safety \
         --prefix=/usr/local \
         --with-gssapi \
         --with-icu \
