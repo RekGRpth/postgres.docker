@@ -124,6 +124,7 @@ RUN set -eux; \
         --enable-integer-datetimes \
         --enable-thread-safety \
         --prefix=/usr/local \
+        --with-gnu-ld \
         --with-gssapi \
         --with-icu \
         --with-includes=/usr/local/include \
