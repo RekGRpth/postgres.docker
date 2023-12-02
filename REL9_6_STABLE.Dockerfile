@@ -1,5 +1,8 @@
-FROM ghcr.io/rekgrpth/lib.docker:alpine_3_16
+FROM alpine:3.16
 ADD bin /usr/local/bin
+ENTRYPOINT [ "docker_entrypoint.sh" ]
+ENV HOME=/home
+MAINTAINER RekGRpth
 CMD [ "postgres" ]
 ENV HOME=/var/lib/postgresql \
     PG_BUILD_FROM_SOURCE=yes \
@@ -13,6 +16,7 @@ ENV ARC=../arc \
     PGDUMP="$HOME/9_$PG_MAJOR/dump" \
     USER=postgres
 RUN set -eux; \
+    ln -fs su-exec /sbin/gosu; \
     chmod +x /usr/local/bin/*.sh; \
     apk update --no-cache; \
     apk upgrade --no-cache; \
@@ -25,29 +29,37 @@ RUN set -eux; \
         bison \
         brotli-dev \
         c-ares-dev \
+        check-dev \
         cjson-dev \
         clang \
         clang-dev \
+        cmake \
         cunit-dev \
+        cups-dev \
         curl-dev \
         file \
         flex \
+        fltk-dev \
         g++ \
         gcc \
         gdal-dev \
         geos-dev \
         gettext-dev \
         git \
+#        gnutls-dev \
         groff \
         icu-dev \
         jansson-dev \
+        jpeg-dev \
         json-c-dev \
         krb5-dev \
         libedit-dev \
         libevent-dev \
+        libgcrypt-dev \
         libgss-dev \
         libidn2-dev \
         libidn-dev \
+        libpng-dev \
         libpsl-dev \
         libssh-dev \
         libtool \
@@ -55,6 +67,9 @@ RUN set -eux; \
         libxslt-dev \
         linux-headers \
         linux-pam-dev \
+        llvm \
+        llvm-dev \
+        lmdb-dev \
         lz4-dev \
         make \
         mt-st \
@@ -72,16 +87,21 @@ RUN set -eux; \
         python3-dev \
         readline-dev \
         rtmpdump-dev \
-        talloc-dev \
+        subunit-dev \
+#        talloc-dev \
         tcl-dev \
         texinfo \
         udns-dev \
         util-linux-dev \
+        yaml-dev \
         zlib-dev \
         zstd-dev \
     ; \
     mkdir -p "$HOME/src"; \
     cd "$HOME/src"; \
+    git clone -b main https://github.com/RekGRpth/pgtap.git; \
+    git clone -b master https://github.com/RekGRpth/htmldoc.git; \
+    git clone -b master https://github.com/RekGRpth/mustach.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
     git clone -b master https://github.com/RekGRpth/pg_htmldoc.git; \
     git clone -b master https://github.com/RekGRpth/pg_jobmon.git; \
@@ -90,7 +110,6 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_qualstats.git; \
     git clone -b master https://github.com/RekGRpth/pg_ssl.git; \
     git clone -b master https://github.com/RekGRpth/pg_stat_kcache.git; \
-    git clone -b main https://github.com/RekGRpth/pgtap.git; \
     git clone -b master https://github.com/RekGRpth/pg_task.git; \
     git clone -b master https://github.com/RekGRpth/pg_track_settings.git; \
     git clone -b master https://github.com/RekGRpth/pg_wait_sampling.git; \
@@ -102,6 +121,18 @@ RUN set -eux; \
     git clone -b "REL9_${PG_MAJOR}_STABLE" https://github.com/RekGRpth/pg_rman.git; \
     git clone -b "REL9_${PG_MAJOR}_STABLE" https://github.com/RekGRpth/postgres.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
+    ln -fs libldap.a /usr/lib/libldap_r.a; \
+    ln -fs libldap.so /usr/lib/libldap_r.so; \
+    cd "$HOME/src/htmldoc"; \
+    ./configure --without-gui; \
+    cd "$HOME/src/htmldoc/data"; \
+    make -j"$(nproc)" install; \
+    cd "$HOME/src/htmldoc/fonts"; \
+    make -j"$(nproc)" install; \
+    cd "$HOME/src/htmldoc/htmldoc"; \
+    make -j"$(nproc)" install; \
+    cd "$HOME/src/mustach"; \
+    make -j"$(nproc)" libs=single install; \
     cd "$HOME/src/postgres"; \
     ./configure \
         CFLAGS="-fno-omit-frame-pointer -Werror=implicit-function-declaration -Werror=incompatible-pointer-types" \
@@ -131,10 +162,17 @@ RUN set -eux; \
     make -j"$(nproc)" -C contrib install; \
     make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install; \
     cd "$HOME"; \
-    find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
+    find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres -e /src/htmldoc -e /src/mustach | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
     apk add --no-cache --virtual .postgres \
+        busybox-extras \
+        busybox-suid \
+        ca-certificates \
+        musl-locales \
         openssh-client \
+        shadow \
+        su-exec \
+        tzdata \
         $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | grep -v "^$" | grep -v -e gdal -e libcrypto -e geos -e perl -e proj -e python -e tcl | sort -u | while read -r lib; do test -z "$(find /usr/local/lib -name "$lib")" && echo "so:$lib"; done) \
     ; \
     find /usr/local/bin -type f -exec strip '{}' \;; \
