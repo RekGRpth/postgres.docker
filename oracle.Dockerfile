@@ -1,4 +1,4 @@
-FROM ghcr.io/rekgrpth/postgres.docker:latest
+FROM ghcr.io/rekgrpth/postgres.docker:gost
 ADD fakeglibc.c "$HOME/src/"
 ENV LD_PRELOAD=/usr/local/lib/fakeglibc.so
 RUN set -eux; \

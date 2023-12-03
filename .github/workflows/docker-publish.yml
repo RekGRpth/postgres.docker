@@ -68,7 +68,7 @@ jobs:
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
     timeout-minutes: 30
   oracle:
-    needs: alpine
+    needs: gist
     runs-on: ubuntu-latest
     steps:
       - uses: rekgrpth/git-clone-shell-action@v1
