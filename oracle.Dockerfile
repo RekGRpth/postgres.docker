@@ -5,12 +5,12 @@ RUN set -eux; \
     apk update --no-cache; \
     apk upgrade --no-cache; \
     apk add --no-cache --virtual .build \
-        clang15 \
-        clang15-dev \
+        clang \
+        clang-dev \
         gcc \
         git \
-        llvm15 \
-        llvm15-dev \
+        llvm \
+        llvm-dev \
         make \
         mariadb-dev \
         musl-dev \
