@@ -53,6 +53,7 @@ RUN set -eux; \
         libedit-dev \
         libevent-dev \
         libfltk1.3-dev \
+        libgc-dev \
         libgcrypt20-dev \
         libgdal-dev \
         libgdal-dev \

@@ -42,6 +42,7 @@ RUN set -eux; \
         fltk-dev \
         g++ \
         gcc \
+        gc-dev \
         gdal-dev \
         geos-dev \
         gettext-dev \
