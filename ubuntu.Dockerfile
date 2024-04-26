@@ -20,8 +20,8 @@ RUN set -eux; \
     chmod +x /usr/local/bin/*.sh; \
     apt-get update; \
     apt-get full-upgrade -y --no-install-recommends; \
-    addgroup --system --gid 999 "$GROUP"; \
-    adduser --system --uid 999 --home "$HOME" --shell /bin/bash --ingroup "$GROUP" "$USER"; \
+    groupadd --system --gid 999 "$GROUP"; \
+    useradd --system --uid 999 --home "$HOME" --shell /bin/bash --gid "$GROUP" "$USER"; \
     apt-get install -y --no-install-recommends \
         apt-utils \
         autoconf \
@@ -203,12 +203,12 @@ RUN set -eux; \
         ! grep -q '/usr/share/locale' /etc/dpkg/dpkg.cfg.d/docker; \
     fi; \
     apt-get install -y --no-install-recommends \
-        adduser \
         ca-certificates \
         gosu \
         locales \
         openssh-client \
         tzdata \
+        useradd \
     ; \
     localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8; \
     localedef -i ru_RU -c -f UTF-8 -A /usr/share/locale/locale.alias ru_RU.UTF-8; \
