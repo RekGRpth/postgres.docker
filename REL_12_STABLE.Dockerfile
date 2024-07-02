@@ -88,6 +88,7 @@ RUN set -eux; \
         python3-dev \
         readline-dev \
         rtmpdump-dev \
+        sfcgal-dev \
         subunit-dev \
 #        talloc-dev \
         tcl-dev \

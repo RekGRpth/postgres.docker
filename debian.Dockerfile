@@ -82,6 +82,7 @@ RUN set -eux; \
         libpsl-dev \
         libreadline-dev \
         libselinux1-dev \
+        libsfcgal-dev \
         libssh-dev \
         libssl-dev \
         libsubunit-dev \
