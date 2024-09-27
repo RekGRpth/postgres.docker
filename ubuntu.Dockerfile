@@ -6,7 +6,7 @@ MAINTAINER RekGRpth
 CMD [ "postgres" ]
 ENV HOME=/var/lib/postgresql \
     PG_BUILD_FROM_SOURCE=yes \
-    PG_MAJOR=16
+    PG_MAJOR=17
 STOPSIGNAL SIGINT
 WORKDIR "$HOME"
 ENV ARC=../arc \
@@ -140,8 +140,8 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
-    git clone -b "PG${PG_MAJOR}" https://github.com/RekGRpth/age.git; \
-    git clone -b "REL_${PG_MAJOR}_STABLE" https://github.com/RekGRpth/pg_rman.git; \
+#    git clone -b "PG${PG_MAJOR}" https://github.com/RekGRpth/age.git; \
+#    git clone -b "REL_${PG_MAJOR}_STABLE" https://github.com/RekGRpth/pg_rman.git; \
     git clone -b "REL_${PG_MAJOR}_STABLE" https://github.com/RekGRpth/postgres.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
     ln -fs libldap.a /usr/lib/libldap_r.a; \
@@ -162,7 +162,6 @@ RUN set -eux; \
         CXXFLAGS="-fno-omit-frame-pointer" \
         --disable-rpath \
         --enable-integer-datetimes \
-        --enable-thread-safety \
         --prefix=/usr/local \
         --with-gssapi \
         --with-icu \
