@@ -1,7 +1,7 @@
 #!/bin/sh -eux
 
 docker pull "ghcr.io/rekgrpth/postgres.docker:${INPUTS_BRANCH:-latest}"
-#docker network create --attachable --opt com.docker.network.bridge.name=docker docker || echo $?
+docker network create --attachable --opt com.docker.network.bridge.name=docker docker || echo $?
 docker volume create postgres
 docker stop postgres || echo $?
 docker rm postgres || echo $?
@@ -21,5 +21,3 @@ docker run \
     --privileged \
     --restart always \
     "ghcr.io/rekgrpth/postgres.docker:${INPUTS_BRANCH:-latest}"
-#    --network name=docker,alias=postgres."$(hostname -d)" \
-#    --publish target=5432,published=5432,mode=host \
