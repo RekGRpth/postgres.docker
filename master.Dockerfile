@@ -119,7 +119,7 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_wait_sampling.git; \
     git clone -b master https://github.com/RekGRpth/pldebugger.git; \
     git clone -b master https://github.com/RekGRpth/plsh.git; \
-#    git clone -b master https://github.com/RekGRpth/postgis.git; \
+    git clone -b master https://github.com/RekGRpth/postgis.git; \
     git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
@@ -169,11 +169,11 @@ RUN set -eux; \
     make -j"$(nproc)" -C src install; \
     make -j"$(nproc)" -C contrib install; \
     make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install; \
-#    cd "$HOME/src/postgis"; \
-#    ./autogen.sh; \
-#    ./configure; \
-#    ln -fs build-aux config; \
-#    make -j"$(nproc)" USE_PGXS=1; \
+    cd "$HOME/src/postgis"; \
+    ./autogen.sh; \
+    ./configure; \
+    ln -fs build-aux config; \
+    make -j"$(nproc)" USE_PGXS=1; \
     cd "$HOME"; \
     find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres -e /src/htmldoc -e /src/mustach | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
