@@ -33,6 +33,7 @@ RUN set -eux; \
         check \
         clang \
         cmake \
+        curl \
         file \
         flex \
         g++ \
@@ -113,7 +114,6 @@ RUN set -eux; \
         tcl-dev \
         texinfo \
         uuid-dev \
-        wget \
         zlib1g-dev \
     ; \
     mkdir -p "$HOME/src"; \

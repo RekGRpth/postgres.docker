@@ -36,6 +36,7 @@ RUN set -eux; \
         cmake \
         cunit-dev \
         cups-dev \
+        curl \
         curl-dev \
         file \
         flex \
