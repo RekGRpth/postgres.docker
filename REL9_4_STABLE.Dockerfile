@@ -79,6 +79,7 @@ RUN set -eux; \
         openldap-dev \
         patch \
         pcre2-dev \
+        pcre-tools \
         pcre-dev \
         perl-dev \
         pkgconf \

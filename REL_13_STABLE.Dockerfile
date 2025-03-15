@@ -81,6 +81,7 @@ RUN set -eux; \
         patch \
         pcre2-dev \
         pcre-dev \
+        pcre-tools \
         perl-dev \
         pkgconf \
         proj-dev \

@@ -104,6 +104,7 @@ RUN set -eux; \
         make \
         mt-st \
         patch \
+        pcregrep \
         pkg-config \
         protobuf-c-compiler \
         python3 \
