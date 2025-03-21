@@ -5,10 +5,100 @@ RUN set -eux; \
     apt-get full-upgrade -y --no-install-recommends; \
     export savedAptMark="$(apt-mark showmanual)"; \
     apt-get install -y --no-install-recommends \
+        apt-utils \
+        autoconf \
+        automake \
+        autopoint \
+        binutils \
+        bison \
+        ca-certificates \
+        check \
+        clang \
+        cmake \
+        curl \
+        file \
+        flex \
+        g++ \
+        gcc \
+        gettext \
         git \
+        gnupg \
+#        gnutls-dev \
+        groff \
+        libbrotli-dev \
+        libc-ares-dev \
+        libc-dev \
+        libcjson-dev \
+        libclang-dev \
+        libcunit1-dev \
+        libcups2-dev \
+        libcurl4-openssl-dev \
+        libedit-dev \
+        libevent-dev \
+        libfltk1.3-dev \
+        libgc-dev \
+        libgcrypt20-dev \
+        libgdal-dev \
+        libgdal-dev \
+        libgeos-dev \
+        libgeos-dev \
+        libgss-dev \
+        libicu-dev \
+        libidn11-dev \
+        libidn2-dev \
+        libjansson-dev \
+        libjpeg-dev \
+        libjson-c-dev \
+        libkrb5-dev \
+        libldap2-dev \
+        liblmdb-dev \
+        liblz4-dev \
+        libnghttp2-dev \
+        libpam0g-dev \
+        libpcre2-dev \
+        libpcre3-dev \
+        libperl-dev \
+        libpng-dev \
+        libpq-dev \
+        libproj-dev \
+        libprotobuf-c-dev \
+        libpsl-dev \
+        libreadline-dev \
+        libselinux1-dev \
+        libsfcgal-dev \
+        libssh-dev \
+        libssl-dev \
+        libsubunit-dev \
+#        libtalloc-dev \
+        libtool \
+        libtool \
+        libudns-dev \
+        libunwind-dev \
+        libxml2-dev \
+        libxslt-dev \
+        libyaml-dev \
+        libzstd-dev \
+        linux-headers-generic \
+        linux-libc-dev \
+        llvm \
+        llvm-dev \
+        lsb-release \
         make \
+        mt-st \
         patch \
+        pcregrep \
         perl \
+        pkg-config \
+        protobuf-c-compiler \
+        python3 \
+        python3-dev \
+        python3-docutils \
+        rtmpdump \
+        systemtap-sdt-dev \
+        tcl-dev \
+        texinfo \
+        uuid-dev \
+        zlib1g-dev \
     ; \
     mkdir -p "$HOME/src"; \
     cd "$HOME/src"; \
@@ -27,7 +117,43 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pldebugger.git; \
 #    git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
+    git clone -b "REL_${PG_MAJOR}_STABLE" https://github.com/RekGRpth/postgres.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
+    cd "$HOME/src/postgres"; \
+    ./configure \
+        CFLAGS="-O0 -g3 -fno-omit-frame-pointer -Werror=implicit-function-declaration -Werror=incompatible-pointer-types" \
+        CXXFLAGS="-O0 -g3 -fno-omit-frame-pointer" \
+        --disable-rpath \
+        --enable-cassert \
+        --enable-debug \
+        --enable-depend \
+        --enable-integer-datetimes \
+        --prefix=/usr/local \
+        --with-gssapi \
+        --with-icu \
+        --with-includes=/usr/local/include \
+        --with-ldap \
+        --with-libedit-preferred \
+        --with-libraries=/usr/local/lib \
+        --with-libxml \
+        --with-libxslt \
+        --with-llvm \
+        --with-lz4 \
+        --with-openssl \
+        --with-pam \
+        --with-perl \
+        --with-pgport=5432 \
+        --with-python \
+        --with-system-tzdata=/usr/share/zoneinfo \
+        --with-tcl \
+        --with-uuid=e2fs \
+        --with-zstd \
+    ; \
+    make -j"$(nproc)" -C src install; \
+    make -j"$(nproc)" -C contrib install; \
+    make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install; \
+    cd "$HOME"; \
+    find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres -e /src/htmldoc -e /src/mustach | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
     gosu postgres initdb --auth=trust; \
     echo "max_worker_processes = '128'" >>"$PGDATA/postgresql.auto.conf"; \
