@@ -143,12 +143,9 @@ RUN set -eux; \
     make -j"$(nproc)" libs=single install; \
     cd "$HOME/src/postgres"; \
     ./configure \
-        CFLAGS="-O0 -g3 -fno-omit-frame-pointer -Werror=implicit-function-declaration -Werror=incompatible-pointer-types" \
-        CXXFLAGS="-O0 -g3 -fno-omit-frame-pointer" \
+        CFLAGS="-fno-omit-frame-pointer -Werror=implicit-function-declaration -Werror=incompatible-pointer-types" \
+        CXXFLAGS="-fno-omit-frame-pointer" \
         --disable-rpath \
-        --enable-cassert \
-        --enable-debug \
-        --enable-depend \
         --enable-integer-datetimes \
         --prefix=/usr/local \
         --with-gssapi \
