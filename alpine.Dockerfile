@@ -173,7 +173,7 @@ RUN set -eux; \
     make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install; \
     cd "$HOME/src/postgis"; \
     ./autogen.sh; \
-    ./configure; \
+    ./configure CFLAGS="-Wno-return-mismatch"; \
     ln -fs build-aux config; \
     make -j"$(nproc)" USE_PGXS=1; \
     cd "$HOME"; \
