@@ -69,6 +69,9 @@ RUN set -eux; \
         proj-dev \
         protobuf-c-dev \
         py3-docutils \
+        py3-gevent \
+        py3-gunicorn \
+        py3-httpbin \
         python3-dev \
         readline-dev \
         rtmpdump-dev \
@@ -139,6 +142,7 @@ RUN set -eux; \
     cd "$HOME"; \
     find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres -e /src/htmldoc -e /src/mustach | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
+    gunicorn -b 0.0.0.0:80 httpbin:app -k gevent -D; \
     gosu postgres initdb --auth=trust; \
     echo "max_worker_processes = '128'" >>"$PGDATA/postgresql.auto.conf"; \
     echo "shared_preload_libraries = 'auto_explain,pg_stat_statements,pg_stat_kcache,pg_qualstats,pg_wait_sampling,plugin_debugger,pg_partman_bgw,pg_task'" >>"$PGDATA/postgresql.auto.conf"; \
