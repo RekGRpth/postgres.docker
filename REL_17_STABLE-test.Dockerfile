@@ -151,6 +151,8 @@ RUN set -eux; \
     find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/pg_task -e src/postgres | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 installcheck || (cat regression.diffs; exit 1); done; \
     cd "$HOME/src/pg_task"; \
     export PGDATABASE=postgres; \
+    echo "log_min_messages = 'debug1'" >>"$PGDATA/postgresql.auto.conf"; \
+    gosu postgres pg_ctl -w reload; \
     make -j"$(nproc)" USE_PGXS=1 installcheck CONTRIB_TESTDB="$PGDATABASE" || (cat "$HOME/src/pg_task/regression.diffs"; exit 1); \
     gosu postgres pg_ctl -m fast -w stop; \
     cd /; \
