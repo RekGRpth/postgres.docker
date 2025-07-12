@@ -103,7 +103,7 @@ RUN set -eux; \
     ; \
     mkdir -p "$HOME/src"; \
     cd "$HOME/src"; \
-    git clone -b main https://github.com/RekGRpth/pgcopydb.git; \
+#    git clone -b main https://github.com/RekGRpth/pgcopydb.git; \
     git clone -b main https://github.com/RekGRpth/pgtap.git; \
     git clone -b master https://github.com/RekGRpth/htmldoc.git; \
     git clone -b master https://github.com/RekGRpth/mustach.git; \
