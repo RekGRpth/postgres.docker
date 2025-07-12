@@ -6,7 +6,7 @@ MAINTAINER RekGRpth
 CMD [ "postgres" ]
 ENV HOME=/var/lib/postgresql \
     PG_BUILD_FROM_SOURCE=yes \
-    PG_MAJOR=17
+    PG_MAJOR=18
 STOPSIGNAL SIGINT
 WORKDIR "$HOME"
 ENV ARC=../arc \
@@ -119,7 +119,7 @@ RUN set -eux; \
     ; \
     mkdir -p "$HOME/src"; \
     cd "$HOME/src"; \
-    git clone -b main https://github.com/RekGRpth/pgcopydb.git; \
+#    git clone -b main https://github.com/RekGRpth/pgcopydb.git; \
     git clone -b main https://github.com/RekGRpth/pgtap.git; \
     git clone -b master https://github.com/RekGRpth/htmldoc.git; \
     git clone -b master https://github.com/RekGRpth/mustach.git; \
@@ -142,7 +142,7 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
 #    git clone -b "PG${PG_MAJOR}" https://github.com/RekGRpth/age.git; \
-    git clone -b "REL_${PG_MAJOR}_STABLE" https://github.com/RekGRpth/pg_rman.git; \
+#    git clone -b "REL_${PG_MAJOR}_STABLE" https://github.com/RekGRpth/pg_rman.git; \
     git clone -b "REL_${PG_MAJOR}_STABLE" https://github.com/RekGRpth/postgres.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
     ln -fs libldap.a /usr/lib/libldap_r.a; \
