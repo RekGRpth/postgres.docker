@@ -101,7 +101,7 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_track_settings.git; \
     git clone -b master https://github.com/RekGRpth/pg_wait_sampling.git; \
     git clone -b master https://github.com/RekGRpth/pldebugger.git; \
-    git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
+#    git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
     git clone -b "REL_${PG_MAJOR}_STABLE" https://github.com/RekGRpth/postgres.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
