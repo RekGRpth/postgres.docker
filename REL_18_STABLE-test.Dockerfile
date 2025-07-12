@@ -1,27 +1,7 @@
-FROM alpine:latest
-ADD bin /usr/local/bin
-ENTRYPOINT [ "docker_entrypoint.sh" ]
-ENV HOME=/home
-MAINTAINER RekGRpth
-CMD [ "postgres" ]
-ENV HOME=/var/lib/postgresql \
-    PG_BUILD_FROM_SOURCE=yes \
-    PG_MAJOR=18
-STOPSIGNAL SIGINT
-WORKDIR "$HOME"
-ENV ARC=../arc \
-    GROUP=postgres \
-    LOG=../log \
-    PGDATA="$HOME/$PG_MAJOR/data" \
-    PGDUMP="$HOME/$PG_MAJOR/dump" \
-    USER=postgres
+FROM ghcr.io/rekgrpth/postgres.docker:REL_18_STABLE
 RUN set -eux; \
-    ln -fs su-exec /sbin/gosu; \
-    chmod +x /usr/local/bin/*.sh; \
     apk update --no-cache; \
     apk upgrade --no-cache; \
-    addgroup -g 70 -S "$GROUP"; \
-    adduser -u 70 -S -D -G "$GROUP" -H -h "$HOME" -s /bin/sh "$USER"; \
     apk add --no-cache --virtual .build \
         autoconf \
         automake \
@@ -38,6 +18,7 @@ RUN set -eux; \
         cups-dev \
         curl \
         curl-dev \
+        diffutils \
         file \
         flex \
         fltk-dev \
@@ -83,10 +64,14 @@ RUN set -eux; \
         pcre-dev \
         pcre-tools \
         perl-dev \
+        perl \
         pkgconf \
         proj-dev \
         protobuf-c-dev \
         py3-docutils \
+        py3-gevent \
+        py3-gunicorn \
+        py3-httpbin \
         python3-dev \
         readline-dev \
         rtmpdump-dev \
@@ -103,10 +88,6 @@ RUN set -eux; \
     ; \
     mkdir -p "$HOME/src"; \
     cd "$HOME/src"; \
-    git clone -b main https://github.com/RekGRpth/pgcopydb.git; \
-    git clone -b main https://github.com/RekGRpth/pgtap.git; \
-    git clone -b master https://github.com/RekGRpth/htmldoc.git; \
-    git clone -b master https://github.com/RekGRpth/mustach.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git; \
     git clone -b master https://github.com/RekGRpth/pg_htmldoc.git; \
     git clone -b master https://github.com/RekGRpth/pg_jobmon.git; \
@@ -120,32 +101,18 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_track_settings.git; \
     git clone -b master https://github.com/RekGRpth/pg_wait_sampling.git; \
     git clone -b master https://github.com/RekGRpth/pldebugger.git; \
-    git clone -b master https://github.com/RekGRpth/plsh.git; \
-    git clone -b master https://github.com/RekGRpth/postgis.git; \
     git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
     git clone -b master https://github.com/RekGRpth/prefix.git; \
-    git clone -b master https://github.com/RekGRpth/session_variable.git; \
-    git clone -b "PG${PG_MAJOR}" https://github.com/RekGRpth/age.git; \
-    git clone -b "REL_${PG_MAJOR}_STABLE" https://github.com/RekGRpth/pg_rman.git; \
     git clone -b "REL_${PG_MAJOR}_STABLE" https://github.com/RekGRpth/postgres.git; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
-    ln -fs libldap.a /usr/lib/libldap_r.a; \
-    ln -fs libldap.so /usr/lib/libldap_r.so; \
-    cd "$HOME/src/htmldoc"; \
-    ./configure --without-gui; \
-    cd "$HOME/src/htmldoc/data"; \
-    make -j"$(nproc)" install; \
-    cd "$HOME/src/htmldoc/fonts"; \
-    make -j"$(nproc)" install; \
-    cd "$HOME/src/htmldoc/htmldoc"; \
-    make -j"$(nproc)" install; \
-    cd "$HOME/src/mustach"; \
-    make -j"$(nproc)" libs=single install; \
     cd "$HOME/src/postgres"; \
     ./configure \
-        CFLAGS="-fno-omit-frame-pointer -Werror=implicit-function-declaration -Werror=incompatible-pointer-types" \
-        CXXFLAGS="-fno-omit-frame-pointer" \
+        CFLAGS="-O0 -g3 -fno-omit-frame-pointer -Werror=implicit-function-declaration -Werror=incompatible-pointer-types" \
+        CXXFLAGS="-O0 -g3 -fno-omit-frame-pointer" \
         --disable-rpath \
+        --enable-cassert \
+        --enable-debug \
+        --enable-depend \
         --enable-integer-datetimes \
         --prefix=/usr/local \
         --with-gssapi \
@@ -171,33 +138,23 @@ RUN set -eux; \
     make -j"$(nproc)" -C src install; \
     make -j"$(nproc)" -C contrib install; \
     make -j"$(nproc)" submake-libpq submake-libpgport submake-libpgfeutils install; \
-    cd "$HOME/src/postgis"; \
-    ./autogen.sh; \
-    ./configure CFLAGS="-Wno-return-mismatch"; \
-    ln -fs build-aux config; \
-    make -j"$(nproc)" USE_PGXS=1; \
     cd "$HOME"; \
     find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres -e /src/htmldoc -e /src/mustach | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
-    apk add --no-cache --virtual .postgres \
-        busybox-extras \
-        busybox-suid \
-        ca-certificates \
-        musl-locales \
-        openssh-client \
-        shadow \
-        su-exec \
-        tzdata \
-        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | grep -v "^$" | grep -v -e gdal -e libcrypto -e geos -e perl -e proj -e python -e tcl | sort -u | while read -r lib; do test -z "$(find /usr/local/lib -name "$lib")" && echo "so:$lib"; done) \
-    ; \
-    find /usr/local/bin -type f -exec strip '{}' \;; \
-    find /usr/local/lib -type f -name "*.so" -exec strip '{}' \;; \
+    gunicorn -b 0.0.0.0:80 httpbin:app -k gevent -D; \
+    gosu postgres initdb --auth=trust; \
+    echo "max_worker_processes = '128'" >>"$PGDATA/postgresql.auto.conf"; \
+    echo "shared_preload_libraries = 'auto_explain,pg_stat_statements,pg_stat_kcache,pg_qualstats,pg_wait_sampling,plugin_debugger,pg_partman_bgw,pg_task'" >>"$PGDATA/postgresql.auto.conf"; \
+    gosu postgres pg_ctl -w start; \
+    sleep 10; \
+    export PGUSER=postgres; \
+    find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/pg_task -e src/postgres | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 installcheck || (cat regression.diffs; exit 1); done; \
+    cd "$HOME/src/pg_task"; \
+    export PGDATABASE=postgres; \
+    echo "log_min_messages = 'debug1'" >>"$PGDATA/postgresql.auto.conf"; \
+    gosu postgres pg_ctl -w reload; \
+    make -j"$(nproc)" USE_PGXS=1 installcheck CONTRIB_TESTDB="$PGDATABASE" || (cat "$HOME/src/pg_task/regression.diffs"; exit 1); \
+    gosu postgres pg_ctl -m fast -w stop; \
+    cd /; \
     apk del --no-cache .build; \
-    rm -rf "$HOME" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
-    find /usr -type f -name "*.la" -delete; \
-    mkdir -p "$HOME"; \
-    chown -R "$USER":"$GROUP" "$HOME"; \
-    install -d -m 1775 -o "$USER" -g "$GROUP" /run/postgresql /run/postgresql/pg_stat_tmp /var/log/postgresql; \
-    install -d -m 0700 -o "$USER" -g "$GROUP" "$PGDATA"; \
-    mkdir -p /docker-entrypoint-initdb.d; \
     echo done
