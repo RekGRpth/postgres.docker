@@ -123,7 +123,7 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/plsh.git; \
 #    git clone -b master https://github.com/RekGRpth/postgis.git; \
     git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
-    git clone -b master https://github.com/RekGRpth/prefix.git; \
+#    git clone -b master https://github.com/RekGRpth/prefix.git; \
     git clone -b master https://github.com/RekGRpth/session_variable.git; \
 #    git clone -b master https://github.com/RekGRpth/age.git; \
     git clone -b master https://github.com/RekGRpth/pg_rman.git; \
