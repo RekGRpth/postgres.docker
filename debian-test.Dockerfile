@@ -57,7 +57,6 @@ RUN set -eux; \
         libnghttp2-dev \
         libpam0g-dev \
         libpcre2-dev \
-        libpcre3-dev \
         libperl-dev \
         libpng-dev \
         libpq-dev \

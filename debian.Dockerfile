@@ -20,8 +20,8 @@ RUN set -eux; \
     chmod +x /usr/local/bin/*.sh; \
     apt-get update; \
     apt-get full-upgrade -y --no-install-recommends; \
-    addgroup --system --gid 999 "$GROUP"; \
-    adduser --system --uid 999 --home "$HOME" --shell /bin/bash --ingroup "$GROUP" "$USER"; \
+    groupadd --system --gid 999 "$GROUP"; \
+    useradd --system --uid 999 --home "$HOME" --shell /bin/bash --gid "$GROUP" "$USER"; \
     apt-get install -y --no-install-recommends \
         apt-utils \
         autoconf \
@@ -74,7 +74,6 @@ RUN set -eux; \
         libnghttp2-dev \
         libpam0g-dev \
         libpcre2-dev \
-        libpcre3-dev \
         libperl-dev \
         libpng-dev \
         libpq-dev \
@@ -195,8 +194,8 @@ RUN set -eux; \
     find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres -e /src/htmldoc -e /src/mustach | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
     apt-mark auto '.*' > /dev/null; \
-    find /usr/local -type f -executable -exec ldd '{}' ';' | grep -v 'not found' | awk '/=>/ { print $(NF-1) }' | sort -u | xargs -r dpkg-query --search | cut -d: -f1 | grep -v -e gdal -e geos -e perl -e python -e tcl | sort -u | xargs -r apt-mark manual; \
-    find /usr/local -type f -executable -exec ldd '{}' ';' | grep -v 'not found' | awk '/=>/ { print $(NF-1) }' | sort -u | xargs -r -i echo "/usr{}" | xargs -r dpkg-query --search | cut -d: -f1 | grep -v -e gdal -e geos -e perl -e python -e tcl | sort -u | xargs -r apt-mark manual; \
+    find /usr/local -type f -executable -exec ldd '{}' ';' | grep -v 'not found' | awk '/=>/ { print $(NF-1) }' | sort -u | xargs -r dpkg-query --search | cut -d: -f1 | grep -v -e gdal -e geos -e perl -e python -e tcl | sort -u | xargs -r apt-mark manual || echo $?; \
+    find /usr/local -type f -executable -exec ldd '{}' ';' | grep -v 'not found' | awk '/=>/ { print $(NF-1) }' | sort -u | xargs -r -i echo "/usr{}" | xargs -r dpkg-query --search | cut -d: -f1 | grep -v -e gdal -e geos -e perl -e python -e tcl | sort -u | xargs -r apt-mark manual || echo $?; \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
     if [ -f /etc/dpkg/dpkg.cfg.d/docker ]; then \
         grep -q '/usr/share/locale' /etc/dpkg/dpkg.cfg.d/docker; \
@@ -204,7 +203,6 @@ RUN set -eux; \
         ! grep -q '/usr/share/locale' /etc/dpkg/dpkg.cfg.d/docker; \
     fi; \
     apt-get install -y --no-install-recommends \
-        adduser \
         ca-certificates \
         gosu \
         locales \
