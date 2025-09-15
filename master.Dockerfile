@@ -65,6 +65,7 @@ RUN set -eux; \
         libpsl-dev \
         libssh-dev \
         libtool \
+        liburing-dev \
         libxml2-dev \
         libxslt-dev \
         linux-headers \
