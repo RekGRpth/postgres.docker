@@ -75,6 +75,7 @@ RUN set -eux; \
         libtool \
         libudns-dev \
         libunwind-dev \
+        liburing-dev \
         libxml2-dev \
         libxslt-dev \
         libyaml-dev \
@@ -138,6 +139,7 @@ RUN set -eux; \
         --with-ldap \
         --with-libedit-preferred \
         --with-libraries=/usr/local/lib \
+        --with-liburing \
         --with-libxml \
         --with-libxslt \
         --with-llvm \
