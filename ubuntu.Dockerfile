@@ -18,6 +18,7 @@ ENV ARC=../arc \
 RUN set -eux; \
     export DEBIAN_FRONTEND=noninteractive; \
     chmod +x /usr/local/bin/*.sh; \
+    add-apt-repository universe; \
     apt-get update; \
     apt-get full-upgrade -y --no-install-recommends; \
     groupadd --system --gid 999 "$GROUP"; \
@@ -104,22 +105,18 @@ RUN set -eux; \
         make \
         mt-st \
         patch \
+        pcregrep \
         pkg-config \
         protobuf-c-compiler \
         python3 \
         python3-dev \
         python3-docutils \
         rtmpdump \
-        software-properties-common \
         systemtap-sdt-dev \
         tcl-dev \
         texinfo \
         uuid-dev \
         zlib1g-dev \
-    ; \
-    add-apt-repository universe; \
-    apt-get install -y --no-install-recommends \
-        pcregrep \
     ; \
     mkdir -p "$HOME/src"; \
     cd "$HOME/src"; \
