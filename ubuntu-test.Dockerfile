@@ -87,7 +87,6 @@ RUN set -eux; \
         make \
         mt-st \
         patch \
-        pcregrep \
         perl \
         pkg-config \
         protobuf-c-compiler \

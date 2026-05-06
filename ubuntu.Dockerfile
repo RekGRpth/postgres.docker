@@ -104,7 +104,7 @@ RUN set -eux; \
         make \
         mt-st \
         patch \
-        pcregrep \
+        pcre2-utils \
         pkg-config \
         protobuf-c-compiler \
         python3 \
@@ -147,6 +147,7 @@ RUN set -eux; \
     git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
     ln -fs libldap.a /usr/lib/libldap_r.a; \
     ln -fs libldap.so /usr/lib/libldap_r.so; \
+    ln -fs pcre2grep /usr/bin/pcregrep; \
     cd "$HOME/src/htmldoc"; \
     ./configure --without-gui; \
     cd "$HOME/src/htmldoc/data"; \
