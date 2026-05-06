@@ -18,6 +18,7 @@ ENV ARC=../arc \
 RUN set -eux; \
     export DEBIAN_FRONTEND=noninteractive; \
     chmod +x /usr/local/bin/*.sh; \
+    add-apt-repository universe; \
     apt-get update; \
     apt-get full-upgrade -y --no-install-recommends; \
     groupadd --system --gid 999 "$GROUP"; \
