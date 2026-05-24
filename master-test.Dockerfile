@@ -105,7 +105,7 @@ RUN set -eux; \
 #    git clone -b master https://github.com/RekGRpth/powa-archivist.git; \
 #    git clone -b master https://github.com/RekGRpth/prefix.git; \
     git clone -b master https://github.com/RekGRpth/postgres.git; \
-#    git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
+    git clone -b REL1_STABLE https://github.com/RekGRpth/hypopg.git; \
     cd "$HOME/src/postgres"; \
     ./configure \
         CFLAGS="-O0 -g3 -fno-omit-frame-pointer -Werror=implicit-function-declaration -Werror=incompatible-pointer-types" \
