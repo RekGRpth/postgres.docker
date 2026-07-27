@@ -20,8 +20,8 @@ RUN set -eux; \
     chmod +x /usr/local/bin/*.sh; \
     apt-get update; \
     apt-get full-upgrade -y --no-install-recommends; \
-#    groupmod -g 1001 ubuntu; \
-#    usermod -g 1001 -u 1001 ubuntu; \
+    groupmod -g 1001 ubuntu; \
+    usermod -g 1001 -u 1001 ubuntu; \
     groupadd --system --gid 1000 "$GROUP"; \
     useradd --system --uid 1000 --home "$HOME" --shell /bin/bash --gid "$GROUP" "$USER"; \
     apt-get install -y --no-install-recommends \
