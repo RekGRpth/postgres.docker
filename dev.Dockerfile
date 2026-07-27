@@ -1,9 +1,7 @@
 FROM ghcr.io/rekgrpth/postgres.docker:ubuntu-test
-#ADD bin /usr/local/bin
 SHELL [ "/bin/bash", "-c" ]
 RUN set -eux; \
     export DEBIAN_FRONTEND=noninteractive; \
-#    chmod +x /usr/local/bin/*.sh; \
     apt-get update; \
     apt-get full-upgrade -y --no-install-recommends; \
     apt-get install -y --no-install-recommends \
@@ -107,9 +105,13 @@ RUN set -eux; \
         uuid-dev \
         zlib1g-dev \
     ; \
+    echo done
+RUN set -eux; \
+    export DEBIAN_FRONTEND=noninteractive; \
     echo "$USER ALL=(ALL:ALL) NOPASSWD: ALL" >>/etc/sudoers; \
     echo '"\e[A": history-search-backward' >>/etc/inputrc; \
     echo '"\e[B": history-search-forward' >>/etc/inputrc; \
+    chown -R "$USER":"$GROUP" /usr/local; \
     echo done
 
 USER "$USER"
