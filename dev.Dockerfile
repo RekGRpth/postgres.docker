@@ -98,6 +98,7 @@ RUN set -eux; \
         python3-gevent \
         python3-httpbin \
         rtmpdump \
+        strace \
         sudo \
         systemtap-sdt-dev \
         tcl-dev \
