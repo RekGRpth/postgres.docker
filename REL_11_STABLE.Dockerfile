@@ -106,11 +106,11 @@ RUN set -eux; \
     git clone -b main https://github.com/RekGRpth/pgtap.git; \
     git clone -b master https://github.com/RekGRpth/htmldoc.git; \
     git clone -b master https://github.com/RekGRpth/mustach.git; \
-    git clone -b master https://github.com/RekGRpth/pg_curl.git; \
-    git clone -b master https://github.com/RekGRpth/pg_htmldoc.git; \
+    git clone -b master https://github.com/RekGRpth/pg_curl.git --recursive; \
+    git clone -b master https://github.com/RekGRpth/pg_htmldoc.git --recursive; \
     git clone -b master https://github.com/RekGRpth/pg_jobmon.git; \
     git clone -b master https://github.com/RekGRpth/pgjwt.git; \
-    git clone -b master https://github.com/RekGRpth/pg_mustach.git; \
+    git clone -b master https://github.com/RekGRpth/pg_mustach.git --recursive; \
     git clone -b master https://github.com/RekGRpth/pg_qualstats.git; \
     git clone -b master https://github.com/RekGRpth/pg_ssl.git; \
     git clone -b master https://github.com/RekGRpth/pg_stat_kcache.git; \
