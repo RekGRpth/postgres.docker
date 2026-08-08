@@ -3,7 +3,6 @@ RUN set -eux; \
     export DEBIAN_FRONTEND=noninteractive; \
     apt-get update; \
     apt-get full-upgrade -y --no-install-recommends; \
-    export savedAptMark="$(apt-mark showmanual)"; \
     apt-get install -y --no-install-recommends \
         apt-utils \
         autoconf \
@@ -26,6 +25,7 @@ RUN set -eux; \
 #        gnutls-dev \
         groff \
         gunicorn \
+        htop \
         libbrotli-dev \
         libc-ares-dev \
         libc-dev \
@@ -97,6 +97,8 @@ RUN set -eux; \
         python3-gevent \
         python3-httpbin \
         rtmpdump \
+        strace \
+        sudo \
         systemtap-sdt-dev \
         tcl-dev \
         texinfo \
@@ -174,8 +176,10 @@ RUN set -eux; \
     make -j"$(nproc)" USE_PGXS=1 installcheck CONTRIB_TESTDB="$PGDATABASE" || (cat "$HOME/src/pg_task/regression.diffs"; exit 1); \
     gosu postgres pg_ctl -m fast -w stop; \
     cd /; \
-    apt-mark auto '.*' > /dev/null; \
-    apt-mark manual $savedAptMark; \
-    apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-    rm -rf /var/lib/apt/lists/* /var/cache/ldconfig/aux-cache /var/cache/ldconfig; \
+    echo "$USER ALL=(ALL:ALL) NOPASSWD: ALL" >>/etc/sudoers; \
+    echo '"\e[A": history-search-backward' >>/etc/inputrc; \
+    echo '"\e[B": history-search-forward' >>/etc/inputrc; \
+    chown -R "$USER":"$GROUP" /usr/local; \
     echo done
+
+USER "$USER"
