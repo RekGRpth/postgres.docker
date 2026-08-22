@@ -142,7 +142,7 @@ RUN set -eux; \
     gunicorn -b 0.0.0.0:80 httpbin:app -k gevent -D; \
     gosu postgres initdb --auth=trust; \
     echo "max_worker_processes = '128'" >>"$PGDATA/postgresql.auto.conf"; \
-    echo "shared_preload_libraries = 'auto_explain,pg_stat_statements,pg_stat_kcache,pg_qualstats,pg_wait_sampling,plugin_debugger,pg_task'" >>"$PGDATA/postgresql.auto.conf"; \
+    echo "shared_preload_libraries = 'auto_explain,pg_stat_statements,pg_stat_kcache,pg_qualstats,plugin_debugger,pg_task'" >>"$PGDATA/postgresql.auto.conf"; \
     gosu postgres pg_ctl -w start; \
     sleep 10; \
     export PGUSER=postgres; \
