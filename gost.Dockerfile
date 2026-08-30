@@ -1,4 +1,4 @@
-FROM ghcr.io/rekgrpth/postgres.docker:latest
+FROM ghcr.io/rekgrpth/postgres.docker:REL_18_STABLE
 RUN set -eux; \
     apk update --no-cache; \
     apk upgrade --no-cache; \
