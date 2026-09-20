@@ -18,6 +18,5 @@ docker run \
     --mount type=volume,source=postgres,destination=/var/lib/postgresql \
     --name postgres \
     --network name=docker \
-    --privileged \
     --restart always \
     "ghcr.io/rekgrpth/postgres.docker:${INPUTS_BRANCH:-latest}"
