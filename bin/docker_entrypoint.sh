@@ -29,8 +29,7 @@ if [ "$1" = 'postgres' ]; then
         ls /docker-entrypoint-initdb.d/ >/dev/null
         initdb -k
         cat >>"$PGDATA/pg_hba.conf" <<EOF
-host all all samenet trust
-host replication all samenet trust
+local all all trust
 EOF
         cat >>"$PGDATA/postgresql.auto.conf" <<EOF
 listen_addresses = '*'
