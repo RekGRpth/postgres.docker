@@ -5,7 +5,6 @@ ENV HOME=/home
 MAINTAINER RekGRpth
 CMD [ "postgres" ]
 ENV HOME=/var/lib/postgresql \
-    PG_BUILD_FROM_SOURCE=yes \
     PG_MAJOR=4
 STOPSIGNAL SIGINT
 WORKDIR "$HOME"
