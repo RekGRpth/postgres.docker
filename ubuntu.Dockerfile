@@ -72,6 +72,7 @@ RUN set -eux; \
         libldap2-dev \
         liblmdb-dev \
         liblz4-dev \
+        libmupdf-dev \
         libnghttp2-dev \
         libpam0g-dev \
         libpcre2-dev \
@@ -128,6 +129,7 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_htmldoc.git --recursive; \
     git clone -b master https://github.com/RekGRpth/pg_jobmon.git; \
     git clone -b master https://github.com/RekGRpth/pgjwt.git; \
+    git clone -b master https://github.com/RekGRpth/pg_mupdf.git; \
     git clone -b master https://github.com/RekGRpth/pg_mustach.git --recursive; \
     git clone -b development https://github.com/RekGRpth/pg_partman.git; \
     git clone -b master https://github.com/RekGRpth/pg_qualstats.git; \

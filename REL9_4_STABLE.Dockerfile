@@ -73,6 +73,7 @@ RUN set -eux; \
         lz4-dev \
         make \
         mt-st \
+        mupdf-dev \
         musl-dev \
         nghttp2-dev \
         openldap-dev \
@@ -107,6 +108,7 @@ RUN set -eux; \
     git clone -b master https://github.com/RekGRpth/pg_htmldoc.git --recursive; \
     git clone -b master https://github.com/RekGRpth/pg_jobmon.git; \
     git clone -b master https://github.com/RekGRpth/pgjwt.git; \
+    git clone -b master https://github.com/RekGRpth/pg_mupdf.git; \
     git clone -b master https://github.com/RekGRpth/pg_mustach.git --recursive; \
     git clone -b master https://github.com/RekGRpth/pg_qualstats.git; \
     git clone -b master https://github.com/RekGRpth/pg_ssl.git; \
