@@ -19,7 +19,9 @@ RUN set -eux; \
         flex \
         g++ \
         gcc \
+        gdb \
         gettext \
+        gh \
         git \
         gnupg \
 #        gnutls-dev \
@@ -103,6 +105,7 @@ RUN set -eux; \
         tcl-dev \
         texinfo \
         uuid-dev \
+        valgrind \
         zlib1g-dev \
     ; \
     mkdir -p "$HOME/src"; \
