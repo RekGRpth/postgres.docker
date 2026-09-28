@@ -40,6 +40,7 @@ RUN set -eux; \
         file \
         flex \
         fltk-dev \
+        freetype-dev \
         g++ \
         gcc \
         gc-dev \
@@ -49,8 +50,10 @@ RUN set -eux; \
         git \
 #        gnutls-dev \
         groff \
+        harfbuzz-dev \
         icu-dev \
         jansson-dev \
+        jbig2dec-dev \
         jpeg-dev \
         json-c-dev \
         krb5-dev \
@@ -75,9 +78,9 @@ RUN set -eux; \
         lz4-dev \
         make \
         mt-st \
-        mupdf-dev \
         musl-dev \
         nghttp2-dev \
+        openjpeg-dev \
         openldap-dev \
         patch \
         pcre2-dev \
@@ -107,6 +110,7 @@ RUN set -eux; \
 #    git clone -b main https://github.com/RekGRpth/pgcopydb.git; \
     git clone -b main https://github.com/RekGRpth/pgtap.git; \
     git clone -b master https://github.com/RekGRpth/htmldoc.git; \
+    git clone -b master https://github.com/RekGRpth/mupdf.git; \
     git clone -b master https://github.com/RekGRpth/mustach.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git --recursive; \
     git clone -b master https://github.com/RekGRpth/pg_htmldoc.git --recursive; \
@@ -144,6 +148,10 @@ RUN set -eux; \
     make -j"$(nproc)" install; \
     cd "$HOME/src/mustach"; \
     make -j"$(nproc)" libs=single install; \
+    cd "$HOME/src/mupdf"; \
+    git -c url.https://github.com/ArtifexSoftware/.insteadOf=https://github.com/RekGRpth/ submodule update --init --depth 1 thirdparty/extract thirdparty/gumbo-parser thirdparty/lcms2; \
+    touch thirdparty/extract/src/*_template.c thirdparty/extract/src/*_template.h; \
+    make -j"$(nproc)" build=release shared=yes mujs=no USE_CMARK_GFM=no USE_SYSTEM_GUMBO=no USE_SYSTEM_LIBS=yes XCFLAGS=-DFZ_ENABLE_MD=0 install-libs; \
     cd "$HOME/src/postgres"; \
     ./configure \
         CFLAGS="-fno-omit-frame-pointer -Werror=implicit-function-declaration -Werror=incompatible-pointer-types" \
@@ -181,7 +189,7 @@ RUN set -eux; \
     ln -fs build-aux config; \
     make -j"$(nproc)" USE_PGXS=1; \
     cd "$HOME"; \
-    find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres -e /src/htmldoc -e /src/mustach | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
+    find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres -e /src/htmldoc -e /src/mupdf -e /src/mustach | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
     apk add --no-cache --virtual .postgres \
         busybox-extras \

@@ -54,7 +54,6 @@ RUN set -eux; \
         libldap2-dev \
         liblmdb-dev \
         liblz4-dev \
-        libmupdf-dev \
         libnghttp2-dev \
         libpam0g-dev \
         libpcre2-dev \

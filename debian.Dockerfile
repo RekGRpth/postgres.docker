@@ -53,6 +53,7 @@ RUN set -eux; \
         libedit-dev \
         libevent-dev \
         libfltk1.3-dev \
+        libfreetype-dev \
         libgc-dev \
         libgcrypt20-dev \
         libgdal-dev \
@@ -60,18 +61,20 @@ RUN set -eux; \
         libgeos-dev \
         libgeos-dev \
         libgss-dev \
+        libharfbuzz-dev \
         libicu-dev \
         libidn11-dev \
         libidn2-dev \
         libjansson-dev \
+        libjbig2dec0-dev \
         libjpeg-dev \
         libjson-c-dev \
         libkrb5-dev \
         libldap2-dev \
         liblmdb-dev \
         liblz4-dev \
-        libmupdf-dev \
         libnghttp2-dev \
+        libopenjp2-7-dev \
         libpam0g-dev \
         libpcre2-dev \
         libperl-dev \
@@ -122,6 +125,7 @@ RUN set -eux; \
 #    git clone -b main https://github.com/RekGRpth/pgcopydb.git; \
     git clone -b main https://github.com/RekGRpth/pgtap.git; \
     git clone -b master https://github.com/RekGRpth/htmldoc.git; \
+    git clone -b master https://github.com/RekGRpth/mupdf.git; \
     git clone -b master https://github.com/RekGRpth/mustach.git; \
     git clone -b master https://github.com/RekGRpth/pg_curl.git --recursive; \
     git clone -b master https://github.com/RekGRpth/pg_htmldoc.git --recursive; \
@@ -158,6 +162,10 @@ RUN set -eux; \
     make -j"$(nproc)" install; \
     cd "$HOME/src/mustach"; \
     make -j"$(nproc)" libs=single install; \
+    cd "$HOME/src/mupdf"; \
+    git -c url.https://github.com/ArtifexSoftware/.insteadOf=https://github.com/RekGRpth/ submodule update --init --depth 1 thirdparty/extract thirdparty/gumbo-parser thirdparty/lcms2; \
+    touch thirdparty/extract/src/*_template.c thirdparty/extract/src/*_template.h; \
+    make -j"$(nproc)" build=release shared=yes mujs=no USE_CMARK_GFM=no USE_SYSTEM_GUMBO=no USE_SYSTEM_LIBS=yes XCFLAGS=-DFZ_ENABLE_MD=0 install-libs; \
     cd "$HOME/src/postgres"; \
     ./configure \
         CFLAGS="-fno-omit-frame-pointer -Werror=implicit-function-declaration -Werror=incompatible-pointer-types" \
@@ -194,8 +202,9 @@ RUN set -eux; \
     ./configure; \
     make -j"$(nproc)" USE_PGXS=1; \
     cd "$HOME"; \
-    find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres -e /src/htmldoc -e /src/mustach | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
+    find "$HOME/src" -maxdepth 1 -mindepth 1 -type d | grep -v -e src/postgres -e /src/htmldoc -e /src/mupdf -e /src/mustach | sort -u | while read -r NAME; do cd "$NAME"; make -j"$(nproc)" USE_PGXS=1 install || exit 1; done; \
     cd /; \
+    ldconfig; \
     apt-mark auto '.*' > /dev/null; \
     find /usr/local -type f -executable -exec ldd '{}' ';' | grep -v 'not found' | awk '/=>/ { print $(NF-1) }' | sort -u | xargs -r dpkg-query --search | cut -d: -f1 | grep -v -e gdal -e geos -e perl -e python -e tcl | sort -u | xargs -r apt-mark manual || echo $?; \
     find /usr/local -type f -executable -exec ldd '{}' ';' | grep -v 'not found' | awk '/=>/ { print $(NF-1) }' | sort -u | xargs -r -i echo "/usr{}" | xargs -r dpkg-query --search | cut -d: -f1 | grep -v -e gdal -e geos -e perl -e python -e tcl | sort -u | xargs -r apt-mark manual || echo $?; \

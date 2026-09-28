@@ -57,7 +57,6 @@ RUN set -eux; \
         lz4-dev \
         make \
         mt-st \
-        mupdf-dev \
         musl-dev \
         nghttp2-dev \
         openldap-dev \
