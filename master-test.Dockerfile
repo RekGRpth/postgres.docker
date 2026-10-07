@@ -157,7 +157,8 @@ RUN set -eux; \
     cd "$HOME/src/pg_task"; \
     export PGDATABASE=postgres; \
 #    echo "log_min_messages = 'debug1'" >>"$PGDATA/postgresql.auto.conf"; \
-    gosu postgres pg_ctl -w reload; \
+    echo "max_files_per_process = '64'" >>"$PGDATA/postgresql.auto.conf"; \
+    gosu postgres pg_ctl -w restart; \
     make -j"$(nproc)" USE_PGXS=1 installcheck CONTRIB_TESTDB="$PGDATABASE" PG_TASK_TEST_USER=postgres PG_TASK_TEST_INSTANCE=existing || (cat "$HOME/src/pg_task/regression.diffs"; exit 1); \
     gosu postgres pg_ctl -m fast -w stop; \
     cd /; \
