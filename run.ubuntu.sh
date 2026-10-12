@@ -6,6 +6,8 @@ docker volume create postgres
 docker stop postgres || echo $?
 docker rm postgres || echo $?
 docker run \
+    --cap-add PERFMON \
+    --cap-add SYS_PTRACE \
     --detach \
     --env ASAN_OPTIONS="detect_odr_violation=0,alloc_dealloc_mismatch=false,halt_on_error=false" \
     --env GROUP_ID="$(id -g)" \
@@ -20,4 +22,5 @@ docker run \
     --name postgres \
     --network name=docker \
     --restart always \
+    --security-opt seccomp=unconfined \
     "ghcr.io/rekgrpth/postgres.docker:${INPUTS_BRANCH:-ubuntu-test}"
