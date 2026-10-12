@@ -189,7 +189,6 @@ RUN set -eux; \
     echo "$USER ALL=(ALL:ALL) NOPASSWD: ALL" >>/etc/sudoers; \
     echo '"\e[A": history-search-backward' >>/etc/inputrc; \
     echo '"\e[B": history-search-forward' >>/etc/inputrc; \
-    setcap cap_perfmon,cap_sys_ptrace+ep /usr/bin/perf; \
     chown -R "$USER":"$GROUP" /usr/local; \
     echo done
 
