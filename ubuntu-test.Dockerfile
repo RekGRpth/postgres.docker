@@ -83,6 +83,8 @@ RUN set -eux; \
         libzstd-dev \
         linux-headers-generic \
         linux-libc-dev \
+        linux-tools-common \
+        linux-tools-generic \
         llvm \
         llvm-dev \
         lsb-release \
