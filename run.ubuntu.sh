@@ -16,7 +16,6 @@ docker run \
     --env USER_ID="$(id -u)" \
     --hostname postgres \
     --init \
-    --ipc=host \
     --mount type=bind,source=/etc/certs,destination=/etc/certs,readonly \
     --mount type=bind,source=/run/postgresql,destination=/run/postgresql \
     --mount type=volume,source=postgres,destination=/var/lib/postgresql \
@@ -24,4 +23,5 @@ docker run \
     --network name=docker \
     --restart always \
     --security-opt seccomp=unconfined \
+    --shm-size=4gb \
     "ghcr.io/rekgrpth/postgres.docker:${INPUTS_BRANCH:-ubuntu-test}"
